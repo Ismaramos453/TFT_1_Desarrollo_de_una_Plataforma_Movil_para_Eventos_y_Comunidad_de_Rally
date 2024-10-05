@@ -1,0 +1,27 @@
+{
+    "photos": [
+        {
+            "id": "1",
+            "url": "https://hips.hearstapps.com/hmg-prod/images/lanciarally037gruppob1982-1983-1-6522bad9e61a8.jpg?crop=1.00xw:1.00xh;0,0&resize=640:*",
+            "description": "Descripción de la foto 1",
+            "category": "WRC",
+            "year": "2022"
+        },
+        {
+            "id": "2",
+            "url": "https://estaticos-cdn.prensaiberica.es/clip/86b1b2ef-a984-4468-b94e-6552105e3f06_16-9-discover-aspect-ratio_default_0.jpg",
+            "description": "Descripción de la foto 2",
+            "category": "Amateur",
+            "year": "2023"
+        },
+        {
+            "id": "3",
+            "url": "https://cdnwp.dealerk.com/0b42016c/uploads/sites/250/2020/04/autos-montalt-ford-focus-wrc-1999-historia-del-mundial-de-rallys-17562.jpg",
+            "description": "Descripción de la foto 3",
+            "category": "Amateur",
+            "year": "2024"
+        }
+    ]
+}
+
+

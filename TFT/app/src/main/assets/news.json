@@ -1,0 +1,19 @@
+{
+    "news": [
+        {
+            "title": "Rally Championship 2024",
+            "content": "The Rally Championship 2024 is set to be the most exciting yet...",
+            "date": "2024-07-23"
+        },
+        {
+            "title": "New Rally Car Models",
+            "content": "Several manufacturers have announced new models for the upcoming season...",
+            "date": "2024-07-22"
+        },
+        {
+            "title": "Interview with Top Drivers",
+            "content": "In this exclusive interview, we talk with the top drivers about their experiences...",
+            "date": "2024-07-21"
+        }
+    ]
+}

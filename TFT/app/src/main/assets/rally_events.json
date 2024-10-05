@@ -1,0 +1,142 @@
+[
+    {
+        "title": "Rally Monte Carlo",
+        "type": "WRC Event",
+        "date": "2023-01-20",
+        "time": "8:00 AM",
+        "location": "Monaco",
+        "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwvTSpWWzCopqncy-xAcPIzcI4BugqYD8cgw&s",
+        "id": "04d29f2b-e2a6-47bd-b9ee-84ed38bec8c3",
+        "description": "El Rally Monte Carlo es uno de los eventos más prestigiosos del Campeonato Mundial de Rally (WRC). Celebrado en el principado de Mónaco, este rally se caracteriza por sus desafiantes condiciones invernales que combinan nieve, hielo y asfalto. Los pilotos deben mostrar una gran destreza y capacidad de adaptación para enfrentar los sinuosos caminos de montaña. Este evento no solo destaca por la competencia, sino también por el glamour y la historia que lo rodea, atrayendo a aficionados de todo el mundo."
+    },
+    {
+        "title": "Rally Sweden",
+        "type": "WRC Event",
+        "date": "2023-02-11",
+        "time": "9:00 AM",
+        "location": "Torsby, Sweden",
+        "image": "https://upload.wikimedia.org/wikipedia/commons/1/10/RallySweden.png",
+        "id": "bb639d4a-1a76-4212-8555-f9b05d7436bc",
+        "description": "El Rally de Suecia es único en el calendario del WRC por ser el único rally completamente invernal. Situado en Torsby, los caminos están cubiertos de nieve y hielo, ofreciendo un espectáculo visual impresionante. Los neumáticos con clavos son esenciales para mantener el control en las condiciones resbaladizas. Este evento es conocido por sus espectaculares saltos y las altas velocidades que los pilotos alcanzan en los caminos helados, ofreciendo una experiencia emocionante tanto para los conductores como para los espectadores."
+    },
+    {
+        "title": "Rally Mexico",
+        "type": "WRC Event",
+        "date": "2023-03-11",
+        "time": "10:00 AM",
+        "location": "León, Mexico",
+        "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEYCq94Sj1Wi91bms4AWqbzJHyhP5ES5edvg&s",
+        "id": "0b2924eb-d92d-4952-97b7-3ee9f6f9c360",
+        "description": "Celebrado en León, el Rally de México es conocido por sus etapas polvorientas y sus altitudes elevadas. Estas condiciones ponen a prueba tanto la resistencia de los vehículos como la habilidad de los pilotos. La altitud afecta la potencia de los motores, lo que añade un desafío adicional a este rally. Con paisajes impresionantes y un ambiente vibrante, el Rally de México es una de las paradas más emocionantes del WRC, ofreciendo una mezcla de cultura, velocidad y adrenalina."
+    },
+    {
+        "title": "Rally Argentina",
+        "type": "WRC Event",
+        "date": "2023-04-22",
+        "time": "11:00 AM",
+        "location": "Villa Carlos Paz, Argentina",
+        "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_VEJFtIzQ__SVdMkLYh9tfRxIYryrdaB2HA&s",
+        "id": "e020255f-b49c-4a1d-8184-84dcd2dacce9",
+        "description": "El Rally de Argentina es famoso por sus caminos difíciles y variados, que incluyen tramos de tierra y barro. Celebrado en Villa Carlos Paz, este rally atrae a miles de fanáticos apasionados que crean un ambiente electrizante. Las etapas a través de las sierras ofrecen vistas espectaculares y desafíos técnicos para los pilotos, destacándose por los icónicos saltos y las condiciones cambiantes. Este evento es una fiesta del automovilismo en Sudamérica, combinando competición intensa con la calidez de la hospitalidad argentina."
+    },
+    {
+        "title": "Rally Portugal",
+        "type": "WRC Event",
+        "date": "2023-05-20",
+        "time": "12:00 PM",
+        "location": "Porto, Portugal",
+        "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRI1aUCSgy2DbSHgTbGViyGXKHHQhMPuCEp6Q&s",
+        "id": "92292992-ee3e-422f-b31e-009c8cf9496b",
+        "description": "El Rally de Portugal, celebrado en Porto, es conocido por sus caminos de grava que desafían tanto a pilotos como a vehículos. Este evento ofrece una combinación de tramos rápidos y técnicos, con paisajes pintorescos y una atmósfera festiva. Los fanáticos acuden en masa para presenciar el famoso salto de Fafe, uno de los momentos más emocionantes del rally. La historia y tradición de este evento lo convierten en una parada imprescindible del WRC, donde la competencia feroz y la pasión por el rally se unen."
+    },
+    {
+        "title": "Entrega de premios Paddock",
+        "type": "Awards Ceremony",
+        "date": "2023-06-04",
+        "time": "7:00 PM",
+        "location": "Alghero, Italy",
+        "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSO2kngI6B0zlkfm29GEaLj3kDieM5rx8l1dQ&s",
+        "id": "94936409-97af-45aa-8788-96722de50c6a",
+        "description": "La Entrega de Premios Paddock es una ceremonia especial que celebra los logros y éxitos de la temporada del WRC. Realizada en Alghero, Italia, esta gala reúne a los pilotos, equipos y personalidades del mundo del rally para una noche de reconocimiento y celebración. Con un entorno elegante y festivo, los premios honran a los mejores desempeños en diversas categorías, desde el mejor piloto hasta el equipo más destacado. Este evento marca el cierre de la primera mitad del año con estilo y sofisticación."
+    },
+    {
+        "title": "Rally Italia Sardegna",
+        "type": "WRC Event",
+        "date": "2023-06-03",
+        "time": "1:00 PM",
+        "location": "Alghero, Italy",
+        "image": "https://pbs.twimg.com/profile_images/1750802046884646912/I_vliqRd_400x400.jpg",
+        "id": "df4cfd78-947d-4f83-a309-3fefce6ef36e",
+        "description": "El Rally Italia Sardegna, con base en Alghero, es famoso por sus caminos estrechos y polvorientos que serpentean a través del paisaje costero de Cerdeña. Este evento desafía a los pilotos con etapas técnicas y difíciles, donde la precisión y la resistencia son clave. La belleza natural de la región, combinada con la intensidad de la competición, crea una experiencia única tanto para los participantes como para los espectadores. Este rally es una joya en el calendario del WRC, ofreciendo un espectáculo de habilidad y velocidad en un entorno impresionante."
+    },
+    {
+        "title": "Quedada de fanáticos del rally",
+        "type": "Fan Meet-up",
+        "date": "2023-07-10",
+        "time": "4:00 PM",
+        "location": "Tartu, Estonia",
+        "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTiHR7z5pyIJ20ibzjLOxjQamqebiBgoN9N6g&s",
+        "id": "ebd9445a-cb11-41cc-b142-7f8c087f34c1",
+        "description": "La Quedada de Fanáticos del Rally es un evento especial para los entusiastas del rally en Tartu, Estonia. Este encuentro ofrece la oportunidad de conocer a otros fanáticos, compartir historias y disfrutar de actividades relacionadas con el rally. Con la participación de pilotos y equipos, los asistentes pueden obtener autógrafos, tomarse fotos y participar en sesiones de preguntas y respuestas. Es una celebración de la comunidad del rally, donde la pasión por el deporte une a personas de todas partes del mundo."
+    },
+    {
+        "title": "Rally Estonia",
+        "type": "WRC Event",
+        "date": "2023-07-15",
+        "time": "2:00 PM",
+        "location": "Tartu, Estonia",
+        "image": "https://upload.wikimedia.org/wikipedia/en/a/ab/Rally_Estonia_Logo.png",
+        "id": "f5b74996-af9d-4774-ac56-2be314b0ff41",
+        "description": "El Rally de Estonia, con sede en Tartu, es conocido por sus rápidas y fluidas etapas de grava. Este evento desafía a los pilotos con caminos que requieren precisión y velocidad, ofreciendo un espectáculo emocionante para los espectadores. Con paisajes pintorescos y una cálida acogida por parte de los fanáticos locales, el Rally de Estonia se ha convertido en una adición popular al calendario del WRC. La combinación de velocidad, habilidad y belleza natural hace de este rally una experiencia inolvidable."
+    },
+    {
+        "title": "Rally Finland",
+        "type": "WRC Event",
+        "date": "2023-08-05",
+        "time": "3:00 PM",
+        "location": "Jyväskylä, Finland",
+        "image": "https://i0.wp.com/sectorallyfinland.fi/wp-content/uploads/2021/07/yt_p_800x800-1.jpg?fit=800%2C800&ssl=1",
+        "id": "2f89cc18-2b4e-4661-a726-9d652b30a337",
+        "description": "El Rally de Finlandia, celebrado en Jyväskylä, es conocido como el 'Gran Premio del Rally' debido a sus altas velocidades y grandes saltos. Este evento icónico desafía a los pilotos con caminos de grava rápida y tramos técnicos que requieren máxima concentración y habilidad. Los fanáticos se alinean en los tramos boscosos para presenciar los espectaculares saltos y la impresionante velocidad de los autos. Es uno de los eventos más emocionantes y esperados del WRC, conocido por su atmósfera electrizante y la pasión de sus seguidores."
+    },
+    {
+        "title": "Shutdown de Rally",
+        "type": "Shutdown Event",
+        "date": "2023-09-26",
+        "time": "9:00 AM",
+        "location": "Auckland, New Zealand",
+        "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdg58_2DQOBWcw5-MWOLsmX8zLljtK_xr_Kw&s",
+        "id": "278fa965-a643-4fd0-88dd-e8ff55d2abf9",
+        "description": "El Shutdown de Rally en Auckland, Nueva Zelanda, marca un cierre temporal en el calendario de eventos del WRC. Este evento especial ofrece una oportunidad para que los equipos y pilotos revisen sus estrategias y preparen sus vehículos para los próximos desafíos. Con actividades para los fanáticos y oportunidades para interactuar con los equipos, el Shutdown de Rally es tanto un momento de reflexión como de anticipación para lo que viene. Es un evento único que combina descanso y preparación en un entorno relajado."
+    },
+    {
+        "title": "Rally New Zealand",
+        "type": "WRC Event",
+        "date": "2023-09-30",
+        "time": "4:00 PM",
+        "location": "Auckland, New Zealand",
+        "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLgOPKksZDPbzcQXHliuOUXqDzZXH2ThbcKg&s",
+        "id": "0160c66a-119d-467a-8d61-77f90e007e97",
+        "description": "El Rally de Nueva Zelanda, celebrado en Auckland, es conocido por sus paisajes impresionantes y sus desafiantes caminos de grava. Este evento pone a prueba la habilidad de los pilotos con tramos sinuosos y superficies cambiantes. Los hermosos paisajes naturales de Nueva Zelanda proporcionan un telón de fondo espectacular para este rally, que es tanto un reto técnico como una delicia visual. La cálida acogida de los fanáticos locales y la atmósfera vibrante hacen de este rally una parada destacada en el calendario del WRC."
+    },
+    {
+        "title": "Rally Spain",
+        "type": "WRC Event",
+        "date": "2024-10-21",
+        "time": "5:00 PM",
+        "location": "Salou, Spain",
+        "image": "https://tietarteve.com/wp-content/uploads/2012/03/logoRallyOfSpain.png",
+        "id": "b581823e-cdd5-4ab2-8f80-ad6d02b5031b",
+        "description": "El Rally de España, celebrado en Salou, es conocido por ser uno de los pocos eventos del WRC que combina etapas de asfalto y grava. Esta mezcla de superficies requiere una gran adaptabilidad por parte de los pilotos y sus equipos. Los tramos rápidos y técnicos a través de la región de Cataluña ofrecen un desafío emocionante y variado. Con un clima generalmente favorable y una gran cantidad de fanáticos entusiastas, el Rally de España es un evento destacado que cierra la temporada europea del WRC con estilo."
+    },
+    {
+        "title": "Cena de gala de rally",
+        "type": "Gala Dinner",
+        "date": "2024-11-19",
+        "time": "8:00 PM",
+        "location": "Porto, Portugal",
+        "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQuLJcZQCenup-E8V-rvPg0PMLlPvfoNXuZJQ&s",
+        "id": "4b09d771-f092-4b5c-bd95-9a00216545c1",
+        "description": "La Cena de Gala de Rally en Porto, Portugal, es una ocasión elegante y festiva que celebra los logros de la temporada del WRC. Este evento reúne a pilotos, equipos, patrocinadores y figuras destacadas del mundo del rally para una noche de reconocimiento y celebración. Con un ambiente sofisticado, la gala incluye la entrega de premios en varias categorías, discursos y una cena de gala exquisita. Es una oportunidad para reflejar sobre la temporada y honrar a aquellos que han destacado en el deporte."
+    }
+]
