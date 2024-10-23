@@ -7,7 +7,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.tft.data.EventService
+import com.example.tft.data.services.Event.EventServices
 import com.example.tft.model.RallyEvent
 import com.example.tft.model.SavedEvent
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -34,7 +34,7 @@ class EventViewModel(application: Application) : AndroidViewModel(application) {
     @RequiresApi(Build.VERSION_CODES.O)
     fun loadSavedEvents(userId: String) {
         viewModelScope.launch {
-            val events = EventService.loadEvents(userId)
+            val events = EventServices.loadEvents(userId)
             _events.postValue(events)
             updateEventDates(events)
         }
@@ -58,7 +58,7 @@ class EventViewModel(application: Application) : AndroidViewModel(application) {
     @RequiresApi(Build.VERSION_CODES.O)
     fun addEvent(userId: String, event: RallyEvent) {
         viewModelScope.launch {
-            val success = EventService.saveEvent(getApplication(), userId, event)
+            val success = EventServices.saveEvent(getApplication(), userId, event)
             if (success) {
                 loadSavedEvents(userId)
             }
@@ -68,7 +68,7 @@ class EventViewModel(application: Application) : AndroidViewModel(application) {
     @RequiresApi(Build.VERSION_CODES.O)
     fun removeEvent(userId: String, eventId: String) {
         viewModelScope.launch {
-            EventService.deleteEvent(userId, eventId)
+            EventServices.deleteEvent(userId, eventId)
             loadSavedEvents(userId)
         }
     }

@@ -5,7 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.tft.data.FirestoreService
+import com.example.tft.data.services.Event.EventServices
+import com.example.tft.data.services.News.NewsServices
 import com.example.tft.model.News
 import com.google.common.reflect.TypeToken
 import com.google.gson.Gson
@@ -37,13 +38,13 @@ class HomeViewModel : ViewModel() {
     }
 
     private fun loadNews() {
-        FirestoreService.getNews { newsList ->
+        NewsServices.getNews { newsList ->
             _news.value = newsList
         }
     }
 
     fun loadRallyEvents() {
-        FirestoreService.loadEvents { events ->
+        EventServices.loadEvents { events ->
             _events.value = events
             filterEvents("All", "All", "")
         }

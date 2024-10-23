@@ -5,7 +5,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.tft.data.FirestoreService
+import com.example.tft.data.services.User.UserServices
 import com.example.tft.model.user.Users
 
 class EditProfileViewModel : ViewModel() {
@@ -20,7 +20,7 @@ class EditProfileViewModel : ViewModel() {
     }
 
     private fun loadUserProfile() {
-        FirestoreService.getCurrentUserProfile { userProfile, docId ->
+        UserServices.getCurrentUserProfile { userProfile, docId ->
             if (userProfile != null && docId != null) {
                 Log.d("EditProfileViewModel", "UserProfile loaded: ${userProfile.name}, ${userProfile.userId}")
                 _userProfile.value = userProfile
@@ -43,9 +43,9 @@ class EditProfileViewModel : ViewModel() {
             documentId?.let { docId ->
                 if (imageUri != null && imageUri != initialImageUri) {
                     // Solo sube la imagen si ha cambiado
-                    FirestoreService.uploadProfileImage(imageUri, user.userId, docId) { success ->
+                    UserServices.uploadProfileImage(imageUri, user.userId, docId) { success ->
                         if (success) {
-                            FirestoreService.updateUserProfile(user, docId) { updateSuccess ->
+                            UserServices.updateUserProfile(user, docId) { updateSuccess ->
                                 if (updateSuccess) {
                                     _userProfile.value = user.copy(image = user.image + "?v=" + System.currentTimeMillis())
                                     loadUserProfile()
@@ -60,7 +60,7 @@ class EditProfileViewModel : ViewModel() {
                     }
                 } else {
                     // Si la imagen no ha cambiado, solo actualiza el perfil
-                    FirestoreService.updateUserProfile(user, docId) { updateSuccess ->
+                    UserServices.updateUserProfile(user, docId) { updateSuccess ->
                         if (updateSuccess) {
                             _userProfile.value = user.copy(image = user.image + "?v=" + System.currentTimeMillis())
                             loadUserProfile()

@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.tft.data.AuthenticationServices
+import com.example.tft.data.services.Authentication.AuthenticationServices
 import kotlinx.coroutines.launch
 
 

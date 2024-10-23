@@ -4,9 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.tft.data.FirestoreService
-import com.example.tft.data.PilotServices
 import com.example.tft.data.api.RetrofitInstance
+import com.example.tft.data.services.PilotFavorites.PilotFavoritesServices
 import com.example.tft.model.detail_stage.Race
 import com.example.tft.model.detail_stage.Season
 
@@ -41,7 +40,7 @@ class PilotDetailViewModel : ViewModel() {
     fun addPilotToFavorites(userId: String, pilotId: Int) {
         viewModelScope.launch {
             try {
-                FirestoreService.addPilotToFavorites(userId, pilotId)
+                PilotFavoritesServices.addPilotToFavorites(userId, pilotId)
             } catch (e: Exception) {
                 // Handle the error appropriately
             }
@@ -74,13 +73,4 @@ class PilotDetailViewModel : ViewModel() {
         }
     }
 
-    fun addPilotToFavorites(pilot: Team) {
-        viewModelScope.launch {
-            try {
-                PilotServices.addPilotToFavorites(pilot)
-            } catch (e: Exception) {
-                // Handle the error appropriately
-            }
-        }
-    }
 }

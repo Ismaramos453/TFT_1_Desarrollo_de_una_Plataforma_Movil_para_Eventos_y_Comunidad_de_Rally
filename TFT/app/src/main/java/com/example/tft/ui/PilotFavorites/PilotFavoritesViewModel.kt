@@ -2,8 +2,9 @@ package com.example.tft.ui.PilotFavorites
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.tft.data.FirestoreService
+import com.example.tft.data.services.PilotFavorites.PilotFavoritesServices
 import com.example.tft.data.api.RetrofitInstance
+import com.example.tft.data.services.User.UserServices
 import com.example.tft.model.pilot.Team
 import com.example.tft.model.user.Users
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -33,7 +34,7 @@ class PilotFavoritesViewModel : ViewModel() {
     }
     fun removePilotFromFavorites(userId: String, pilotId: Int) {
         viewModelScope.launch {
-            FirestoreService.removePilotFromFavorites(userId, pilotId)
+            PilotFavoritesServices.removePilotFromFavorites(userId, pilotId)
             loadFavoritePilotsDetails(userId)  // Recargar la lista después de eliminar
         }
     }
@@ -41,6 +42,6 @@ class PilotFavoritesViewModel : ViewModel() {
     private suspend fun fetchUserDetails(userId: String): Users? {
         // Aquí deberías implementar la lógica para obtener los datos del usuario
         // Podría ser desde Firestore, una API REST, etc.
-        return FirestoreService.getUserDetails(userId)  // Este es un ejemplo, necesitas implementar este método
+        return UserServices.getUserDetails(userId)  // Este es un ejemplo, necesitas implementar este método
     }
 }

@@ -22,7 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.tft.data.AuthenticationServices
+import com.example.tft.data.services.Authentication.AuthenticationServices
 import com.example.tft.navigation.AppNavigation
 import com.example.tft.navigation.AppScreens
 import com.example.tft.ui.bottonBar.BottonBarScreen

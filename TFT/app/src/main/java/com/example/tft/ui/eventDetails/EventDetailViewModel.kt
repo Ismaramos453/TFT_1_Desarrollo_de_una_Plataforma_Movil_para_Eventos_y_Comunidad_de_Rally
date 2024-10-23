@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.tft.data.FirestoreService
+import com.example.tft.data.services.Event.EventServices
 import com.example.tft.model.RallyEvent
 import com.google.common.reflect.TypeToken
 import com.google.gson.Gson
@@ -18,7 +18,7 @@ class EventDetailViewModel : ViewModel() {
     val event: LiveData<RallyEvent?> = _event
 
     fun loadEventById(eventId: String) {
-        FirestoreService.getEventById(eventId) { event ->
+        EventServices.getEventById(eventId) { event ->
             _event.value = event
         }
     }

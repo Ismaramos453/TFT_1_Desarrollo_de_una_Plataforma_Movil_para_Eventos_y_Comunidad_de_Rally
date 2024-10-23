@@ -1,4 +1,5 @@
-package com.example.tft.data
+package com.example.tft.data.services.Event
+
 import android.content.Context
 import com.example.tft.model.RallyEvent
 import com.example.tft.model.SavedEvent
@@ -7,14 +8,10 @@ import com.example.tft.model.user.Users
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 
-
-object EventService {
-    private val firestore = FirebaseFirestore.getInstance()
-
-
-
+object EventServices {
+    val firestore = FirebaseFirestore.getInstance()
     suspend fun saveEvent(context: Context, userId: String, event: RallyEvent): Boolean {
-        val userRef = firestore.collection("users").document(userId)
+        val userRef = EventServices.firestore.collection("users").document(userId)
         val userSnapshot = userRef.get().await()
 
         if (userSnapshot.exists()) {
@@ -29,7 +26,7 @@ object EventService {
                     location = event.location,
                     type = event.type,
                     description = event.description,
-                    image = event.image ?: ""
+                    image = event.getImageAsString() ?: "" // Usamos getImageAsString() para asegurar que sea un String
                 )
 
                 updatedEvents.add(savedEvent)
@@ -40,8 +37,9 @@ object EventService {
         return false
     }
 
+
     suspend fun loadEvents(userId: String): List<SavedEvent> {
-        val userSnapshot = firestore.collection("users").document(userId).get().await()
+        val userSnapshot = EventServices.firestore.collection("users").document(userId).get().await()
         if (userSnapshot.exists()) {
             val user = userSnapshot.toObject(Users::class.java)
             return user?.eventsSaved ?: emptyList()
@@ -50,7 +48,7 @@ object EventService {
     }
 
     suspend fun deleteEvent(userId: String, eventId: String) {
-        val userRef = firestore.collection("users").document(userId)
+        val userRef = EventServices.firestore.collection("users").document(userId)
         val userSnapshot = userRef.get().await()
 
         if (userSnapshot.exists()) {
@@ -61,25 +59,30 @@ object EventService {
             }
         }
     }
-}
 
-
-object PilotServices {
-    private val favorites = mutableListOf<Team>()
-
-    fun addPilotToFavorites(pilot: Team) {
-        if (!favorites.any { it.id == pilot.id }) {
-            favorites.add(pilot)
-        }
+    fun loadEvents(callback: (List<RallyEvent>) -> Unit) {
+        EventServices.firestore.collection("events")
+            .get()
+            .addOnSuccessListener { result ->
+                val events = result.documents.mapNotNull { doc ->
+                    doc.toObject(RallyEvent::class.java)?.copy(id = doc.id)
+                }
+                callback(events)
+            }
+            .addOnFailureListener {
+                callback(emptyList())
+            }
     }
 
-    fun removePilotFromFavorites(pilotId: Int) {
-        favorites.removeAll { it.id == pilotId }
+    fun getEventById(eventId: String, callback: (RallyEvent?) -> Unit) {
+        EventServices.firestore.collection("events").document(eventId).get()
+            .addOnSuccessListener { document ->
+                val event = document.toObject(RallyEvent::class.java)
+                callback(event)
+            }
+            .addOnFailureListener {
+                callback(null)
+            }
     }
 
-    fun isPilotFavorite(pilotId: Int): Boolean {
-        return favorites.any { it.id == pilotId }
-    }
-
-    fun getFavorites(): List<Team> = favorites
 }

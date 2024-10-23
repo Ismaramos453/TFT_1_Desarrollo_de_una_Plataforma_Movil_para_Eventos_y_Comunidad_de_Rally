@@ -3,7 +3,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.tft.data.FirestoreService
+import com.example.tft.data.services.News.NewsServices
 import com.example.tft.model.News
 import kotlinx.coroutines.launch
 
@@ -12,7 +12,6 @@ class NewsViewModel : ViewModel() {
     val news: LiveData<List<News>> = _news
 
     private val _searchQuery = MutableLiveData("")
-    val searchQuery: LiveData<String> = _searchQuery
 
     init {
         loadNews()
@@ -20,25 +19,8 @@ class NewsViewModel : ViewModel() {
 
     private fun loadNews() {
         viewModelScope.launch {
-            FirestoreService.getNews { newsList ->
+            NewsServices.getNews { newsList ->
                 _news.value = newsList
-            }
-        }
-    }
-
-    fun setSearchQuery(query: String) {
-        _searchQuery.value = query
-        filterNews()
-    }
-
-    private fun filterNews() {
-        viewModelScope.launch {
-            FirestoreService.getNews { newsList ->
-                if (_searchQuery.value!!.isNotEmpty()) {
-                    _news.value = newsList.filter { it.title.contains(_searchQuery.value!!, true) }
-                } else {
-                    _news.value = newsList
-                }
             }
         }
     }

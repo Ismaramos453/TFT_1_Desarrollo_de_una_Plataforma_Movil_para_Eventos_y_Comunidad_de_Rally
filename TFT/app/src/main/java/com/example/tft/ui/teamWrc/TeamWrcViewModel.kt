@@ -3,7 +3,7 @@ package com.example.tft.ui.teamWrc
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.tft.data.FirestoreService
+import com.example.tft.data.services.Teams.TeamsServices
 import com.example.tft.model.wrc.TeamWrc
 
 class TeamWrcViewModel : ViewModel() {
@@ -15,7 +15,7 @@ class TeamWrcViewModel : ViewModel() {
     }
 
     private fun loadTeams() {
-        FirestoreService.getTeams { teams ->
+        TeamsServices.getTeams { teams ->
             _teams.postValue(teams)
         }
     }

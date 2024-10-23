@@ -41,7 +41,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.example.tft.data.AuthenticationServices
+import com.example.tft.data.services.Authentication.AuthenticationServices
 import com.example.tft.templates_App.BackTopBar
 import com.example.tft.ui.events.EventViewModel
 import com.example.tft.ui.theme.ColorTextDark

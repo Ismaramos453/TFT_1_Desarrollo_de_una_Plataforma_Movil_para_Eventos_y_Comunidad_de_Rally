@@ -7,14 +7,9 @@ import androidx.compose.runtime.mutableStateMapOf
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
-import com.example.tft.data.FirestoreService
+import com.example.tft.data.services.Gallery.GalleryServices
 import com.example.tft.model.GalleryItem
 
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import org.json.JSONObject
 
 class PhotosViewModel(application: Application) : AndroidViewModel(application) {
     private val _galleryItems = MutableLiveData<List<GalleryItem>>()
@@ -32,7 +27,7 @@ class PhotosViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     private fun loadGalleryItems() {
-        FirestoreService.getGalleryItems { items ->
+        GalleryServices.getGalleryItems { items ->
             _galleryItems.value = items
         }
     }

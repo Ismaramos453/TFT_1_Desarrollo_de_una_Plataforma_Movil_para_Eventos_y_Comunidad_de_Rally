@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.tft.data.FirestoreService
+import com.example.tft.data.services.Cars.CarsServices
 import com.example.tft.model.Car
 import com.example.tft.model.CarCategory
 import kotlinx.coroutines.Dispatchers
@@ -23,7 +23,7 @@ class CarCategoriesViewModel : ViewModel() {
 
     private suspend fun loadCategories() {
         withContext(Dispatchers.IO) { // Ejecuta en un hilo de fondo
-            FirestoreService.getCarCategories {
+            CarsServices.getCarCategories {
                 _categories.postValue(it)
             }
         }

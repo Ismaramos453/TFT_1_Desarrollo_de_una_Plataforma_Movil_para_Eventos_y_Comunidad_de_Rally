@@ -3,7 +3,7 @@ package com.example.tft.ui.allEventsScreen
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.tft.data.FirestoreService
+import com.example.tft.data.services.Event.EventServices
 import com.example.tft.model.RallyEvent
 
 class AllEventsViewModel : ViewModel() {
@@ -16,7 +16,7 @@ class AllEventsViewModel : ViewModel() {
 
     private fun loadEvents() {
         // Aquí debes cargar los eventos desde tu fuente de datos, como una base de datos o un servicio web
-        FirestoreService.loadEvents { eventList ->
+        EventServices.loadEvents { eventList ->
             _events.value = eventList
         }
     }

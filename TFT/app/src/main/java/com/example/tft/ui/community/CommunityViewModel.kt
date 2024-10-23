@@ -10,7 +10,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.tft.data.FirestoreService
+import com.example.tft.data.services.Question.QuestionServices
+import com.example.tft.data.services.Votation.VotationServices
 import com.example.tft.model.foro.Question
 import com.example.tft.model.foro.Votation
 import com.google.firebase.auth.FirebaseAuth
@@ -22,7 +23,7 @@ import org.json.JSONObject
 
 
 class CommunityViewModel : ViewModel() {
-    private val firestoreService = FirestoreService
+    private val firestoreService = VotationServices
     private val _allQuestions = MutableLiveData<List<Question>>()
     private val _filteredQuestions = MediatorLiveData<List<Question>>()
     val questions: LiveData<List<Question>> = _filteredQuestions
@@ -36,7 +37,7 @@ class CommunityViewModel : ViewModel() {
     }
 
     private fun loadQuestions() {
-        firestoreService.getQuestions { questionsList ->
+        QuestionServices.getQuestions { questionsList ->
             _allQuestions.postValue(questionsList)
             _filteredQuestions.postValue(questionsList)  // Iniciar el filtro con todos los datos
         }
@@ -88,7 +89,7 @@ class CommunityViewModel : ViewModel() {
 
     fun voteOnVotation(votationId: String, option: String) {
         val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
-        firestoreService.voteOnVotation(votationId, option, userId) { success ->
+        VotationServices.voteOnVotation(votationId, option, userId) { success ->
             if (success) {
                 loadItems()  // Recargar items para reflejar el cambio de votos
             }

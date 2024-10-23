@@ -1,9 +1,8 @@
-package com.example.tft.data
+package com.example.tft.data.services.Authentication
 
 
 import android.util.Log
 import com.example.tft.model.user.Users
-import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
@@ -22,23 +21,7 @@ object AuthenticationServices {
             null
         }
     }
-    fun reauthenticateUser(currentPassword: String, callback: (Boolean) -> Unit) {
-        val user = auth.currentUser
-        val email = user?.email
 
-        if (user != null && email != null) {
-            val credential = EmailAuthProvider.getCredential(email, currentPassword)
-            user.reauthenticate(credential)
-                .addOnCompleteListener { task ->
-                    callback(task.isSuccessful)
-                }
-                .addOnFailureListener {
-                    callback(false)
-                }
-        } else {
-            callback(false)
-        }
-    }
     // Este método comprueba si el documento del usuario existe en Firestore
     fun checkIfUserExists(callback: (Boolean) -> Unit) {
         val currentUser = getCurrentUser()

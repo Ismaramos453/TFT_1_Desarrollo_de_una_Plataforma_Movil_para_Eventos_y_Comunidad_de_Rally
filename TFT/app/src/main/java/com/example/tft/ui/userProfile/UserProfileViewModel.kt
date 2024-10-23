@@ -5,8 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
-import com.example.tft.data.AuthenticationServices
-import com.example.tft.data.FirestoreService
+import com.example.tft.data.services.Authentication.AuthenticationServices
+import com.example.tft.data.services.User.UserServices
 import com.example.tft.model.user.Users
 import com.example.tft.navigation.AppScreens
 
@@ -22,7 +22,7 @@ class UserProfileViewModel : ViewModel() {
 
     fun loadUserProfile(forceReload: Boolean = false) {
         if (forceReload || _userProfile.value == null) {
-            FirestoreService.getCurrentUserProfile { userProfile, docId ->
+            UserServices.getCurrentUserProfile { userProfile, docId ->
                 if (userProfile != null && docId != null) {
                     _userProfile.postValue(userProfile)
                     documentId = docId.toString()
@@ -38,7 +38,7 @@ class UserProfileViewModel : ViewModel() {
             user.userId = email
 
             documentId?.let { docId ->
-                FirestoreService.updateUserProfile(user, docId) { success ->
+                UserServices.updateUserProfile(user, docId) { success ->
                     if (success) {
                         loadUserProfile(forceReload = true) // Forzar recarga después de guardar
                         onComplete()
