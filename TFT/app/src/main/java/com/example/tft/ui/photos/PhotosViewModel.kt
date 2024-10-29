@@ -17,11 +17,6 @@ class PhotosViewModel(application: Application) : AndroidViewModel(application) 
 
     val likes = mutableStateMapOf<String, Boolean>()
 
-    fun toggleLike(photoId: String) {
-        val currentLikeStatus = likes[photoId] ?: false
-        likes[photoId] = !currentLikeStatus
-    }
-
     init {
         loadGalleryItems()
     }
