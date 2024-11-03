@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.example.tft.data.services.Answer.AnswerServices
 import com.example.tft.data.services.Question.QuestionServices
 import com.example.tft.model.foro.Question
+import com.example.tft.model.notification.NotificationService
 import com.google.firebase.auth.FirebaseAuth
 
 class QuestionsDetailViewModel : ViewModel() {
@@ -40,11 +41,22 @@ class QuestionsDetailViewModel : ViewModel() {
         val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
         AnswerServices.addAnswer(questionId, content, userId) { success ->
             if (success) {
+                QuestionServices.getQuestionById(questionId) { question ->
+                    question?.let {
+                        val message = "Un usuario ha respondido a tu pregunta: \"${it.title}\""
+                        NotificationService.addNotification(it.userId, message) { success ->
+                            if (success) {
+                                loadQuestionDetail(questionId)
+                            }
+                        }
+                    }
+                }
                 loadQuestionDetail(questionId)
             }
             callback(success)
         }
     }
+
 
     fun deleteQuestion(questionId: String, callback: (Boolean) -> Unit) {
         QuestionServices.deleteQuestion(questionId, callback)

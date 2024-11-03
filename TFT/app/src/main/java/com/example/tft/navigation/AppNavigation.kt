@@ -53,6 +53,8 @@ import com.example.tft.ui.videos.VideoScreen
 import com.example.tft.ui.votationDetail.VotationDetailScreen
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
+import com.example.tft.ui.faq.FaqViewModel
+import com.example.tft.ui.settings.SettingViewModel
 import com.example.tft.ui.teamWrc.TeamWrcScreen
 import com.example.tft.ui.teamWrc.TeamWrcViewModel
 import com.example.tft.ui.votationDetail.VotationDetailViewModel
@@ -173,7 +175,8 @@ fun AppNavigation(navController: NavHostController, startDestination: String) {
             CarScreen(navController, categoryId)
         }
         composable(route = AppScreens.SettingScreen.route) {
-            SettingScreen(navController)
+            val settingViewModel: SettingViewModel = viewModel()  // Obtiene ViewModel aquí
+            SettingScreen(navController, settingViewModel)  // Pasa el ViewModel
         }
         composable(route = AppScreens.PilotFavoritesScreen.route) {
             val auth = FirebaseAuth.getInstance()
@@ -187,7 +190,8 @@ fun AppNavigation(navController: NavHostController, startDestination: String) {
         }
 
         composable(route = AppScreens.FaqScreen.route) {
-            FaqScreen(navController)
+            val viewModel: FaqViewModel = viewModel()
+            FaqScreen(navController,viewModel)
         }
         composable(route = AppScreens.SeasonScreen.route) {
             SeasonScreen(navController)

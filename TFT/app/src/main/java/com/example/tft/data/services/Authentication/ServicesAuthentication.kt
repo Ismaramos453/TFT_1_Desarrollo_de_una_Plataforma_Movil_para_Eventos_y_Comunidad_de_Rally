@@ -7,6 +7,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.auth.User
 import kotlinx.coroutines.tasks.await
 
 object AuthenticationServices {
@@ -20,6 +21,9 @@ object AuthenticationServices {
         } catch (e: Exception) {
             null
         }
+    }
+    fun getCurrentUserId(): String? {
+        return FirebaseAuth.getInstance().currentUser?.uid
     }
 
     // Este método comprueba si el documento del usuario existe en Firestore
@@ -129,10 +133,6 @@ object AuthenticationServices {
 
     fun getCurrentUser(): FirebaseUser? {
         return auth.currentUser
-    }
-
-    fun isUserLoggedIn(): Boolean {
-        return getCurrentUser() != null
     }
 
     fun signOut() {

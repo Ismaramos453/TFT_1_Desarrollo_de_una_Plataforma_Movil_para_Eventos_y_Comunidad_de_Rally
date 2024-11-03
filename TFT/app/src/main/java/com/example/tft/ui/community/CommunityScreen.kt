@@ -146,43 +146,45 @@ fun CommunityScreen(navController: NavHostController) {
             }
         }
     ) { innerPadding ->
-        Column(
-            Modifier
+        LazyColumn(
+            modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
                 .background(MaterialTheme.colorScheme.background)
         ) {
-            OutlinedTextField(
-                value = searchText,
-                onValueChange = { searchText = it },
-                label = { Text("Buscar en la comunidad...") },
-                leadingIcon = { Icon(Icons.Default.Search, contentDescription = "Search") },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
-            )
+            item {
+                OutlinedTextField(
+                    value = searchText,
+                    onValueChange = { searchText = it },
+                    label = { Text("Buscar en la comunidad...") },
+                    leadingIcon = { Icon(Icons.Default.Search, contentDescription = "Search") },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                )
+            }
 
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
-                    .padding(bottom = 8.dp),
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-                SortDropdownMenu("Recientes", listOf("Todas", "Recientes", "Antiguas"), sortOption) { selected ->
-                    sortOption = selected
-                }
-                SortCommentsDropdownMenu(commentsSortOption) { selected ->
-                    commentsSortOption = selected
+            item {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp)
+                        .padding(bottom = 8.dp),
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    SortDropdownMenu("Recientes", listOf("Todas", "Recientes", "Antiguas"), sortOption) { selected ->
+                        sortOption = selected
+                    }
+                    SortCommentsDropdownMenu(commentsSortOption) { selected ->
+                        commentsSortOption = selected
+                    }
                 }
             }
 
-            LazyColumn {
-                items(filteredItems) { item ->
-                    when (item) {
-                        is Question -> QuestionCard(item, navController)
-                        is Votation -> VotationCard(item, viewModel::voteOnVotation, navController)
-                    }
+            items(filteredItems) { item ->
+                when (item) {
+                    is Question -> QuestionCard(item, navController)
+                    is Votation -> VotationCard(item, viewModel::voteOnVotation, navController)
                 }
             }
         }
