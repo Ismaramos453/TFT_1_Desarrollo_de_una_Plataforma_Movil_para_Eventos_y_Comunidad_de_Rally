@@ -10,6 +10,8 @@ import com.example.tft.model.detail_stage.Race
 import com.example.tft.model.detail_stage.Season
 
 import com.example.tft.model.pilot.Team
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException
@@ -25,25 +27,52 @@ class PilotDetailViewModel : ViewModel() {
     private val _seasons = MutableLiveData<List<Season>>()
     val seasons: LiveData<List<Season>> get() = _seasons
 
+    private val _favoritePilots = MutableStateFlow<List<Int>>(emptyList())
+    val favoritePilots = _favoritePilots.asStateFlow()
+
     fun loadPilotDetail(pilotId: Int) {
         viewModelScope.launch {
             try {
                 val response = RetrofitInstance.api.getPilotDetail(pilotId)
                 _pilotDetail.value = response.team
             } catch (e: IOException) {
-                // Manejo de errores de red
+                // Handle network errors
             } catch (e: HttpException) {
-                // Manejo de errores HTTP
+                // Handle HTTP errors
             }
         }
     }
+
     fun addPilotToFavorites(userId: String, pilotId: Int) {
         viewModelScope.launch {
             try {
                 PilotFavoritesServices.addPilotToFavorites(userId, pilotId)
+                loadFavoritePilots(userId) // Reload favorites
             } catch (e: Exception) {
                 // Handle the error appropriately
             }
+        }
+    }
+
+    fun removePilotFromFavorites(userId: String, pilotId: Int) {
+        viewModelScope.launch {
+            try {
+                PilotFavoritesServices.removePilotFromFavorites(userId, pilotId)
+                loadFavoritePilots(userId) // Reload favorites
+            } catch (e: Exception) {
+                // Handle the error appropriately
+            }
+        }
+    }
+
+    fun loadFavoritePilots(userId: String) {
+        viewModelScope.launch {
+            val pilots = PilotFavoritesServices.getFavoritePilots(userId)
+            _favoritePilots.value = pilots
+
+
+
+
         }
     }
 
@@ -72,5 +101,4 @@ class PilotDetailViewModel : ViewModel() {
             }
         }
     }
-
 }

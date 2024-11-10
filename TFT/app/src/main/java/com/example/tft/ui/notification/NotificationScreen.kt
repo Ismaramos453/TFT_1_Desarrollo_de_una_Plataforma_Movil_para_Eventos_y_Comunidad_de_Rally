@@ -7,16 +7,21 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.AttachEmail
 import androidx.compose.material.icons.filled.AutoAwesomeMosaic
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.NotificationsOff
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
@@ -77,59 +82,82 @@ fun NotificationScreen(navController: NavHostController, viewModel: Notification
                 .background(MaterialTheme.colorScheme.background)
                 .padding(innerPadding)
         ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(16.dp)
-                    .verticalScroll(rememberScrollState())
-            ) {
-                notifications.forEach { notification ->
-                    val notificationId = notification["id"].toString() // Asegúrate de tener el ID de la notificación
+            if (notifications.isEmpty()) {
+                // Mostrar mensaje y icono de "No hay notificaciones"
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.NotificationsOff,
+                        contentDescription = "No hay notificaciones",
+                        modifier = Modifier.size(64.dp),
+                        tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text(
+                        text = "No hay notificaciones",
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                    )
+                }
+            } else {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp)
+                        .verticalScroll(rememberScrollState())
+                ) {
+                    notifications.forEach { notification ->
+                        val notificationId = notification["id"].toString()
 
-                    Card(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 8.dp),
-                        colors = CardDefaults.cardColors(
-                            containerColor = MaterialTheme.colorScheme.tertiary
-                        ),
-                        elevation = CardDefaults.cardElevation(4.dp),
-                    ) {
-                        Row(
+                        Card(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(16.dp),
-                            horizontalArrangement = Arrangement.SpaceBetween
+                                .padding(vertical = 8.dp),
+                            colors = CardDefaults.cardColors(
+                                containerColor = MaterialTheme.colorScheme.tertiary
+                            ),
+                            elevation = CardDefaults.cardElevation(4.dp),
                         ) {
-                            Column(
-                                modifier = Modifier.weight(1f)
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(16.dp),
+                                horizontalArrangement = Arrangement.SpaceBetween
                             ) {
-                                val message = notification["message"].toString()
-                                val isResponseMessage = message.contains("un usuario te ha respondido", ignoreCase = true)
+                                Column(
+                                    modifier = Modifier.weight(1f)
+                                ) {
+                                    val message = notification["message"].toString()
+                                    val isResponseMessage = message.contains("un usuario te ha respondido", ignoreCase = true)
 
-                                Text(
-                                    text = message,
-                                    style = if (isResponseMessage) {
-                                        MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
-                                    } else {
-                                        MaterialTheme.typography.bodyLarge
-                                    },
-                                    color = Color.Black,
-                                    modifier = Modifier.padding(bottom = 8.dp)
-                                )
-
-                                notification["timestamp"]?.let { timestamp ->
-                                    val formattedDate = Instant.ofEpochMilli(timestamp as Long)
-                                        .atZone(ZoneId.systemDefault())
-                                        .toLocalDate()
                                     Text(
-                                        text = "Fecha: $formattedDate",
-                                        style = MaterialTheme.typography.labelSmall,
-                                        color = Color.Black
+                                        text = message,
+                                        style = if (isResponseMessage) {
+                                            MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
+                                        } else {
+                                            MaterialTheme.typography.bodyLarge
+                                        },
+                                        color = Color.Black,
+                                        modifier = Modifier.padding(bottom = 8.dp)
                                     )
+
+                                    notification["timestamp"]?.let { timestamp ->
+                                        val formattedDate = Instant.ofEpochMilli(timestamp as Long)
+                                            .atZone(ZoneId.systemDefault())
+                                            .toLocalDate()
+                                        Text(
+                                            text = "Fecha: $formattedDate",
+                                            style = MaterialTheme.typography.labelSmall,
+                                            color = Color.Black
+                                        )
+                                    }
                                 }
                             }
-
                         }
                     }
                 }
@@ -137,3 +165,4 @@ fun NotificationScreen(navController: NavHostController, viewModel: Notification
         }
     }
 }
+

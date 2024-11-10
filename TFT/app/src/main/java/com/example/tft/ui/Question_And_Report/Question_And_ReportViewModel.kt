@@ -1,15 +1,14 @@
-package com.example.tft.ui.faq
+package com.example.tft.ui.Question_And_Report
 
 
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
-import com.example.tft.data.services.Authentication.AuthenticationServices
-import com.example.tft.data.services.Faq.FaqServices
+import com.example.tft.data.services.Faq.QuestionForAdminServices
 import com.example.tft.model.Faq.SeverityLevel
 import com.google.firebase.auth.FirebaseAuth
 
-class FaqViewModel : ViewModel() {
+class Question_And_ReportViewModel : ViewModel() {
     fun sendFaqQuestion(title: String, content: String) {
         val currentUser = FirebaseAuth.getInstance().currentUser
         if (currentUser != null) {
@@ -18,7 +17,7 @@ class FaqViewModel : ViewModel() {
             val userEmail = currentUser.email ?: "No Email Provided"
             val userName = currentUser.displayName ?: "Anonymous"
 
-            FaqServices.postFaqQuestion(title, content, userId, userName, userEmail)
+            QuestionForAdminServices.postQuestion(title, content, userId, userName, userEmail)
         } else {
             Log.e("FaqViewModel", "No user logged in.")
         }
@@ -32,7 +31,7 @@ class FaqViewModel : ViewModel() {
             val userEmail = currentUser.email ?: "No Email Provided"
             val userName = currentUser.displayName ?: "Anonymous"
 
-            FaqServices.postBugReport(title, content, userId, userName, userEmail, severity)
+            QuestionForAdminServices.postBugReport(title, content, userId, userName, userEmail, severity)
         } else {
             Log.e("FaqViewModel", "No user logged in.")
         }

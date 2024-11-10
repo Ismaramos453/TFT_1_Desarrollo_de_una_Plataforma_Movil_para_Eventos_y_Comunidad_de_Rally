@@ -42,9 +42,11 @@ class EditProfileViewModel : ViewModel() {
 
             documentId?.let { docId ->
                 if (imageUri != null && imageUri != initialImageUri) {
-                    // Solo sube la imagen si ha cambiado
-                    UserServices.uploadProfileImage(imageUri, user.userId, docId) { success ->
-                        if (success) {
+                    // Subir la imagen y obtener la URL
+                    UserServices.uploadProfileImage(imageUri, user.userId) { success, imageUrl ->
+                        if (success && imageUrl != null) {
+                            user.image = imageUrl // Actualizar el objeto user con la nueva URL
+                            // Ahora actualizar el perfil del usuario
                             UserServices.updateUserProfile(user, docId) { updateSuccess ->
                                 if (updateSuccess) {
                                     _userProfile.value = user.copy(image = user.image + "?v=" + System.currentTimeMillis())
@@ -73,5 +75,6 @@ class EditProfileViewModel : ViewModel() {
             }
         }
     }
+
 }
 

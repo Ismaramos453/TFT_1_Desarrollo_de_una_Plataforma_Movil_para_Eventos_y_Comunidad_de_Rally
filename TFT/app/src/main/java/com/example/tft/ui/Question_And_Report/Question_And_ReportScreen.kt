@@ -1,6 +1,5 @@
-package com.example.tft.ui.faq
+package com.example.tft.ui.Question_And_Report
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -15,9 +14,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.tft.model.Faq.SeverityLevel
@@ -28,13 +25,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
-import com.example.tft.ui.createQuestion.DropdownMenuComponent
 import com.example.tft.ui.theme.ColorTextDark
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FaqScreen(navController: NavHostController, viewModel: FaqViewModel) {
+fun FaqScreen(navController: NavHostController, viewModel: Question_And_ReportViewModel) {
     var title by remember { mutableStateOf("") }
     var content by remember { mutableStateOf("") }
     var severity by remember { mutableStateOf(SeverityLevel.LIGHT) }
@@ -47,7 +43,7 @@ fun FaqScreen(navController: NavHostController, viewModel: FaqViewModel) {
 
     Scaffold(
         topBar = {
-            BackTopBar(title = "FAQ", navController = navController)
+            BackTopBar(title = "Preguntas y Reportes", navController = navController)
         },
         snackbarHost = { SnackbarHost(hostState = SnackbarHostState()) }
     ) { innerPadding ->

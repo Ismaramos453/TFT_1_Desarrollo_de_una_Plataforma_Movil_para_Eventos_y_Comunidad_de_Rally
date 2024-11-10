@@ -68,20 +68,8 @@ fun VotationDetailScreen(navController: NavHostController, votationId: String, v
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = { Text("Detalle de Votación") },
-                navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.Filled.ArrowBack, contentDescription = "Volver")
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                    navigationIconContentColor = MaterialTheme.colorScheme.onPrimaryContainer
-                )
-            )
-        }
+            BackTopBar(title = "Detalle de Votación", navController = navController)
+        },
     ) {
         Box(
             modifier = Modifier

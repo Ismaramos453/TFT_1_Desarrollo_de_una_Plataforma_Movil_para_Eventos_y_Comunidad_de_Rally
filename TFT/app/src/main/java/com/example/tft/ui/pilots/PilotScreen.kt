@@ -135,7 +135,7 @@ fun PilotCard(pilot: Team, navController: NavHostController) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { navController.navigate("PilotDetail_Screens/${pilot.id}") },
+            .clickable {  navController.navigate(AppScreens.PilotDetailScreen.route.replace("{pilotId}", pilot.id.toString()))  },
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.tertiary

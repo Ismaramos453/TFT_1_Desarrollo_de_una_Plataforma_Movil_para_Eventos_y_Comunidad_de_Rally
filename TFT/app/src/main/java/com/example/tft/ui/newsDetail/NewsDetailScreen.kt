@@ -22,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -42,8 +43,7 @@ fun NewsDetailScreen(navController: NavHostController, newsId: String) {
     Scaffold(
         topBar = {
             // Utilizar el título de la noticia si está disponible
-            //BackTopBar(title = newsDetail?.title ?: "Detalle de Noticia", navController = navController)
-            BackTopBar(title =  "Detalle de Noticia", navController = navController)
+            BackTopBar(title = "Detalle de la Noticia", navController = navController)
         }
     ) { innerPadding ->
         Box(
@@ -75,7 +75,8 @@ fun NewsDetailScreen(navController: NavHostController, newsId: String) {
                             text = news.description,
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(horizontal = 8.dp)
+                                .padding(horizontal = 8.dp),
+                            textAlign = TextAlign.Justify // Alineación justificada
                         )
                     }
                 }

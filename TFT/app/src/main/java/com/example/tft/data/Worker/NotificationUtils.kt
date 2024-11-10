@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit
 object NotificationUtils {
     fun scheduleEventNotifications(context: Context) {
         val workRequest = OneTimeWorkRequestBuilder<EventNotificationWorker>()
-            .setInitialDelay(1, TimeUnit.MINUTES) // Ajusta según la necesidad
+            .setInitialDelay(4, TimeUnit.HOURS) // Ajusta según la necesidad
             .addTag("event_notifications")
             .build()
         WorkManager.getInstance(context).enqueue(workRequest)

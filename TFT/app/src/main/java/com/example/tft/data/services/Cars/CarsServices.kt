@@ -14,7 +14,7 @@ object CarsServices {
     val storageReference = FirebaseStorage.getInstance().reference
 
     fun getCarCategories(callback: (List<CarCategory>) -> Unit) {
-        CarsServices.firestore.collection("categories")
+        firestore.collection("categories")
             .orderBy("priority")  // Asumiendo que hay un campo 'priority' para el orden
             .get()
             .addOnSuccessListener { result ->
@@ -29,27 +29,47 @@ object CarsServices {
                 callback(categories)
             }
             .addOnFailureListener { exception ->
-                Log.e("FirestoreService", "Error getting car categories", exception)
+                Log.e("CarsServices", "Error getting car categories", exception)
                 callback(emptyList())
             }
     }
 
     fun getCarsFromCategory(categoryId: String, callback: (List<Car>) -> Unit) {
-        CarsServices.firestore.collection("categories").document(categoryId).collection("cars").get()
+        firestore.collection("categories").document(categoryId).collection("cars").get()
             .addOnSuccessListener { result ->
                 val cars = result.documents.mapNotNull { document ->
                     try {
                         document.toObject(Car::class.java)
                     } catch (e: Exception) {
-                        Log.e("FirestoreService", "Error parsing car document", e)
+                        Log.e("CarsServices", "Error parsing car document", e)
                         null
                     }
                 }
                 callback(cars)
             }
             .addOnFailureListener { exception ->
-                Log.e("FirestoreService", "Error getting cars from category", exception)
+                Log.e("CarsServices", "Error getting cars from category", exception)
                 callback(emptyList())
+            }
+    }
+
+    // Nueva función para obtener los detalles de una categoría específica
+    fun getCategoryById(categoryId: String, callback: (CarCategory?) -> Unit) {
+        firestore.collection("categories").document(categoryId).get()
+            .addOnSuccessListener { document ->
+                try {
+                    val category = document.toObject(CarCategory::class.java)
+                    category?.let {
+                        callback(it.copy(id = document.id))
+                    } ?: callback(null)
+                } catch (e: Exception) {
+                    Log.e("CarsServices", "Error parsing category document", e)
+                    callback(null)
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.e("CarsServices", "Error getting category by ID", exception)
+                callback(null)
             }
     }
 }

@@ -1,6 +1,10 @@
 package com.example.tft.ui.StageDetailDay
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -22,17 +26,25 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.CalendarToday
+import androidx.compose.material.icons.filled.EmojiEvents
+import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.runtime.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
 import coil.compose.rememberImagePainter
+import com.example.tft.R
 import com.example.tft.model.detail_stage.Stage
 import com.example.tft.templates_App.BackTopBar
 import com.example.tft.ui.theme.PrimaryColor
@@ -45,12 +57,17 @@ import java.time.format.DateTimeFormatter
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun StageDaysDetailScreen(navController: NavController, stageId: String, viewModel: StageDaysDetailViewModel = viewModel()) {
+fun StageDaysDetailScreen(
+    navController: NavController,
+    stageId: String,
+    viewModel: StageDaysDetailViewModel = viewModel()
+) {
     val substages by viewModel.substages.observeAsState()
     val stageImage by viewModel.stageImage.observeAsState()
     val isDarkTheme = isSystemInDarkTheme()
-    val cardBackgroundColor = if (isDarkTheme) TertiaryColorDark else TertiaryColor
+    val cardBackgroundColor = MaterialTheme.colorScheme.surfaceVariant
     val textColor = MaterialTheme.colorScheme.onSurface
+
     LaunchedEffect(stageId) {
         viewModel.fetchSubstages(stageId)
     }
@@ -63,96 +80,167 @@ fun StageDaysDetailScreen(navController: NavController, stageId: String, viewMod
         Box(
             Modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background)
                 .padding(innerPadding)
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(horizontal = 24.dp, vertical = 16.dp),
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                // Imagen principal con animación de carga
                 stageImage?.let { imageUrl ->
-                    Image(
-                        painter = rememberImagePainter(data = imageUrl),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(240.dp)
-                            .clip(RoundedCornerShape(12.dp))
-                            .padding(vertical = 16.dp)
-                    )
+                    ImageCard(imageUrl)
                 }
 
-                substages?.let { substagesResponse ->
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // Mostrar indicador de carga o lista de etapas
+                if (substages == null) {
+                    LoadingIndicator("Cargando detalles de los días...")
+                } else {
                     LazyColumn(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(vertical = 8.dp),
+                        modifier = Modifier.fillMaxSize(),
                         verticalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
-                        items(substagesResponse.stages) { stage ->
-                            StageCard(stage, cardBackgroundColor, textColor)
+                        items(substages!!.stages) { stage ->
+                            StageCard(stage)
                         }
                     }
-                } ?: run {
-                    CircularProgressIndicator(
-                        color = MaterialTheme.colorScheme.primary,
-                    )
-                    Text(
-                        text = "Cargando detalles de los días...",
-                        style = MaterialTheme.typography.bodyMedium,
-                    )
                 }
             }
         }
     }
 }
 
+@Composable
+fun ImageCard(imageUrl: String) {
+    Card(
+        shape = RoundedCornerShape(16.dp),
+        elevation = CardDefaults.cardElevation(8.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(200.dp)
+    ) {
+        AsyncImage(
+            model = imageUrl,
+            contentDescription = "Imagen del escenario",
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.fillMaxSize()
+        )
+    }
+}
+
+@Composable
+fun LoadingIndicator(message: String) {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = message,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onBackground
+        )
+    }
+}
+
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun StageCard(stage: Stage, backgroundColor: Color, textColor: Color) {
+fun StageCard(stage: Stage) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { /* Handle card click if necessary */ },
-        shape = RoundedCornerShape(12.dp),
+            .padding(horizontal = 8.dp)
+            .clickable { /* Manejar el clic en la tarjeta si es necesario */ },
+        shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
-            containerColor = backgroundColor,
-            contentColor = textColor
-        )
+            containerColor = Color.White,
+            contentColor = MaterialTheme.colorScheme.onSurface
+        ),
+        elevation = CardDefaults.cardElevation(4.dp)
     ) {
         Column(
-            modifier = Modifier.padding(all = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            modifier = Modifier.padding(16.dp)
         ) {
+            // Encabezado con el nombre del día y el ganador
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    imageVector = Icons.Default.CalendarToday,
+                    contentDescription = "Día",
+                    tint = MaterialTheme.colorScheme.primary
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = "Día: ${stage.name}",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            // Información del ganador con avatar (si está disponible)
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                // Si tienes una imagen del ganador, puedes utilizarla aquí
+                Icon(
+                    imageVector = Icons.Default.EmojiEvents,
+                    contentDescription = "Ganador",
+                    tint = MaterialTheme.colorScheme.secondary
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = "Ganador: ${stage.winner.name}",
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            // Descripción
             Text(
-                text = "Día: ${stage.name}",
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold,
-                color = textColor
-            )
-            Text(
-                text = "Ganador: ${stage.winner.name}",
-                style = MaterialTheme.typography.bodyLarge,
-                color = textColor
-            )
-            Text(
-                text = "Descripción: ${stage.description}",
+                text = stage.description,
                 style = MaterialTheme.typography.bodyMedium,
-                color = textColor
+                color = MaterialTheme.colorScheme.onSurface,
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Justify
             )
-            Text(
-                text = "Inicio: ${formatDate(stage.startDateTimestamp)}",
-                style = MaterialTheme.typography.bodyMedium,
-                color = textColor
-            )
-            Text(
-                text = "Fin: ${formatDate(stage.endDateTimestamp)}",
-                style = MaterialTheme.typography.bodyMedium,
-                color = textColor
-            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            // Fechas de inicio y fin
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    imageVector = Icons.Default.Schedule,
+                    contentDescription = "Inicio",
+                    tint = MaterialTheme.colorScheme.primary
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = "Inicio: ${formatDate(stage.startDateTimestamp)}",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            }
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    imageVector = Icons.Default.Schedule,
+                    contentDescription = "Fin",
+                    tint = MaterialTheme.colorScheme.primary
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = "Fin: ${formatDate(stage.endDateTimestamp)}",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            }
         }
     }
 }

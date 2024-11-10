@@ -1,5 +1,7 @@
 package com.example.tft.ui.pilotDetail
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
@@ -16,16 +18,22 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.CalendarToday
+import androidx.compose.material.icons.filled.DirectionsCar
+import androidx.compose.material.icons.filled.EmojiEvents
 import androidx.compose.runtime.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -39,7 +47,11 @@ import com.example.tft.ui.pilots.getPilotImageUrl
 import com.example.tft.ui.theme.ColorTextDark
 import com.example.tft.ui.theme.PrimaryColor
 import com.google.firebase.auth.FirebaseAuth
+import java.time.Instant
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PilotDetailScreen(
@@ -55,14 +67,27 @@ fun PilotDetailScreen(
     var expanded by remember { mutableStateOf(false) }
     val auth = FirebaseAuth.getInstance()
     val currentUser = auth.currentUser
-    val userId = currentUser?.uid  // Asegúrate de que el usuario está logueado
+    val userId = currentUser?.uid
     val snackbarHostState = remember { SnackbarHostState() }
     var showSnackbar by remember { mutableStateOf(false) }
     var snackbarMessage by remember { mutableStateOf("") }
     var showDialog by remember { mutableStateOf(false) }
+    var dialogMessage by remember { mutableStateOf("") } // New variable for dialog message
+
+    // Observe favorite pilots
+    val favoritePilots by viewModel.favoritePilots.collectAsState()
+    val isFavorite = favoritePilots.contains(pilotId)
+
     LaunchedEffect(pilotId) {
         viewModel.loadPilotDetail(pilotId)
         viewModel.loadSeasons()
+    }
+
+    // Load favorite pilots when the user ID changes
+    LaunchedEffect(userId) {
+        if (userId != null) {
+            viewModel.loadFavoritePilots(userId)
+        }
     }
 
     LaunchedEffect(selectedSeasonId) {
@@ -108,10 +133,17 @@ fun PilotDetailScreen(
                         Button(
                             onClick = {
                                 if (userId != null) {
-                                    viewModel.addPilotToFavorites(userId, pilotId)
-                                    showDialog = true  // Mostrar el diálogo de confirmación
+                                    if (isFavorite) {
+                                        viewModel.removePilotFromFavorites(userId, pilotId)
+                                        dialogMessage = "Piloto eliminado de tus favoritos"
+                                        showDialog = true
+                                    } else {
+                                        viewModel.addPilotToFavorites(userId, pilotId)
+                                        dialogMessage = "Piloto añadido a tus favoritos"
+                                        showDialog = true
+                                    }
                                 } else {
-
+                                    // Handle case when user is not logged in
                                 }
                             },
                             colors = ButtonDefaults.buttonColors(
@@ -119,7 +151,7 @@ fun PilotDetailScreen(
                             ),
                             modifier = Modifier.padding(8.dp)
                         ) {
-                            Text("Añadir a favoritos")
+                            Text(if (isFavorite) "Eliminar de favoritos" else "Añadir a favoritos")
                         }
 
                         Spacer(modifier = Modifier.height(16.dp))
@@ -137,17 +169,14 @@ fun PilotDetailScreen(
                             text = "Birthplace: ${pilot.playerTeamInfo.birthplace}",
                             color = MaterialTheme.colorScheme.onBackground
                         )
-                        Text(
-                            text = "Team Colors: ${pilot.teamColors.primary}, ${pilot.teamColors.secondary}",
-                            color = MaterialTheme.colorScheme.onBackground
-                        )
-
                         Spacer(modifier = Modifier.height(16.dp))
 
                         // Dropdown to select season
                         Box {
                             OutlinedButton(onClick = { expanded = true }) {
-                                Text(text = seasons.find { it.id == selectedSeasonId }?.name ?: "Select Season",
+                                Text(
+                                    text = seasons.find { it.id == selectedSeasonId }?.name
+                                        ?: "Select Season",
                                     color = MaterialTheme.colorScheme.onBackground
                                 )
                             }
@@ -196,9 +225,8 @@ fun PilotDetailScreen(
                 CircularProgressIndicator()
             }
         }
-
-
     }
+
     if (showDialog) {
         val isSystemInDarkTheme = isSystemInDarkTheme()
         val dialogBackgroundColor = if (isSystemInDarkTheme) MaterialTheme.colorScheme.surface else PrimaryColor
@@ -208,70 +236,111 @@ fun PilotDetailScreen(
                 showDialog = false
             },
             title = {
-                Text("Confirmación",color = dialogTextColor)
+                Text("Confirmación", color = dialogTextColor)
             },
             text = {
-                Text("Piloto añadido a tus favoritos",color = dialogTextColor)
+                Text(dialogMessage, color = dialogTextColor) // Display the appropriate message
             },
             containerColor = dialogBackgroundColor,
             confirmButton = {
                 Button(
                     onClick = {
-                        showDialog = false  // Ocultar el diálogo cuando el usuario toca "Aceptar"
+                        showDialog = false
                     }
                 ) {
-                    Text("Aceptar",color = dialogTextColor)
+                    Text("Aceptar", color = dialogTextColor)
                 }
             }
         )
     }
-
-
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun RaceCard(race: Race) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+        shape = RoundedCornerShape(16.dp),
+        elevation = CardDefaults.cardElevation(4.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface
-        )
+            containerColor = MaterialTheme.colorScheme.tertiary
+        ),
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
+        Column(
+            modifier = Modifier.padding(16.dp)
+        ) {
+            // Título de la etapa
             Text(
                 text = race.stage.name,
+                style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onSurface
+                color = MaterialTheme.colorScheme.primary
             )
-            Spacer(modifier = Modifier.height(4.dp))
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+
+            // Descripción de la etapa
             Text(
-                text = "Description: ${race.stage.description}",
-                color = MaterialTheme.colorScheme.onSurface
+                text = race.stage.description,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurface,
+                textAlign = TextAlign.Justify
             )
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(
-                text = "Position: ${race.position}",
-                color = MaterialTheme.colorScheme.onSurface
-            )
-            race.points?.let {
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    text = "Points: $it",
-                    color = MaterialTheme.colorScheme.onSurface
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            // Información adicional con iconos
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                TextWithIcon(
+                    icon = Icons.Default.DirectionsCar,
+                    text = "Posición: ${race.position}",
+                    iconTint = MaterialTheme.colorScheme.primary
+                )
+                race.points?.let {
+                    TextWithIcon(
+                        icon = Icons.Default.EmojiEvents,
+                        text = "Puntos: $it",
+                        iconTint = MaterialTheme.colorScheme.primary
+                    )
+                }
+                TextWithIcon(
+                    icon = Icons.Default.CalendarToday,
+                    text = formatDate(race.updatedAtTimestamp),
+                    iconTint = MaterialTheme.colorScheme.primary
                 )
             }
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(
-                text = "Updated At: ${race.updatedAtTimestamp}",
-                color = MaterialTheme.colorScheme.onSurface
-            )
         }
     }
 }
 
-fun getPilotImageUrl(pilotId: Int): String {
-    return "https://motorsportapi.p.rapidapi.com/api/motorsport/team/$pilotId/image"
+@Composable
+fun TextWithIcon(icon: ImageVector, text: String, iconTint: Color) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Icon(
+            imageVector = icon,
+            contentDescription = null,
+            tint = iconTint,
+            modifier = Modifier.size(20.dp)
+        )
+        Spacer(modifier = Modifier.width(4.dp))
+        Text(
+            text = text,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurface
+        )
+    }
 }
+
+@RequiresApi(Build.VERSION_CODES.O)
+fun formatDate(timestamp: Long): String {
+    return Instant.ofEpochSecond(timestamp)
+        .atZone(ZoneId.systemDefault())
+        .format(DateTimeFormatter.ofPattern("dd MMM yyyy"))
+}
+

@@ -15,7 +15,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -83,9 +85,11 @@ fun EditProfileScreen(navController: NavHostController, viewModel: EditProfileVi
                 .background(MaterialTheme.colorScheme.background)
                 .padding(innerPadding)
         ) {
-
+            // Agregamos un Scrollable
             Column(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState()), // Hacemos la columna desplazable
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
@@ -124,8 +128,14 @@ fun EditProfileScreen(navController: NavHostController, viewModel: EditProfileVi
                     Text("Seleccionar Foto de Perfil", color = MaterialTheme.colorScheme.onPrimary)
                 }
 
+                Spacer(modifier = Modifier.height(15.dp))
+                Button(
+                    onClick = { navController.navigate(AppScreens.ChangePasswordScreen.route) },
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
+                ) {
+                    Text("Cambiar Contraseña", color = MaterialTheme.colorScheme.onSecondary)
+                }
                 Spacer(modifier = Modifier.height(32.dp))
-
                 // Campos de texto para editar el nombre y correo
                 OutlinedTextField(
                     value = name,
@@ -155,6 +165,8 @@ fun EditProfileScreen(navController: NavHostController, viewModel: EditProfileVi
                 ) {
                     Text("Guardar Cambios", color = MaterialTheme.colorScheme.onPrimary)
                 }
+
+                Spacer(modifier = Modifier.height(32.dp))
             }
         }
     }

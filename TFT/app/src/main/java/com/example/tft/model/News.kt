@@ -6,7 +6,7 @@ data class News(
     val author: String = "",
     val description: String = "",
     val image: String = "",
-    val publication: String = "",
+    val publicacion: String = "",
     val type: String = "news"
 )
 

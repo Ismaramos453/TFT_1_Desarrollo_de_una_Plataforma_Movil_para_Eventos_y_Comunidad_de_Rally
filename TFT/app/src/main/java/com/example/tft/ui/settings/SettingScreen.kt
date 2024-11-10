@@ -31,10 +31,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 @Composable
 fun SettingScreen(navController: NavHostController, settingViewModel: SettingViewModel) {
     val context = LocalContext.current
-
-    // Observa los cambios en la preferencia de notificación
     val areNotificationsEnabled = settingViewModel.areNotificationsEnabled
-
 
     // Solicita permiso cuando sea necesario
     val requestPermissionLauncher = rememberLauncherForActivityResult(
@@ -53,7 +50,7 @@ fun SettingScreen(navController: NavHostController, settingViewModel: SettingVie
             BackTopBar(title = "Ajustes", navController = navController)
         },
         containerColor = MaterialTheme.colorScheme.background
-    ) {innerPadding ->
+    ) { innerPadding ->
         Box(
             Modifier
                 .fillMaxSize()
@@ -64,9 +61,17 @@ fun SettingScreen(navController: NavHostController, settingViewModel: SettingVie
                     .fillMaxWidth()
                     .padding(16.dp)
             ) {
-                Text("Activar notificaciones de eventos")
-                Switch(
-                    checked = areNotificationsEnabled,
+                Text(
+                    text = "Preferencias de Notificación",
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
+
+                SettingOption(
+                    title = "Activar notificaciones de eventos",
+                    description = "Recibe notificaciones de nuevos eventos y actualizaciones importantes.",
+                    isChecked = areNotificationsEnabled,
                     onCheckedChange = { isChecked ->
                         if (isChecked) {
                             if (ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
@@ -79,7 +84,49 @@ fun SettingScreen(navController: NavHostController, settingViewModel: SettingVie
                         }
                     }
                 )
+
+                Divider(
+                    Modifier.padding(vertical = 16.dp),
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f)
+                )
+
+                // Otras configuraciones aquí
+
             }
         }
+    }
+}
+
+@Composable
+fun SettingOption(
+    title: String,
+    description: String,
+    isChecked: Boolean,
+    onCheckedChange: (Boolean) -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Column(modifier = Modifier.weight(1f)) {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+            Text(
+                text = description,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
+                modifier = Modifier.padding(top = 4.dp)
+            )
+        }
+        Switch(
+            checked = isChecked,
+            onCheckedChange = onCheckedChange,
+            modifier = Modifier.padding(start = 16.dp)
+        )
     }
 }

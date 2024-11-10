@@ -234,14 +234,6 @@ fun EventDetailScreen(navController: NavHostController, eventId: String) {
                                 }
                             }
                         }
-                        Text(
-                            text = "Comentarios",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurface,
-                            fontWeight = FontWeight.Bold
-                        )
-
-                        Spacer(modifier = Modifier.height(16.dp))
                     }
                 }
             } ?: run {
@@ -252,7 +244,7 @@ fun EventDetailScreen(navController: NavHostController, eventId: String) {
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "Event not found",
+                        text = "Cargando detalles del evento...",
                         color = MaterialTheme.colorScheme.onSecondary
                     )
                 }

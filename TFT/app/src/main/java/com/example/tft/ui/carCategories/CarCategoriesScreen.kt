@@ -103,7 +103,7 @@ fun CategoryCard(
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(16.dp))
-            .clickable { navController.navigate("carScreen/${category.id}") },
+            .clickable {  navController.navigate(AppScreens.CarScreen.route.replace("{categoryId}", category.id))  },
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.tertiary)
     ) {

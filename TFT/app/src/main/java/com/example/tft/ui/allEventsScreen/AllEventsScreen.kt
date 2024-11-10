@@ -38,6 +38,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -50,12 +51,16 @@ import com.example.tft.R
 import com.example.tft.navigation.AppScreens
 import com.example.tft.ui.home.IconCategoryButton
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AllEventsScreen(navController: NavHostController, viewModel: AllEventsViewModel = viewModel()) {
     val events by viewModel.events.observeAsState(initial = emptyList())
     var searchQuery by remember { mutableStateOf("") }
+
+    // Filtra los eventos en función de searchQuery
+    val filteredEvents = events.filter { event ->
+        event.title.contains(searchQuery, ignoreCase = true)
+    }
 
     Scaffold(
         topBar = {
@@ -68,46 +73,55 @@ fun AllEventsScreen(navController: NavHostController, viewModel: AllEventsViewMo
                 .background(MaterialTheme.colorScheme.background)
                 .padding(innerPadding)
         ) {
-            Column {
-                // Barra de búsqueda en la parte superior
-                OutlinedTextField(
-                    value = searchQuery,
-                    onValueChange = { searchQuery = it },
-                    label = { Text("Buscar eventos...") },
-                    leadingIcon = { Icon(Icons.Default.Search, contentDescription = "Buscar") },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp)
-                )
-                EventCategoryButtons(navController)
-                if (events.isEmpty()) {
-                    Text(
-                        "No hay eventos disponibles.",
-                        Modifier
-                            .padding(16.dp)
-                            .align(Alignment.CenterHorizontally)
+            // Usar LazyColumn para permitir desplazamiento
+            LazyColumn(
+                Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                item {
+                    // Barra de búsqueda en la parte superior
+                    OutlinedTextField(
+                        value = searchQuery,
+                        onValueChange = { searchQuery = it },
+                        label = { Text("Buscar eventos...") },
+                        leadingIcon = { Icon(Icons.Default.Search, contentDescription = "Buscar") },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 16.dp)
                     )
+                }
+
+                item {
+                    // Botones de categorías
+                    EventCategoryButtons(navController)
+                }
+
+                if (filteredEvents.isEmpty()) {
+                    item {
+                        Text(
+                            "No hay eventos disponibles.",
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp),
+                            textAlign = TextAlign.Center
+                        )
+                    }
                 } else {
-                    LazyColumn(
-                        Modifier
-                            .fillMaxSize()
-                            .padding(top = 16.dp),
-                        verticalArrangement = Arrangement.spacedBy(16.dp)
-                    ) {
-                        items(events) { event ->
-                            RallyEventCard(event, navController)
-                            Divider(
-                                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f),
-                                thickness = 1.dp
-                            )
-                        }
+                    // Lista de eventos
+                    items(filteredEvents) { event ->
+                        RallyEventCard(event, navController)
+                        Divider(
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f),
+                            thickness = 1.dp
+                        )
                     }
                 }
             }
         }
     }
 }
-
 
 @Composable
 fun EventCategoryButtons(navController: NavHostController) {
@@ -141,7 +155,10 @@ fun RallyEventCard(event: RallyEvent, navController: NavHostController) {
         modifier = Modifier
             .fillMaxWidth()
             .height(200.dp)
-            .clickable { navController.navigate("EventDetailScreen/${event.id}") },
+            .clickable { navController.navigate(AppScreens.EventDetailScreen.route + "/${event.id}") }
+
+        ,
+
         shape = RoundedCornerShape(8.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {

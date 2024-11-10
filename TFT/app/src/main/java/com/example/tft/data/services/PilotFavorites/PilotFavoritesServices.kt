@@ -29,32 +29,26 @@ object PilotFavoritesServices {
     val firestore = FirebaseFirestore.getInstance()
     private val storageReference = FirebaseStorage.getInstance().reference
 
-    // Agregar un piloto a favoritos
-    fun addPilotToFavorites(userId: String, pilotId: Int) {
-        val userRef = PilotFavoritesServices.firestore.collection("users").document(userId)
-        userRef.update("favoritePilots", FieldValue.arrayUnion(pilotId))
+    // Add a pilot to favorites
+    suspend fun addPilotToFavorites(userId: String, pilotId: Int) {
+        val userRef = firestore.collection("users").document(userId)
+        userRef.update("favoritePilots", FieldValue.arrayUnion(pilotId)).await()
     }
 
-    // Eliminar un piloto de favoritos
-    fun removePilotFromFavorites(userId: String, pilotId: Int) {
-        val userRef = PilotFavoritesServices.firestore.collection("users").document(userId)
-        userRef.update("favoritePilots", FieldValue.arrayRemove(pilotId))
+    // Remove a pilot from favorites
+    suspend fun removePilotFromFavorites(userId: String, pilotId: Int) {
+        val userRef = firestore.collection("users").document(userId)
+        userRef.update("favoritePilots", FieldValue.arrayRemove(pilotId)).await()
     }
 
-    // Obtener la lista de pilotos favoritos
-    fun getFavoritePilots(userId: String, callback: (List<Int>) -> Unit) {
-        PilotFavoritesServices.firestore.collection("users").document(userId)
-            .get()
-            .addOnSuccessListener { document ->
-                val user = document.toObject(Users::class.java)
-                user?.let {
-                    callback(it.favoritePilots)
-                }
-            }
-            .addOnFailureListener {
-                callback(emptyList())
-            }
+    // Get the list of favorite pilots
+    suspend fun getFavoritePilots(userId: String): List<Int> {
+        return try {
+            val document = firestore.collection("users").document(userId).get().await()
+            val user = document.toObject(Users::class.java)
+            user?.favoritePilots ?: emptyList()
+        } catch (e: Exception) {
+            emptyList()
+        }
     }
-
-
 }

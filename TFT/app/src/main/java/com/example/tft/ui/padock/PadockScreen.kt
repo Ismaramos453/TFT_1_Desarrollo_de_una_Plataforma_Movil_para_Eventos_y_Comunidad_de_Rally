@@ -101,6 +101,7 @@ fun TeamCard(navController: NavHostController, imageId: Int, title: String, desc
     InfoCard(navController, imageId, title, description, icon, AppScreens.TeamWrcScreen.route)
 }
 
+
 @Composable
 fun InfoCard(
     navController: NavHostController,

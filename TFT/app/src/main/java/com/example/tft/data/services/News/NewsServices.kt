@@ -10,12 +10,34 @@ object NewsServices {
     val auth = FirebaseAuth.getInstance()
     val firestore = FirebaseFirestore.getInstance()
     val storageReference = FirebaseStorage.getInstance().reference
+
     fun getNews(callback: (List<News>) -> Unit) {
-        NewsServices.firestore.collection("news")
+        firestore.collection("news")
             .get()
             .addOnSuccessListener { result ->
                 val newsList = result.documents.mapNotNull { doc ->
-                    doc.toObject(News::class.java)?.copy(id = doc.id)
+                    // Extrae los valores manualmente y convierte el campo "publicacion" de Timestamp a String
+                    val id = doc.id
+                    val title = doc.getString("title") ?: ""
+                    val author = doc.getString("author") ?: ""
+                    val description = doc.getString("description") ?: ""
+                    val image = doc.getString("image") ?: ""
+                    val type = doc.getString("type") ?: "news"
+
+                    // Convierte el Timestamp en una fecha formateada
+                    val timestamp = doc.getTimestamp("publicacion")
+                    val formattedDate = timestamp?.toDate()?.toString() ?: ""  // Convierte a String; ajusta el formato si es necesario
+
+                    // Crea el objeto News manualmente
+                    News(
+                        id = id,
+                        title = title,
+                        author = author,
+                        description = description,
+                        image = image,
+                        publicacion = formattedDate,
+                        type = type
+                    )
                 }
                 callback(newsList)
             }
@@ -24,3 +46,4 @@ object NewsServices {
             }
     }
 }
+

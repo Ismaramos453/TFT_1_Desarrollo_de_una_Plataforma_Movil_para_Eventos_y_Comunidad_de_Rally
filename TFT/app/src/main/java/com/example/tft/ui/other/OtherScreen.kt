@@ -79,12 +79,6 @@ fun OtherScreen(navController: NavHostController) {
                     .padding(16.dp)
             ) {
                 SectionItem(
-                    text = "Otras categorías",
-                    icon = Icons.Default.Category,
-                    onClick = { navController.navigate(AppScreens.OtherCategoryRallyScreen.route) }
-                )
-                CustomDivider()
-                SectionItem(
                     text = "Pilotos Favoritos",
                     icon = Icons.Default.Star,
                     onClick = { navController.navigate(AppScreens.PilotFavoritesScreen.route) }
@@ -128,7 +122,7 @@ fun OtherScreen(navController: NavHostController) {
                 )
                 CustomDivider()
                 SectionItem(
-                    text = "FAQ",
+                    text = "Preguntas y Reportes",
                     icon = Icons.Default.Help,
                     onClick = { navController.navigate(AppScreens.FaqScreen.route) }
                 )

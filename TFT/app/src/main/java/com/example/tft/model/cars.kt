@@ -9,7 +9,8 @@ data class Summary(
 data class CarCategory(
     val id: String = "",
     val summary: Summary = Summary(),
-    val cars: List<Car> = emptyList()
+    val cars: List<Car> = emptyList(),
+    val category: String = "",
 )
 
 

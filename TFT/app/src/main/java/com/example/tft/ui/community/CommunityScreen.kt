@@ -49,6 +49,7 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.sp
 import com.example.tft.model.foro.Votation
+import com.example.tft.navigation.AppScreens
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
@@ -138,13 +139,14 @@ fun CommunityScreen(navController: NavHostController) {
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { navController.navigate("CreateQuestion_Screen") },
+                onClick = { navController.navigate(AppScreens.CreateQuestionScreen.route) },
                 containerColor = MaterialTheme.colorScheme.secondary,
                 contentColor = MaterialTheme.colorScheme.onSecondary
             ) {
                 Icon(Icons.Filled.Add, contentDescription = "Crear Pregunta")
             }
         }
+
     ) { innerPadding ->
         LazyColumn(
             modifier = Modifier
@@ -327,7 +329,9 @@ fun QuestionCard(question: Question, navController: NavHostController) {
             .fillMaxWidth()
             .padding(8.dp)
             .clickable {
-                navController.navigate("QuestionsDetail_Screen/${question.id}")
+                navController.navigate(
+                    AppScreens.QuestionsDetailScreen.route.replace("{questionId}", question.id))
+
             },
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.tertiary)
     ) {
@@ -392,7 +396,9 @@ fun VotationCard(votation: Votation, onVote: (String, String) -> Unit, navContro
             .fillMaxWidth()
             .padding(8.dp)
             .clickable {
-                navController.navigate("VotationDetail_Screen/${votation.id}")
+                navController.navigate(
+                    AppScreens.VotationDetailScreen.route.replace("{votationId}", votation.id)
+                )
             },
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.tertiary)
     ) {

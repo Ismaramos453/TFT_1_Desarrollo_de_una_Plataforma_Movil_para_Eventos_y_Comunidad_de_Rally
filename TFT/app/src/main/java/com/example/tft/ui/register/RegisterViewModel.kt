@@ -40,6 +40,8 @@ class RegisterViewModel : ViewModel() {
             true
         }
     }
+
+    // Function to validate that passwords match
     fun validatePasswordsMatch(password: String, repeatPassword: String): Boolean {
         return if (password != repeatPassword) {
             _passwordMismatchError.value = "Las contraseñas no coinciden"
@@ -50,18 +52,26 @@ class RegisterViewModel : ViewModel() {
         }
     }
 
-    // Function to validate password length
+    // Function to validate password requirements
     fun validatePassword(password: String): Boolean {
-        return if (password.isBlank()) {
+        if (password.isBlank()) {
             _passwordError.value = "La contraseña no puede estar vacía"
-            false
-        } else if (password.length < 6) {
-            _passwordError.value = "La contraseña debe tener al menos 6 caracteres"
-            false
-        } else {
-            _passwordError.value = null
-            true
+            return false
         }
+        if (password.length < 6) {
+            _passwordError.value = "La contraseña debe tener al menos 6 caracteres"
+            return false
+        }
+        if (!password.any { it.isUpperCase() }) {
+            _passwordError.value = "La contraseña debe contener al menos una letra mayúscula"
+            return false
+        }
+        if (!password.any { it.isDigit() }) {
+            _passwordError.value = "La contraseña debe contener al menos un número"
+            return false
+        }
+        _passwordError.value = null
+        return true
     }
 
     // Function to validate username
@@ -76,7 +86,12 @@ class RegisterViewModel : ViewModel() {
     }
 
     fun register(email: String, password: String, repeatPassword: String, name: String, image: String) {
-        if (validateEmail(email) && validatePassword(password) && validateUsername(name) && validatePasswordsMatch(password, repeatPassword)) {
+        val isEmailValid = validateEmail(email)
+        val isPasswordValid = validatePassword(password)
+        val isUsernameValid = validateUsername(name)
+        val doPasswordsMatch = validatePasswordsMatch(password, repeatPassword)
+
+        if (isEmailValid && isPasswordValid && isUsernameValid && doPasswordsMatch) {
             viewModelScope.launch {
                 _registrationState.value = RegistrationState.Loading
                 try {
@@ -95,7 +110,6 @@ class RegisterViewModel : ViewModel() {
         }
     }
 
-
     sealed class RegistrationState {
         object Idle : RegistrationState()
         object Loading : RegistrationState()
@@ -103,4 +117,3 @@ class RegisterViewModel : ViewModel() {
         data class Failure(val errorMessage: String) : RegistrationState()
     }
 }
-

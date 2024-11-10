@@ -25,7 +25,7 @@ class UserProfileViewModel : ViewModel() {
             UserServices.getCurrentUserProfile { userProfile, docId ->
                 if (userProfile != null && docId != null) {
                     _userProfile.postValue(userProfile)
-                    documentId = docId.toString()
+                    documentId = docId // Asegúrate de no llamar a `toString()` aquí
                 }
             }
         }

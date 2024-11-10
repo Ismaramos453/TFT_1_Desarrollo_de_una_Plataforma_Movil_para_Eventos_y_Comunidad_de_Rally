@@ -382,7 +382,7 @@ fun NewsCard(news: News, navController: NavController){
             .width(280.dp)
             .height(200.dp)
             .padding(end = 8.dp)  // Reducir o eliminar el padding izquierdo para alinear mejor
-            .clickable { navController.navigate("NewsDetail_Screen/${news.id}") },
+            .clickable {   navController.navigate(AppScreens.NewsDetailScreen.route.replace("{newsId}", news.id)) },
         shape = RoundedCornerShape(8.dp),
     ) {
         Box {

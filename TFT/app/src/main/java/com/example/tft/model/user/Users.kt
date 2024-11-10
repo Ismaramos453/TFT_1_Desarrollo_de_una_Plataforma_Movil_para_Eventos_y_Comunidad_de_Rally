@@ -6,11 +6,8 @@ data class Users(
     var userId: String = "",
     var name: String = "",
     var image: String = "",
-    var favoritePilots: MutableList<Int> = mutableListOf(),  // Lista para almacenar los IDs de los pilotos favoritos
+    var favoritePilots: MutableList<Int> = mutableListOf(),
     val eventsSaved: List<SavedEvent> = emptyList()
 ) {
     constructor() : this(null, "", "", "", mutableListOf(), emptyList())
 }
-
-
-

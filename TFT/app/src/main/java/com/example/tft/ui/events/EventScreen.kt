@@ -34,6 +34,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.tft.data.services.Authentication.AuthenticationServices
 import com.example.tft.model.SavedEvent
+import com.example.tft.navigation.AppScreens
 import com.example.tft.templates_App.BackTopBar
 import com.example.tft.ui.theme.ColorTextDark
 import com.example.tft.ui.theme.PrimaryColor
@@ -146,7 +147,7 @@ fun EventItem(event: SavedEvent, isEditMode: Boolean, onDelete: () -> Unit, navC
             .padding(vertical = 8.dp)
             .shadow(4.dp, shape = MaterialTheme.shapes.medium)
             .clickable {
-                navController.navigate("EventDetail_Screens/${event.id}")
+                navController.navigate(AppScreens.EventDetailScreen.route + "/${event.id}")
             },
         shape = MaterialTheme.shapes.medium,
         colors = CardDefaults.cardColors(
