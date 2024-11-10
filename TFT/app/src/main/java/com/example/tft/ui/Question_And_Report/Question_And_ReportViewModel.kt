@@ -4,7 +4,7 @@ package com.example.tft.ui.Question_And_Report
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
-import com.example.tft.data.services.Faq.QuestionForAdminServices
+import com.example.tft.data.services.Questions_And_BugReport.QuestionForAdminServices
 import com.example.tft.model.Questions_And_BugReport.SeverityLevel
 import com.google.firebase.auth.FirebaseAuth
 
