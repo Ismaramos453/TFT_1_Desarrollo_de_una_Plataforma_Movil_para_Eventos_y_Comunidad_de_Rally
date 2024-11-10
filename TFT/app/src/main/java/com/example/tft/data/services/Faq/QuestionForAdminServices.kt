@@ -2,9 +2,9 @@ package com.example.tft.data.services.Faq
 
 import java.util.*
 
-import com.example.tft.model.Faq.BugReport
-import com.example.tft.model.Faq.QuestionForAdmin
-import com.example.tft.model.Faq.SeverityLevel
+import com.example.tft.model.Questions_And_BugReport.BugReport
+import com.example.tft.model.Questions_And_BugReport.QuestionForAdmin
+import com.example.tft.model.Questions_And_BugReport.SeverityLevel
 import com.google.firebase.firestore.FirebaseFirestore
 
 object QuestionForAdminServices {

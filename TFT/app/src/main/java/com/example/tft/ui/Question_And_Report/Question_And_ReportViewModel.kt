@@ -5,7 +5,7 @@ package com.example.tft.ui.Question_And_Report
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.tft.data.services.Faq.QuestionForAdminServices
-import com.example.tft.model.Faq.SeverityLevel
+import com.example.tft.model.Questions_And_BugReport.SeverityLevel
 import com.google.firebase.auth.FirebaseAuth
 
 class Question_And_ReportViewModel : ViewModel() {

@@ -1,4 +1,4 @@
-package com.example.tft.model.Faq
+package com.example.tft.model.Questions_And_BugReport
 
 import java.util.Date
 
