@@ -44,6 +44,7 @@ import coil.request.CachePolicy
 import coil.request.ImageRequest
 import coil.transform.CircleCropTransformation
 import com.example.tft.R
+import com.example.tft.navigation.AppScreens
 import com.example.tft.templates_App.BackTopBar
 import com.example.tft.ui.pilots.getPilotImageUrl
 import com.example.tft.ui.theme.ColorTextDark
@@ -151,7 +152,7 @@ fun PilotItem(pilot: Team, navController: NavHostController, isEditMode: Boolean
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
-            .clickable(enabled = !isEditMode) { navController.navigate("PilotDetail_Screens/${pilot.id}") },
+            .clickable {  navController.navigate(AppScreens.PilotDetailScreen.route.replace("{pilotId}", pilot.id.toString()))  },
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.tertiary
