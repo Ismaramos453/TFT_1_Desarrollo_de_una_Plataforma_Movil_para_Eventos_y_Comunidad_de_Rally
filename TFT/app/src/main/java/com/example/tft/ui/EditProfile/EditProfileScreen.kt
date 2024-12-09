@@ -37,14 +37,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.tft.templates_App.BackTopBar
-import com.example.tft.ui.userProfile.UserProfileViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.lifecycle.ViewModel
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.*
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
-import androidx.core.app.ActivityCompat.startActivityForResult
 import coil.compose.rememberImagePainter
 import com.example.tft.R
 import com.example.tft.navigation.AppScreens
@@ -67,7 +63,7 @@ fun EditProfileScreen(navController: NavHostController, viewModel: EditProfileVi
     LaunchedEffect(userProfile) {
         userProfile?.let { profile ->
             name = profile.name ?: ""
-            email = profile.userId ?: ""
+            email = profile.email ?: ""
             if (imageUri == null) {
                 imageUri = profile.image?.let { Uri.parse(it) }
             }
@@ -85,11 +81,10 @@ fun EditProfileScreen(navController: NavHostController, viewModel: EditProfileVi
                 .background(MaterialTheme.colorScheme.background)
                 .padding(innerPadding)
         ) {
-            // Agregamos un Scrollable
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .verticalScroll(rememberScrollState()), // Hacemos la columna desplazable
+                    .verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
@@ -107,7 +102,7 @@ fun EditProfileScreen(navController: NavHostController, viewModel: EditProfileVi
                 } ?: run {
                     // Placeholder si no hay imagen seleccionada
                     Image(
-                        painter = painterResource(id = R.drawable.default_profile_image), // Usa un recurso local
+                        painter = painterResource(id = R.drawable.default_profile_image), 
                         contentDescription = "Imagen de perfil por defecto",
                         modifier = Modifier
                             .size(150.dp)
@@ -117,11 +112,10 @@ fun EditProfileScreen(navController: NavHostController, viewModel: EditProfileVi
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
-
                 // Botón para seleccionar una nueva foto de perfil
                 Button(
                     onClick = {
-                        imagePickerLauncher.launch("image/*") // Abre el selector de imágenes
+                        imagePickerLauncher.launch("image/*")
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
                 ) {
@@ -155,9 +149,7 @@ fun EditProfileScreen(navController: NavHostController, viewModel: EditProfileVi
                 Button(
                     onClick = {
                         viewModel.updateUserProfileWithImage(name, email, imageUri) {
-                            // Navegar de vuelta a la pantalla de perfil
                             navController.popBackStack()
-                            // Refrescar el perfil al regresar
                             navController.navigate(AppScreens.UserProfileScreen.route)
                         }
                     },

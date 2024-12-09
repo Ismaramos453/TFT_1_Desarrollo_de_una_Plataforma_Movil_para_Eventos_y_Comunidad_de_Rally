@@ -17,11 +17,8 @@ import androidx.compose.material.icons.filled.AddAPhoto
 import androidx.compose.material.icons.filled.AutoAwesomeMosaic
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Cast
-import androidx.compose.material.icons.filled.Category
 import androidx.compose.material.icons.filled.CheckCircleOutline
-import androidx.compose.material.icons.filled.Group
 import androidx.compose.material.icons.filled.Help
-import androidx.compose.material.icons.filled.Newspaper
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Star
@@ -44,20 +41,18 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.tft.navigation.AppScreens
-import com.example.tft.templates_App.DefaultTopBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OtherScreen(navController: NavHostController) {
 
-    val searchQuery = remember { mutableStateOf("") } // Convertido en MutableState
+    val searchQuery = remember { mutableStateOf("") }
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Otras secciones", color = Color.White) }, // Color del título ajustado a blanco
+                title = { Text("Otras secciones", color = Color.White) },
                 navigationIcon = {
-                    // Puedes cambiar Icons.Filled.Menu por Icons.Filled.ArrowBack si es para navegación hacia atrás
-                    IconButton(onClick = { /* Define la acción aquí, como navController.popBackStack() o abrir un drawer */ }) {
+                    IconButton(onClick = {}) {
                         Icon(Icons.Filled.AutoAwesomeMosaic, contentDescription = "Otros", tint = Color.White)
                     }
                 },
@@ -161,11 +156,10 @@ fun SectionItem(text: String, icon: ImageVector, onClick: () -> Unit) {
 @Composable
 fun CustomDivider() {
     val isDarkTheme = isSystemInDarkTheme()
-    // Define el color del divisor dependiendo del tema
-    val dividerColor = if (isDarkTheme) Color.Gray else Color.LightGray  // Cambia estos colores según tu preferencia
+    val dividerColor = if (isDarkTheme) Color.Gray else Color.LightGray
 
     Divider(
         color = dividerColor,
-        thickness = 1.dp  // Puedes ajustar el grosor si lo deseas
+        thickness = 1.dp
     )
 }

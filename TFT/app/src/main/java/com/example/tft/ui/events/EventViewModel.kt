@@ -22,14 +22,8 @@ class EventViewModel(application: Application) : AndroidViewModel(application) {
     val events: LiveData<List<SavedEvent>> = _events
     private val _eventTypes = MutableLiveData<Map<LocalDate, String>>()
     val eventTypes: LiveData<Map<LocalDate, String>> = _eventTypes
-
-    // StateFlow para almacenar las fechas de los eventos
     private val _eventDates = MutableStateFlow<List<LocalDate>>(emptyList())
     val eventDates: StateFlow<List<LocalDate>> = _eventDates.asStateFlow()
-
-
-
-
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun loadSavedEvents(userId: String) {
@@ -46,14 +40,12 @@ class EventViewModel(application: Application) : AndroidViewModel(application) {
         val eventTypesMap = mutableMapOf<LocalDate, String>()
         val dates = events.mapNotNull { event ->
             val date = LocalDate.parse(event.date, formatter)
-            eventTypesMap[date] = event.type // Asignamos el tipo de evento (WRC, ERC, etc.)
+            eventTypesMap[date] = event.type
             date
         }
         _eventDates.value = dates
         _eventTypes.postValue(eventTypesMap)
     }
-
-
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun addEvent(userId: String, event: RallyEvent) {
@@ -73,15 +65,11 @@ class EventViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-
     @RequiresApi(Build.VERSION_CODES.O)
     fun getEventsByDate(date: LocalDate): List<SavedEvent> {
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
         return _events.value?.filter { LocalDate.parse(it.date, formatter) == date } ?: emptyList()
     }
-
-
-
 }
 
 

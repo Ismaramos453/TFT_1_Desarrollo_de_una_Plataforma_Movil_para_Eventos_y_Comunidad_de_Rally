@@ -1,5 +1,6 @@
 package com.example.tft.ui.Question_And_Report
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -20,7 +21,6 @@ import androidx.navigation.NavHostController
 import com.example.tft.model.Questions_And_BugReport.SeverityLevel
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -38,8 +38,8 @@ fun FaqScreen(navController: NavHostController, viewModel: Question_And_ReportVi
     val options = listOf("Hacer una pregunta", "Informar de un error")
     var showSnackbar by remember { mutableStateOf(false) }
     var snackbarMessage by remember { mutableStateOf("") }
-    val showDialog = remember { mutableStateOf(false) }  // Usar remember para MutableState<Boolean>
-    val dialogMessage = remember { mutableStateOf("") }  // Usar remember para MutableState<String>
+    val showDialog = remember { mutableStateOf(false) }
+    val dialogMessage = remember { mutableStateOf("") }
 
     Scaffold(
         topBar = {
@@ -80,7 +80,7 @@ fun FaqScreen(navController: NavHostController, viewModel: Question_And_ReportVi
                         dialogMessage.value = "Tu informe de error ha sido enviado correctamente."
                     }
                     showSnackbar = true
-                    showDialog.value = true  // Usar .value para cambiar el estado
+                    showDialog.value = true
                     title = ""
                     content = ""
                 },
@@ -94,17 +94,11 @@ fun FaqScreen(navController: NavHostController, viewModel: Question_And_ReportVi
     }
 }
 
-
-
 @Composable
 fun CustomAlertDialog(showDialog: MutableState<Boolean>, dialogMessage: String) {
     if (showDialog.value) {
-        // Determine if the system is in dark theme
         val isSystemInDarkTheme = isSystemInDarkTheme()
-
-        // Set colors based on the theme
         val dialogBackgroundColor = if (isSystemInDarkTheme) MaterialTheme.colorScheme.surface else MaterialTheme.colorScheme.primary
-
         val dialogTextColor = if (isSystemInDarkTheme) ColorTextDark else Color.White
         AlertDialog(
             onDismissRequest = { showDialog.value = false },
@@ -131,22 +125,39 @@ fun CustomAlertDialog(showDialog: MutableState<Boolean>, dialogMessage: String) 
     }
 }
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FaqForm(title: String, onTitleChange: (String) -> Unit,
-            content: String, onContentChange: (String) -> Unit) {
+fun FaqForm(
+    title: String,
+    onTitleChange: (String) -> Unit,
+    content: String,
+    onContentChange: (String) -> Unit
+) {
     TextField(
         value = title,
         onValueChange = onTitleChange,
-        label = { Text("Título") },
+        label = { Text("Título", color = MaterialTheme.colorScheme.onBackground) },
+        colors = TextFieldDefaults.textFieldColors(
+            textColor = MaterialTheme.colorScheme.onBackground,
+            focusedLabelColor = MaterialTheme.colorScheme.primary,
+            focusedIndicatorColor = MaterialTheme.colorScheme.primary,
+            unfocusedIndicatorColor = MaterialTheme.colorScheme.onBackground,
+
+        ),
         modifier = Modifier.fillMaxWidth()
     )
     Spacer(modifier = Modifier.height(8.dp))
     TextField(
         value = content,
         onValueChange = onContentChange,
-        label = { Text("Contenido") },
+        label = { Text("Contenido", color = MaterialTheme.colorScheme.onBackground) },
+        colors = TextFieldDefaults.textFieldColors(
+            textColor = MaterialTheme.colorScheme.onBackground,
+            focusedLabelColor = MaterialTheme.colorScheme.primary,
+            focusedIndicatorColor = MaterialTheme.colorScheme.primary,
+            unfocusedIndicatorColor = MaterialTheme.colorScheme.onBackground,
+
+        ),
         modifier = Modifier.fillMaxWidth().height(200.dp)
     )
 }
@@ -175,7 +186,7 @@ fun ErrorReportForm(title: String, onTitleChange: (String) -> Unit,
 
 @Composable
 fun DropdownMenuComponent(
-    selectedOption: String,  // Este parámetro debe existir en la definición
+    selectedOption: String,
     options: List<String>,
     onOptionSelected: (String) -> Unit,
     modifier: Modifier = Modifier
@@ -185,15 +196,29 @@ fun DropdownMenuComponent(
     Column(modifier = modifier) {
         OutlinedButton(
             onClick = { expanded = true },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            colors = ButtonDefaults.outlinedButtonColors(
+                containerColor = MaterialTheme.colorScheme.surface,
+                contentColor = MaterialTheme.colorScheme.onSurface
+            )
         ) {
-            Text(text = selectedOption, style = MaterialTheme.typography.bodyLarge)
-            Icon(Icons.Filled.ArrowDropDown, contentDescription = "Desplegar")
+            Text(
+                text = selectedOption,
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+            Icon(
+                imageVector = Icons.Filled.ArrowDropDown,
+                contentDescription = "Desplegar",
+                tint = MaterialTheme.colorScheme.onSurface
+            )
         }
         DropdownMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .background(MaterialTheme.colorScheme.surface)
+                .fillMaxWidth()
         ) {
             options.forEach { option ->
                 DropdownMenuItem(
@@ -201,23 +226,38 @@ fun DropdownMenuComponent(
                         onOptionSelected(option)
                         expanded = false
                     },
-                    text = { Text(option) }
+                    text = { Text(option, color = MaterialTheme.colorScheme.onSurface) }
                 )
             }
         }
     }
 }
 
+
 @Composable
 fun SeveritySelector(currentSeverity: SeverityLevel, onSeveritySelected: (SeverityLevel) -> Unit) {
-    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
         SeverityLevel.values().forEach { level ->
             OutlinedButton(
                 onClick = { onSeveritySelected(level) },
-                colors = ButtonDefaults.buttonColors(containerColor = if (currentSeverity == level) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surface)
+                colors = ButtonDefaults.outlinedButtonColors(
+                    containerColor = if (currentSeverity == level)
+                        MaterialTheme.colorScheme.primary
+                    else
+                        MaterialTheme.colorScheme.surface,
+                    contentColor = if (currentSeverity == level)
+                        MaterialTheme.colorScheme.onPrimary
+                    else
+                        MaterialTheme.colorScheme.onSurface
+                ),
+                modifier = Modifier.padding(horizontal = 4.dp)
             ) {
                 Text(level.name)
             }
         }
     }
 }
+

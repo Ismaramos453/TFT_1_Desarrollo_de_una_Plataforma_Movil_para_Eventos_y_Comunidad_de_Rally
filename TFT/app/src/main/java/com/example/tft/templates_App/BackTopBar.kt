@@ -25,7 +25,7 @@ fun BackTopBar(title: String, navController: NavController){
             Text(
                 text = title,
                 modifier = Modifier.padding(start = 20.dp),
-                color = Color.White  // Establece el color del texto a blanco
+                color = Color.White
             )
         },
         navigationIcon = {
@@ -35,10 +35,9 @@ fun BackTopBar(title: String, navController: NavController){
                 modifier = Modifier
                     .clickable { navController.popBackStack() }
                     .padding(start = 10.dp),
-                tint = Color.White  // Establece el color del ícono a blanco
+                tint = Color.White
             )
         },
-        colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = colors.primary) // Un color gris oscuro para el fondo
+        colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = colors.primary)
         )
-
 }

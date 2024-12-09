@@ -12,8 +12,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 class VotationDetailViewModel : ViewModel() {
     private val firestore = FirebaseFirestore.getInstance()
-
-    // MutableLiveData que se expone como LiveData para abstraer el acceso a los consumidores
     private val _votationLiveData = MutableLiveData<Votation>()
     val votationLiveData: LiveData<Votation> = _votationLiveData
 
@@ -31,7 +29,7 @@ class VotationDetailViewModel : ViewModel() {
                 _votationLiveData.postValue(votation)
             }
             .addOnFailureListener {
-                _votationLiveData.postValue(null)  // Opcionalmente manejar el error de manera más específica
+                _votationLiveData.postValue(null)
             }
     }
 
@@ -56,7 +54,7 @@ class VotationDetailViewModel : ViewModel() {
             // Actualizar el voto del usuario y el mapa de votos
             transaction.update(votationRef, mapOf(
                 "userVote" to option,
-                "votes" to votes.mapValues { it.value.toInt() }  // Asegura que todos los valores sean Int antes de enviar
+                "votes" to votes.mapValues { it.value.toInt() }
             ))
         }.addOnSuccessListener {
             callback(true)
@@ -71,11 +69,11 @@ class VotationDetailViewModel : ViewModel() {
         val votationRef = firestore.collection("votations").document(votationId)
         val updatedData = mapOf(
             "title" to updatedVotation.title,
-            "options" to updatedVotation.options  // Asumiendo que también quieres actualizar las opciones
+            "options" to updatedVotation.options
         )
         votationRef.update(updatedData)
             .addOnSuccessListener {
-                loadVotationDetail(votationId)  // Recarga los detalles para asegurar que la UI esté actualizada
+                loadVotationDetail(votationId)
                 callback(true)
             }
             .addOnFailureListener { callback(false) }
@@ -85,7 +83,7 @@ class VotationDetailViewModel : ViewModel() {
     fun deleteVotation(votationId: String, callback: (Boolean) -> Unit) {
         firestore.collection("votations").document(votationId).delete()
             .addOnSuccessListener {
-                _votationLiveData.postValue(null)  // Limpiar los datos en la UI
+                _votationLiveData.postValue(null)
                 callback(true)
             }
             .addOnFailureListener { callback(false) }

@@ -49,7 +49,7 @@ fun EventScreen(navController: NavHostController) {
     var showDialog by remember { mutableStateOf(false) }
     var eventToDeleteId by remember { mutableStateOf<String?>(null) }
     val user = AuthenticationServices.getCurrentUser()
-    var isEditMode by remember { mutableStateOf(false) } // Estado para controlar el modo de edición
+    var isEditMode by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         user?.let {
@@ -63,7 +63,7 @@ fun EventScreen(navController: NavHostController) {
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { isEditMode = !isEditMode }, // Cambiar entre modo de edición
+                onClick = { isEditMode = !isEditMode },
                 containerColor = MaterialTheme.colorScheme.secondary
             ) {
                 Icon(

@@ -10,7 +10,6 @@ object VotationServices {
 
     private val auth = FirebaseAuth.getInstance()
     val firestore = FirebaseFirestore.getInstance()
-    private val storageReference = FirebaseStorage.getInstance().reference
 
     fun addVotation(title: String, userId: String, options: List<String>, callback: (Boolean, String?) -> Unit) {
         val userDocRef = VotationServices.firestore.collection("users").document(userId)
@@ -47,18 +46,18 @@ object VotationServices {
 
             // Decrementar el voto anterior, si existe
             if (!existingVote.isNullOrBlank() && votes[existingVote] != null) {
-                val currentVotes = votes[existingVote]!!.toInt()  // Asegura la conversión a Int
+                val currentVotes = votes[existingVote]!!.toInt()
                 votes[existingVote] = (currentVotes - 1).coerceAtLeast(0)
             }
 
             // Incrementar el nuevo voto
-            val newVotes = votes[option]?.toInt() ?: 0  // Maneja null y asegura Int
+            val newVotes = votes[option]?.toInt() ?: 0
             votes[option] = newVotes + 1
 
             // Actualizar el voto del usuario y el mapa de votos
             transaction.update(votationRef, mapOf(
                 "userVote" to option,
-                "votes" to votes.mapValues { it.value.toInt() }  // Asegura que todos los valores sean Int antes de enviar
+                "votes" to votes.mapValues { it.value.toInt() }
             ))
         }.addOnSuccessListener {
             callback(true)

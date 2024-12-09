@@ -3,7 +3,7 @@ data class Summary(
     val averagePower: String = "",
     val averageWeight: String = "",
     val title: String = "",
-    val image: String = ""  // URL de la imagen
+    val image: String = ""
 )
 
 data class CarCategory(
@@ -13,12 +13,10 @@ data class CarCategory(
     val category: String = "",
 )
 
-
-
 data class Car(
     val model: String = "",
     val power: String = "",
     val weight: String = "",
     val price: String = "",
-    val image: String = ""  // Campo adicional para la URL de la imagen
+    val image: String = ""
 )

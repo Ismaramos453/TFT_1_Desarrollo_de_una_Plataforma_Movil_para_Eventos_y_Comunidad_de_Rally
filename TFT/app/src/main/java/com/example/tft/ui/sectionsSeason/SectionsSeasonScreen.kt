@@ -10,14 +10,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Event
-import androidx.compose.material.icons.filled.List
 import androidx.compose.runtime.*
 import androidx.compose.material3.*
 import androidx.compose.ui.Alignment
@@ -72,9 +68,7 @@ fun SectionsSeasonScreen(navController: NavHostController, seasonId: String) {
                 ) {
                     Text("Clasificación Global", style = MaterialTheme.typography.bodyLarge)
                 }
-
                 Spacer(modifier = Modifier.height(24.dp))
-
                 Button(
                     onClick = { navController.navigate(AppScreens.SeasonDetailScreen.route + "/$seasonId") },
                     modifier = Modifier

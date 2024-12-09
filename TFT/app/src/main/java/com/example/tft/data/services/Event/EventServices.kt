@@ -3,7 +3,6 @@ package com.example.tft.data.services.Event
 import android.content.Context
 import com.example.tft.model.RallyEvent
 import com.example.tft.model.SavedEvent
-import com.example.tft.model.pilot.Team
 import com.example.tft.model.user.Users
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await

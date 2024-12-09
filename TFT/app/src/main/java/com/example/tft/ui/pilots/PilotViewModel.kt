@@ -7,13 +7,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.tft.data.api.RetrofitInstance
-
 import com.example.tft.model.pilot.Team
 import com.google.common.reflect.TypeToken
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
-
-
 
 class PilotViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -60,7 +57,6 @@ class PilotViewModel(application: Application) : AndroidViewModel(application) {
                 _filteredRallyPilots.value = rallyTeams
                 _countries.value = listOf("All") + rallyTeams.map { it.country.name ?: "" }.distinct()
             } catch (e: Exception) {
-                // Manejo de errores
             } finally {
                 isLoading = false
             }

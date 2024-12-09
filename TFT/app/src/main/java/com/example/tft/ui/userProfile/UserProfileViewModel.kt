@@ -25,7 +25,7 @@ class UserProfileViewModel : ViewModel() {
             UserServices.getCurrentUserProfile { userProfile, docId ->
                 if (userProfile != null && docId != null) {
                     _userProfile.postValue(userProfile)
-                    documentId = docId // Asegúrate de no llamar a `toString()` aquí
+                    documentId = docId
                 }
             }
         }
@@ -35,12 +35,12 @@ class UserProfileViewModel : ViewModel() {
         val user = _userProfile.value
         if (user != null) {
             user.name = name
-            user.userId = email
+            user.email = email
 
             documentId?.let { docId ->
                 UserServices.updateUserProfile(user, docId) { success ->
                     if (success) {
-                        loadUserProfile(forceReload = true) // Forzar recarga después de guardar
+                        loadUserProfile(forceReload = true)
                         onComplete()
                     } else {
                         Log.e("UserProfileViewModel", "Error updating user profile")

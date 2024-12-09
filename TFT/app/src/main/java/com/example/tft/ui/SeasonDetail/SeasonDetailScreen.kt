@@ -18,7 +18,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.runtime.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.livedata.observeAsState
@@ -27,14 +26,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.tft.R
 import com.example.tft.navigation.AppScreens
 import com.example.tft.templates_App.BackTopBar
-import com.example.tft.ui.theme.PrimaryColor
 import com.example.tft.ui.theme.SecondaryColor
 import com.example.tft.ui.theme.TertiaryColor
 import com.example.tft.ui.theme.TertiaryColorDark
@@ -89,8 +86,8 @@ fun SeasonDetailScreen(navController: NavController, seasonId: String, viewModel
                                     .fillMaxWidth()
                                     .padding(bottom = 8.dp),
                                 colors = CardDefaults.cardColors(
-                                    containerColor = cardBackgroundColor, // Color de fondo de la carta
-                                    contentColor = textColor // Color del contenido (texto)
+                                    containerColor = cardBackgroundColor,
+                                    contentColor = textColor
                                 ),
                                 shape = RoundedCornerShape(16.dp),
                                 elevation = CardDefaults.cardElevation(8.dp)
@@ -437,7 +434,7 @@ fun SeasonDetailScreen(navController: NavController, seasonId: String, viewModel
                                         ) {
                                             Text(
                                                 text = "Tiempos",
-                                                color = textColor // Color del texto del botón
+                                                color = textColor
                                             )
                                         }
                                     }

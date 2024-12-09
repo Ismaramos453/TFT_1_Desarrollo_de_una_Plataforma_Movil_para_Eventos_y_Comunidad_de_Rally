@@ -1,6 +1,5 @@
 package com.example.tft.ui.votationDetail
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
@@ -14,17 +13,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -38,8 +33,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -51,7 +44,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.tft.model.foro.Votation
 import com.example.tft.templates_App.BackTopBar
@@ -61,8 +53,6 @@ fun VotationDetailScreen(navController: NavHostController, votationId: String, v
     val votation by viewModel.getVotationDetail(votationId).observeAsState()
     var showDeleteConfirmDialog by remember { mutableStateOf(false) }
     var showEditDialog by remember { mutableStateOf(false) }
-
-    // Estados para los campos de edición
     var editedTitle by remember { mutableStateOf("") }
     var editedOptions by remember { mutableStateOf(listOf<String>()) }
 
@@ -97,7 +87,6 @@ fun VotationDetailScreen(navController: NavHostController, votationId: String, v
                             isOwner = viewModel.isUserOwner(vot),
                             onVote = { id, option -> viewModel.voteOnVotation(id, option) { /* Handle vote result */ } },
                             onEdit = {
-                                // Inicializa los valores de edición
                                 editedTitle = vot.title
                                 editedOptions = vot.options
                                 showEditDialog = true
@@ -137,8 +126,6 @@ fun VotationDetailScreen(navController: NavHostController, votationId: String, v
                         if (showEditDialog) {
                             var editedTitleState by remember { mutableStateOf(editedTitle) }
                             var editedOptionsState by remember { mutableStateOf(editedOptions) }
-
-                            // Determinar colores basados en el tema
                             val isSystemInDarkTheme = isSystemInDarkTheme()
                             val dialogBackgroundColor = if (isSystemInDarkTheme) MaterialTheme.colorScheme.surface else MaterialTheme.colorScheme.primary
                             val dialogTextColor = if (isSystemInDarkTheme) MaterialTheme.colorScheme.onSurface else Color.White
@@ -276,7 +263,7 @@ fun EditVotationDialog(
 
                 Button(
                     onClick = {
-                        editedOptions = editedOptions + "" // Agrega una nueva opción vacía
+                        editedOptions = editedOptions + ""
                     },
                     modifier = Modifier.align(Alignment.End)
                 ) {

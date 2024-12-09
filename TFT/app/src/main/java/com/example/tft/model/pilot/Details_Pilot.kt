@@ -1,7 +1,5 @@
 package com.example.tft.model.pilot
 
-import android.health.connect.datatypes.SleepSessionRecord
-
 data class RallyStandingsResponse2(
     val standings: List<Standing>
 )
@@ -31,8 +29,8 @@ data class Team(
     val flag: String,
     val teamColors: TeamColors,
     val fieldTranslations: FieldTranslations,
-    val fullName: String, // Asegúrate de incluir este campo
-    val playerTeamInfo: PlayerTeamInfo // Asegúrate de incluir este campo
+    val fullName: String,
+    val playerTeamInfo: PlayerTeamInfo
 )
 
 data class PlayerTeamInfo(

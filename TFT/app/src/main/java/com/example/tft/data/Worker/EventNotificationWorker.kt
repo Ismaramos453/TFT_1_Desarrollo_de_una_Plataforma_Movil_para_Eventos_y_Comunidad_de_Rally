@@ -27,8 +27,6 @@ class EventNotificationWorker(context: Context, workerParams: WorkerParameters) 
     @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun doWork(): Result {
         Log.d("EventNotificationWorker", "Ejecutando el Worker para verificar eventos próximos")
-
-        // Código del Worker...
         val userId = AuthenticationServices.getCurrentUserId() ?: return Result.failure()
         val events = EventServices.loadEvents(userId)
         events.filter { shouldNotifyUser(it.date) }.forEach { event ->

@@ -9,7 +9,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.tft.data.api.RetrofitInstance
 import com.example.tft.model.detail_stage.Season
-import com.example.tft.model.detail_stage.SeasonWithImage
 import com.google.common.reflect.TypeToken
 import com.google.gson.Gson
 import kotlinx.coroutines.launch

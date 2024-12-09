@@ -9,12 +9,9 @@ import androidx.lifecycle.viewModelScope
 import com.example.tft.data.services.Authentication.AuthenticationServices
 import kotlinx.coroutines.launch
 
-
 class ForgotPasswordViewModel : ViewModel() {
     private val _emailError = MutableLiveData<String?>()
     val emailError: LiveData<String?> get() = _emailError
-
-    // Function to validate email format
     fun validateEmail(email: String): Boolean {
         return if (email.isBlank()) {
             _emailError.value = "El correo electrónico no puede estar vacío"

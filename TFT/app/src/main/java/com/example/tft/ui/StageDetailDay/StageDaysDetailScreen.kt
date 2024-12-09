@@ -89,14 +89,11 @@ fun StageDaysDetailScreen(
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                // Imagen principal con animación de carga
                 stageImage?.let { imageUrl ->
                     ImageCard(imageUrl)
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
-
-                // Mostrar indicador de carga o lista de etapas
                 if (substages == null) {
                     LoadingIndicator("Cargando detalles de los días...")
                 } else {
@@ -152,14 +149,20 @@ fun LoadingIndicator(message: String) {
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun StageCard(stage: Stage) {
+    val containerColor = if (isSystemInDarkTheme()) {
+        MaterialTheme.colorScheme.surfaceVariant
+    } else {
+        MaterialTheme.colorScheme.tertiary
+    }
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 8.dp)
-            .clickable { /* Manejar el clic en la tarjeta si es necesario */ },
+            .clickable {},
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
-            containerColor = Color.White,
+            containerColor = containerColor,
             contentColor = MaterialTheme.colorScheme.onSurface
         ),
         elevation = CardDefaults.cardElevation(4.dp)
@@ -167,7 +170,6 @@ fun StageCard(stage: Stage) {
         Column(
             modifier = Modifier.padding(16.dp)
         ) {
-            // Encabezado con el nombre del día y el ganador
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(
                     imageVector = Icons.Default.CalendarToday,
@@ -184,10 +186,7 @@ fun StageCard(stage: Stage) {
             }
 
             Spacer(modifier = Modifier.height(8.dp))
-
-            // Información del ganador con avatar (si está disponible)
             Row(verticalAlignment = Alignment.CenterVertically) {
-                // Si tienes una imagen del ganador, puedes utilizarla aquí
                 Icon(
                     imageVector = Icons.Default.EmojiEvents,
                     contentDescription = "Ganador",
@@ -195,15 +194,14 @@ fun StageCard(stage: Stage) {
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = "Ganador: ${stage.winner.name}",
+                    text = "Ganador: ${stage.winner?.name ?: "Sin ganador"}",
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onSurface
                 )
-            }
 
+            }
             Spacer(modifier = Modifier.height(8.dp))
 
-            // Descripción
             Text(
                 text = stage.description,
                 style = MaterialTheme.typography.bodyMedium,

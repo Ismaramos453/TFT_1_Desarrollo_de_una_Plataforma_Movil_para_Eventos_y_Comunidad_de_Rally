@@ -49,7 +49,7 @@ fun CalendarScreen(navController: NavHostController, viewModel: CalendarViewMode
     val daysOfMonth by viewModel.daysOfMonth.collectAsState()
     val selectedDay by viewModel.selectedDay.collectAsState()
     val eventDates by eventViewModel.eventDates.collectAsState()
-    val eventTypes by eventViewModel.eventTypes.observeAsState(emptyMap())  // Observing the event types as state
+    val eventTypes by eventViewModel.eventTypes.observeAsState(emptyMap())
     val user = AuthenticationServices.getCurrentUser()
 
     LaunchedEffect(user) {
@@ -85,7 +85,7 @@ fun CalendarScreen(navController: NavHostController, viewModel: CalendarViewMode
                     currentMonth = currentMonth,
                     selectedDay = selectedDay,
                     eventDates = eventDates,
-                    eventTypes = eventTypes,  // Pass the event types map to the CalendarView
+                    eventTypes = eventTypes,
                     onDaySelected = { day ->
                         viewModel.selectDay(day)
                     }
@@ -119,7 +119,6 @@ fun EventItem(event: SavedEvent, navController: NavHostController) {
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.tertiary
         )
-
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -131,12 +130,6 @@ fun EventItem(event: SavedEvent, navController: NavHostController) {
                 Text(text = "${event.date}, ${event.time}")
                 Text(text = event.location)
             }
-            /*
-            IconButton(onClick = { /* Acción de eliminar evento */ }) {
-
-                Icon(Icons.Default.Close, contentDescription = "Eliminar evento")
-            }
-        */
         }
     }
 }
@@ -154,7 +147,6 @@ fun CalendarHeader(currentMonth: YearMonth, onPreviousMonth: () -> Unit, onNextM
             .fillMaxWidth()
             .padding(16.dp)
     ) {
-        // Botón para navegar al mes anterior
         IconButton(onClick = onPreviousMonth) {
             Icon(Icons.Default.ArrowBack, contentDescription = "Mes Anterior")
         }
@@ -163,7 +155,6 @@ fun CalendarHeader(currentMonth: YearMonth, onPreviousMonth: () -> Unit, onNextM
             text = "${currentMonth.month.getDisplayName(TextStyle.FULL, Locale.getDefault())} ${currentMonth.year}",
             style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
         )
-        // Botón para navegar al mes siguiente
         IconButton(onClick = onNextMonth) {
             Icon(Icons.Default.ArrowForward, contentDescription = "Mes Siguiente")
         }
@@ -178,7 +169,7 @@ fun CalendarView(
     selectedDay: LocalDate?,
     eventDates: List<LocalDate>,
     onDaySelected: (LocalDate) -> Unit,
-    eventTypes: Map<LocalDate, String>  // Se pasa el mapa de tipos de evento
+    eventTypes: Map<LocalDate, String>
 ) {
     Column(modifier = Modifier.padding(16.dp)) {
         val daysOfWeek = listOf("L", "M", "M", "J", "V", "S", "D")
@@ -224,7 +215,7 @@ fun CalendarView(
                                     day == null -> Color.Transparent
                                     eventTypes[day] == "WRC Event" -> Color(0xFF2196F3) // Azul para WRC
                                     eventTypes[day] == "ERC Event" -> Color(0xFF4CAF50) // Verde para ERC
-                                    day == selectedDay -> Color(0xFFA32902) // Naranja para el día seleccionado
+                                    day == selectedDay -> Color(0xFFA32902) // Rojo para el día seleccionado
                                     else -> Color(0xFFF58A26) // Naranja para los días normales
                                 },
                                 shape = CircleShape
@@ -243,7 +234,6 @@ fun CalendarView(
                 }
             }
         }
-
         // Leyenda para los tipos de eventos
         Row(
             verticalAlignment = Alignment.CenterVertically,

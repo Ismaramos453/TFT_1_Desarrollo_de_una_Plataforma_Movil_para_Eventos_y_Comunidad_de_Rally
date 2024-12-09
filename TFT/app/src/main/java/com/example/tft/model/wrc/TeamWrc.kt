@@ -5,9 +5,8 @@ data class TeamWrc(
     val teamName: String = "",
     val car: String = "",
     val country: String = "",
-    val pilots: List<String> = listOf()  // Ahora pilots es una lista de strings.
+    val pilots: List<String> = listOf()
 )
-
 
 data class Pilot(
     val name: String,

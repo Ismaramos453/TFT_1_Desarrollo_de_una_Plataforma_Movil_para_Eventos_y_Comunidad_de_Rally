@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tft.data.services.Cars.CarsServices
-import com.example.tft.model.Car
 import com.example.tft.model.CarCategory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

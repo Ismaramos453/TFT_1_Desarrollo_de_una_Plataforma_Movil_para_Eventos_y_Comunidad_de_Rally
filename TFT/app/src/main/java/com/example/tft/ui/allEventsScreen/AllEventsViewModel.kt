@@ -15,7 +15,7 @@ class AllEventsViewModel : ViewModel() {
     }
 
     private fun loadEvents() {
-        // Aquí debes cargar los eventos desde tu fuente de datos, como una base de datos o un servicio web
+        // Carga de eventos
         EventServices.loadEvents { eventList ->
             _events.value = eventList
         }

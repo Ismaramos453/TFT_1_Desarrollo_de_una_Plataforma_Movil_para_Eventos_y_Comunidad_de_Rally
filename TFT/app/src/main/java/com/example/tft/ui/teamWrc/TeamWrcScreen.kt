@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -16,18 +15,14 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -37,7 +32,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -47,9 +41,6 @@ import coil.compose.rememberImagePainter
 import com.example.tft.model.wrc.TeamWrc
 import com.example.tft.templates_App.BackTopBar
 import androidx.lifecycle.viewmodel.compose.viewModel
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
-import com.example.tft.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -68,8 +59,6 @@ fun TeamWrcScreen(navController: NavHostController, viewModel: TeamWrcViewModel 
         }
     }
 }
-
-
 
 @Composable
 fun TeamCard(team: TeamWrc) {
@@ -113,7 +102,6 @@ fun TeamCard(team: TeamWrc) {
                     }
                 }
 
-                // Gradiente de degradado
                 Box(
                     modifier = Modifier
                         .matchParentSize()
@@ -142,8 +130,6 @@ fun TeamCard(team: TeamWrc) {
                 Text("Car: ${team.car}", style = MaterialTheme.typography.bodyMedium)
                 Text("Country: ${team.country}", style = MaterialTheme.typography.bodyMedium)
                 Text("Pilots:")
-
-                // Grid-like structure for pilots
                 val halfSize = (team.pilots.size + 1) / 2
                 val firstColumn = team.pilots.take(halfSize)
                 val secondColumn = team.pilots.drop(halfSize)
@@ -172,7 +158,7 @@ fun PilotItem(pilot: String) {
             imageVector = Icons.Default.Person,
             contentDescription = "Pilot",
             modifier = Modifier.size(24.dp),
-            tint = MaterialTheme.colorScheme.primary
+            tint = MaterialTheme.colorScheme.onSurface
         )
         Spacer(Modifier.width(8.dp))
         Text(pilot, style = MaterialTheme.typography.bodySmall)

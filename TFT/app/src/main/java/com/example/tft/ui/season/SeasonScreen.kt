@@ -30,10 +30,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.tft.R
-import com.example.tft.model.detail_stage.Season
 import com.example.tft.navigation.AppScreens
 import com.example.tft.templates_App.BackTopBar
-import com.example.tft.ui.SeasonDetail.SeasonDetailViewModel
 import com.example.tft.ui.theme.PrimaryColor
 import com.example.tft.ui.theme.SecondaryColor
 import com.example.tft.ui.theme.TertiaryColor
@@ -84,15 +82,15 @@ fun SeasonScreen(navController: NavHostController, viewModel: SeasonViewModel = 
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(8.dp),
-                        verticalArrangement = Arrangement.spacedBy(16.dp) // Espaciado más grande entre los elementos
+                        verticalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
                         items(it) { season ->
                             Card(
                                 modifier = Modifier
                                     .fillMaxWidth(),
                                 colors = CardDefaults.cardColors(
-                                    containerColor = cardBackgroundColor, // Color de fondo de la carta
-                                    contentColor = textColor // Color del contenido (texto)
+                                    containerColor = cardBackgroundColor,
+                                    contentColor = textColor
                                 ),
                                 shape = RoundedCornerShape(16.dp),
                                 elevation = CardDefaults.cardElevation(8.dp),
@@ -141,7 +139,7 @@ fun SeasonScreen(navController: NavHostController, viewModel: SeasonViewModel = 
                                         ) {
                                             Text(
                                                 text = "Clasificación Global",
-                                                color = textColor // Color del texto del botón
+                                                color = textColor
                                             )
                                         }
                                         Button(
@@ -150,7 +148,7 @@ fun SeasonScreen(navController: NavHostController, viewModel: SeasonViewModel = 
                                         ) {
                                             Text(
                                                 text = "Rallys",
-                                                color = textColor // Color del texto del botón
+                                                color = textColor
                                             )
                                         }
                                     }

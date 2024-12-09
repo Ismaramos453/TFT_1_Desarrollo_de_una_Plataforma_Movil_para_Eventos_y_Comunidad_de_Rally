@@ -12,7 +12,7 @@ class EditProfileViewModel : ViewModel() {
 
     private val _userProfile = MutableLiveData<Users?>()
     private var documentId: String? = null
-    private var initialImageUri: Uri? = null  // Almacenar el URI inicial de la imagen
+    private var initialImageUri: Uri? = null
     val userProfile: LiveData<Users?> get() = _userProfile
 
     init {
@@ -22,7 +22,7 @@ class EditProfileViewModel : ViewModel() {
     private fun loadUserProfile() {
         UserServices.getCurrentUserProfile { userProfile, docId ->
             if (userProfile != null && docId != null) {
-                Log.d("EditProfileViewModel", "UserProfile loaded: ${userProfile.name}, ${userProfile.userId}")
+                Log.d("EditProfileViewModel", "UserProfile loaded: ${userProfile.name}, ${userProfile.email}")
                 _userProfile.value = userProfile
                 documentId = docId.toString()
 
@@ -38,14 +38,14 @@ class EditProfileViewModel : ViewModel() {
         val user = _userProfile.value
         if (user != null) {
             user.name = name
-            user.userId = email
+            user.email = email
 
             documentId?.let { docId ->
                 if (imageUri != null && imageUri != initialImageUri) {
                     // Subir la imagen y obtener la URL
-                    UserServices.uploadProfileImage(imageUri, user.userId) { success, imageUrl ->
+                    UserServices.uploadProfileImage(imageUri, user.email) { success, imageUrl ->
                         if (success && imageUrl != null) {
-                            user.image = imageUrl // Actualizar el objeto user con la nueva URL
+                            user.image = imageUrl
                             // Ahora actualizar el perfil del usuario
                             UserServices.updateUserProfile(user, docId) { updateSuccess ->
                                 if (updateSuccess) {

@@ -4,15 +4,11 @@ import android.util.Log
 import com.example.tft.model.GalleryItem
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.storage.FirebaseStorage
-
 
 object GalleryServices{
 
     val auth = FirebaseAuth.getInstance()
     val firestore = FirebaseFirestore.getInstance()
-    val storageReference = FirebaseStorage.getInstance().reference
-
 
     fun getGalleryItems(callback: (List<GalleryItem>) -> Unit) {
         GalleryServices.firestore.collection("gallery")

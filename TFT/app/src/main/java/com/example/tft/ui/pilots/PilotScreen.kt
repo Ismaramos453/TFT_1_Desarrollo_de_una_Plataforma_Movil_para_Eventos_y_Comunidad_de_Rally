@@ -17,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import com.example.tft.templates_App.DefaultTopBar
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
@@ -31,16 +30,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.TextFieldValue
 import coil.compose.AsyncImage
 import com.example.tft.model.pilot.Team
-
-
 import coil.request.CachePolicy
 import coil.request.ImageRequest
-
 import com.example.tft.data.api.rememberImageLoader
 import com.example.tft.navigation.AppScreens
 import com.example.tft.templates_App.BackTopBar
 import com.example.tft.ui.theme.TFTTheme
-import com.example.tft.ui.theme.TertiaryColor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -50,7 +45,6 @@ fun PilotScreen(viewModel: PilotViewModel = viewModel(), navController: NavHostC
     var searchQuery by remember { mutableStateOf(TextFieldValue("")) }
     var selectedCountry by remember { mutableStateOf("Todos") }
     var expanded by remember { mutableStateOf(false) }
-
     LaunchedEffect(Unit) {
         if (viewModel.rallyPilots.value.isNullOrEmpty()) {
             viewModel.loadRallyPilots()
@@ -130,7 +124,7 @@ fun PilotScreen(viewModel: PilotViewModel = viewModel(), navController: NavHostC
 fun PilotCard(pilot: Team, navController: NavHostController) {
     val isDarkTheme = isSystemInDarkTheme()
     val textColor = if (isDarkTheme) Color.White else Color.Black
-    val imageLoader = rememberImageLoader() // Utiliza el ImageLoader personalizado
+    val imageLoader = rememberImageLoader()
 
     Card(
         modifier = Modifier
@@ -153,7 +147,7 @@ fun PilotCard(pilot: Team, navController: NavHostController) {
                     .memoryCachePolicy(CachePolicy.ENABLED)
                     .build(),
                 contentDescription = "Imagen del piloto",
-                imageLoader = imageLoader, // Aplica el ImageLoader personalizado
+                imageLoader = imageLoader,
                 modifier = Modifier
                     .size(64.dp)
                     .clip(CircleShape)
@@ -169,7 +163,7 @@ fun PilotCard(pilot: Team, navController: NavHostController) {
                     color = textColor
                 )
                 Text(
-                    text = "Equipo: ${pilot.name}",  // Asegúrate de que pilot tiene una propiedad teamName
+                    text = "Equipo: ${pilot.name}",
                     style = MaterialTheme.typography.bodyMedium,
                     color = textColor
                 )
@@ -182,7 +176,6 @@ fun PilotCard(pilot: Team, navController: NavHostController) {
         }
     }
 }
-
 
 fun getPilotImageUrl(pilotId: Int): String {
     return "https://motorsportapi.p.rapidapi.com/api/motorsport/team/$pilotId/image"

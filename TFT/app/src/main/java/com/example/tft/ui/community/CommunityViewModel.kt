@@ -2,24 +2,17 @@ package com.example.tft.ui.community
 
 import androidx.lifecycle.ViewModel
 
-import android.app.Application
-import android.content.Context
+
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
 import com.example.tft.data.services.Question.QuestionServices
 import com.example.tft.data.services.Votation.VotationServices
 import com.example.tft.model.foro.Question
 import com.example.tft.model.foro.Votation
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.Query
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import org.json.JSONObject
 
 
 class CommunityViewModel : ViewModel() {
@@ -27,7 +20,7 @@ class CommunityViewModel : ViewModel() {
     private val _allQuestions = MutableLiveData<List<Question>>()
     private val _filteredQuestions = MediatorLiveData<List<Question>>()
     val questions: LiveData<List<Question>> = _filteredQuestions
-    private val _items = MutableLiveData<List<Any>>()  // Esto incluirá Question y Votation
+    private val _items = MutableLiveData<List<Any>>()
     val items: LiveData<List<Any>> = _items
 
     init {
@@ -39,7 +32,7 @@ class CommunityViewModel : ViewModel() {
     private fun loadQuestions() {
         QuestionServices.getQuestions { questionsList ->
             _allQuestions.postValue(questionsList)
-            _filteredQuestions.postValue(questionsList)  // Iniciar el filtro con todos los datos
+            _filteredQuestions.postValue(questionsList)
         }
     }
 
@@ -86,7 +79,6 @@ class CommunityViewModel : ViewModel() {
             }
     }
 
-
     fun voteOnVotation(votationId: String, option: String) {
         val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
         VotationServices.voteOnVotation(votationId, option, userId) { success ->
@@ -95,8 +87,6 @@ class CommunityViewModel : ViewModel() {
             }
         }
     }
-
-    // Nueva función para recargar los ítems después de agregar una pregunta o votación
     fun refreshItems() {
         loadItems()
     }

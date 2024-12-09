@@ -1,26 +1,12 @@
 package com.example.tft.ui.ChangePassword
 
-// ChangePasswordViewModel.kt
-import android.app.Application
-import android.content.Context
-import android.util.Log
-import androidx.lifecycle.AndroidViewModel
+
+
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.example.tft.data.services.Question.QuestionServices
-import com.example.tft.data.services.Votation.VotationServices
-import com.example.tft.model.foro.Question
-import com.example.tft.model.foro.Votation
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.Query
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import org.json.JSONObject
 
 class ChangePasswordViewModel : ViewModel() {
     private val _isLoading = MutableLiveData<Boolean>()

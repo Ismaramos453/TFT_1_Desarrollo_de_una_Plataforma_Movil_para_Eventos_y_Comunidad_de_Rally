@@ -1,22 +1,9 @@
 package com.example.tft.ui.ChangePassword
 
 import android.widget.Toast
-import androidx.annotation.RequiresApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material.icons.filled.FilterList
-import androidx.compose.material.icons.filled.Group
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.*
@@ -24,38 +11,15 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavHostController
-import coil.compose.rememberImagePainter
-import com.example.tft.model.foro.Question
 import com.example.tft.templates_App.BackTopBar
-import com.example.tft.templates_App.DefaultTopBar
 import com.google.accompanist.pager.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import org.json.JSONObject
-import java.time.Instant
-import java.time.ZoneId
-import androidx.compose.material3.*
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Rect
-import androidx.compose.ui.layout.boundsInWindow
-import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.DpOffset
-import androidx.compose.ui.unit.IntSize
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.tft.model.foro.Votation
-// ChangePasswordScreen.kt
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChangePasswordScreen(navController: NavController, viewModel: ChangePasswordViewModel = viewModel()) {
@@ -63,7 +27,7 @@ fun ChangePasswordScreen(navController: NavController, viewModel: ChangePassword
     val newPassword = remember { mutableStateOf("") }
     val confirmPassword = remember { mutableStateOf("") }
 
-    // Estados para controlar la visibilidad de las contraseñas
+    // Estados de visibilidad de las contraseñas
     val currentPasswordVisible = remember { mutableStateOf(false) }
     val newPasswordVisible = remember { mutableStateOf(false) }
     val confirmPasswordVisible = remember { mutableStateOf(false) }

@@ -10,19 +10,13 @@ import androidx.lifecycle.viewModelScope
 import com.example.tft.data.services.Authentication.AuthenticationServices
 import kotlinx.coroutines.launch
 
-
-
 class LoginViewModel : ViewModel() {
     private val _loading = MutableLiveData(false)
-
-    // LiveData for validation errors
     private val _emailError = MutableLiveData<String?>()
     val emailError: LiveData<String?> get() = _emailError
-
     private val _passwordError = MutableLiveData<String?>()
     val passwordError: LiveData<String?> get() = _passwordError
 
-    // Function to validate email format
     fun validateEmail(email: String): Boolean {
         return if (email.isBlank()) {
             _emailError.value = "El correo electrónico no puede estar vacío"
@@ -36,7 +30,6 @@ class LoginViewModel : ViewModel() {
         }
     }
 
-    // Function to validate password length
     fun validatePassword(password: String): Boolean {
         return if (password.isBlank()) {
             _passwordError.value = "La contraseña no puede estar vacía"

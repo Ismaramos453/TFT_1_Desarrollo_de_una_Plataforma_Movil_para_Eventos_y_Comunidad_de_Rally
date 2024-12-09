@@ -8,7 +8,7 @@ enum class SeverityLevel {
 }
 
 data class QuestionForAdmin(
-    var id: String = "", // Agregar este campo
+    var id: String = "",
     val title: String,
     val content: String,
     val authorId: String,
@@ -19,7 +19,7 @@ data class QuestionForAdmin(
 )
 
 data class BugReport(
-    var id: String = "", // Agregar este campo
+    var id: String = "",
     val title: String,
     val content: String,
     val authorId: String,

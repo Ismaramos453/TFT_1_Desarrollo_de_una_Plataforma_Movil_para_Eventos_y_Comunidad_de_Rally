@@ -1,6 +1,5 @@
 package com.example.tft.ui.videos
 
-import android.provider.MediaStore
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -23,7 +22,7 @@ class VideoViewModel : ViewModel() {
     val isLoading: LiveData<Boolean> = _isLoading
 
     private val apiKey = "AIzaSyB0CEAh4Q3gEtZVAQu6FSDveY_-L_s_4GU"
-    private var cache = mutableMapOf<String, List<Video>>()  // Caché para almacenar listas de videos por término de búsqueda
+    private var cache = mutableMapOf<String, List<Video>>()
 
     init {
         searchRallyVideos()

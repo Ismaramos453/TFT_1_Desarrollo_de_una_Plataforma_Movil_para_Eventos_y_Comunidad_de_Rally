@@ -51,33 +51,27 @@ import androidx.compose.material.icons.filled.VisibilityOff
 fun RegisterScreen(navController: NavController) {
     Scaffold(
         topBar = {
-            // Reemplazo TopAppBar por BackTopBar con el título adecuado
             BackTopBar(title = "Inicio de Sesión", navController = navController)
         }
     ) { innerPadding ->
         Box(
             Modifier
                 .fillMaxSize()
-                .padding(innerPadding)  // Aplica el padding proporcionado por el Scaffold
+                .padding(innerPadding)
         ) {
-            BackgroundImage()  // Función para poner una imagen de fondo
-            RegisterContent(navController)  // Contenido de registro
+            BackgroundImage()
+            RegisterContent(navController)
         }
     }
 }
 
-
-
-
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegisterContent(navController: NavController, viewModel: RegisterViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
     val username = remember { mutableStateOf("") }
     val email = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
     val repeatPassword = remember { mutableStateOf("") }
-    val image = "" // Puedes obtener esto de algún lugar en tu UI
-
+    val image = ""
     val emailError by viewModel.emailError.observeAsState()
     val passwordError by viewModel.passwordError.observeAsState()
     val usernameError by viewModel.usernameError.observeAsState()
@@ -95,8 +89,8 @@ fun RegisterContent(navController: NavController, viewModel: RegisterViewModel =
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         item {
-            HeaderImage()  // Muestra el logo en la parte superior
-            Spacer(modifier = Modifier.height(16.dp))  // Espacio tras el logo
+            HeaderImage()
+            Spacer(modifier = Modifier.height(16.dp))
         }
         item {
             Text(
@@ -168,7 +162,7 @@ fun RegisterContent(navController: NavController, viewModel: RegisterViewModel =
                 Spacer(modifier = Modifier.height(16.dp))
             }
             RegisterButton(navController, viewModel, email.value, password.value, repeatPassword.value, username.value, image)  // Muestra el botón en el centro
-            Spacer(modifier = Modifier.height(16.dp))  // Espacio debajo del botón
+            Spacer(modifier = Modifier.height(16.dp))
         }
         item {
             if (registrationState is RegisterViewModel.RegistrationState.Failure) {
@@ -220,8 +214,6 @@ fun CustomTextField(
     }
 }
 
-
-
 @Composable
 fun RegisterButton(navController: NavController, viewModel: RegisterViewModel, email: String, password: String, repeatPassword: String, name: String, image: String) {
     val registrationState by viewModel.registrationState.observeAsState(RegisterViewModel.RegistrationState.Idle)
@@ -258,7 +250,6 @@ fun RegisterButton(navController: NavController, viewModel: RegisterViewModel, e
             Text(text = errorMessage, color = Color.Red)
         }
         is RegisterViewModel.RegistrationState.Idle -> {
-            // No hacer nada
         }
     }
 }

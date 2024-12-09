@@ -1,6 +1,5 @@
 package com.example.tft.ui.car
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -43,7 +42,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.example.tft.model.Car
-import com.example.tft.model.ItemsNavBar.Item_NavBar1.title
 import com.example.tft.templates_App.BackTopBar
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -121,17 +119,17 @@ fun CarItem(car: Car) {
                 TextWithIcon(
                     icon = Icons.Default.Speed,
                     text = "Potencia: ${car.power}",
-                    iconTint = MaterialTheme.colorScheme.primary
+                    iconTint = MaterialTheme.colorScheme.onSurface
                 )
                 TextWithIcon(
                     icon = Icons.Default.FitnessCenter,
                     text = "Peso: ${car.weight}",
-                    iconTint = MaterialTheme.colorScheme.primary
+                    iconTint = MaterialTheme.colorScheme.onSurface
                 )
                 TextWithIcon(
                     icon = Icons.Default.AttachMoney,
                     text = "Precio: ${car.price}",
-                    iconTint = MaterialTheme.colorScheme.primary
+                    iconTint = MaterialTheme.colorScheme.onSurface
                 )
             }
         }

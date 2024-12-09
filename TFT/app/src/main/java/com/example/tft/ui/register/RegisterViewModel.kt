@@ -13,21 +13,15 @@ import kotlinx.coroutines.launch
 class RegisterViewModel : ViewModel() {
     private val _registrationState = MutableLiveData<RegistrationState>(RegistrationState.Idle)
     val registrationState: LiveData<RegistrationState> get() = _registrationState
-
-    // LiveData for validation errors
     private val _emailError = MutableLiveData<String?>()
     val emailError: LiveData<String?> get() = _emailError
-
     private val _passwordError = MutableLiveData<String?>()
     val passwordError: LiveData<String?> get() = _passwordError
-
     private val _usernameError = MutableLiveData<String?>()
     val usernameError: LiveData<String?> get() = _usernameError
-
     private val _passwordMismatchError = MutableLiveData<String?>()
     val passwordMismatchError: LiveData<String?> get() = _passwordMismatchError
 
-    // Function to validate email format
     fun validateEmail(email: String): Boolean {
         return if (email.isBlank()) {
             _emailError.value = "El correo electrónico no puede estar vacío"
@@ -41,7 +35,6 @@ class RegisterViewModel : ViewModel() {
         }
     }
 
-    // Function to validate that passwords match
     fun validatePasswordsMatch(password: String, repeatPassword: String): Boolean {
         return if (password != repeatPassword) {
             _passwordMismatchError.value = "Las contraseñas no coinciden"
@@ -52,7 +45,6 @@ class RegisterViewModel : ViewModel() {
         }
     }
 
-    // Function to validate password requirements
     fun validatePassword(password: String): Boolean {
         if (password.isBlank()) {
             _passwordError.value = "La contraseña no puede estar vacía"
@@ -74,7 +66,6 @@ class RegisterViewModel : ViewModel() {
         return true
     }
 
-    // Function to validate username
     fun validateUsername(username: String): Boolean {
         return if (username.isBlank()) {
             _usernameError.value = "El nombre de usuario no puede estar vacío"

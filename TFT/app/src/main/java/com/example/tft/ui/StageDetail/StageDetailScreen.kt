@@ -1,8 +1,7 @@
 package com.example.tft.ui.StageDetail
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,7 +15,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -28,18 +26,17 @@ import androidx.compose.runtime.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import coil.compose.rememberImagePainter
 import com.example.tft.model.pilot.Standing
 import com.example.tft.navigation.AppScreens
 import com.example.tft.templates_App.BackTopBar
-import com.example.tft.ui.theme.PrimaryColor
+import com.example.tft.ui.StageDetailDay.LoadingIndicator
+import com.example.tft.ui.theme.ColorTextDark
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -52,6 +49,11 @@ fun StageDetailScreen(
 
     LaunchedEffect(stageId) {
         viewModel.fetchStandings(stageId)
+    }
+    val headerTextColor = if (isSystemInDarkTheme()) {
+        ColorTextDark
+    } else {
+        MaterialTheme.colorScheme.primary
     }
 
     Scaffold(
@@ -74,7 +76,7 @@ fun StageDetailScreen(
                 Text(
                     text = "Clasificación de la Etapa",
                     style = MaterialTheme.typography.headlineMedium,
-                    color = MaterialTheme.colorScheme.primary,
+                    color = headerTextColor,
                     modifier = Modifier.padding(vertical = 8.dp)
                 )
 
@@ -121,32 +123,26 @@ fun StageDetailScreen(
 }
 
 @Composable
-fun LoadingIndicator(message: String) {
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(
-            text = message,
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onBackground
-        )
-    }
-}
-
-@Composable
 fun StandingCard(standing: Standing) {
+    val containerColor = if (isSystemInDarkTheme()) {
+        MaterialTheme.colorScheme.surfaceVariant
+    } else {
+        MaterialTheme.colorScheme.tertiary
+    }
+    val positionTextColor = if (isSystemInDarkTheme()) {
+        ColorTextDark
+    } else {
+        MaterialTheme.colorScheme.primary
+    }
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 4.dp)
-            .clickable { /* Manejar el clic en la tarjeta si es necesario */ },
+            .clickable {},
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
-            containerColor = Color.White,
+            containerColor = containerColor,
             contentColor = MaterialTheme.colorScheme.onSurface
         ),
         elevation = CardDefaults.cardElevation(4.dp)
@@ -162,10 +158,9 @@ fun StandingCard(standing: Standing) {
                 text = "${standing.position}º",
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.primary,
+                color = positionTextColor, // Color dinámico
                 modifier = Modifier.padding(end = 16.dp)
             )
-
             // Información del equipo
             Column(
                 modifier = Modifier.weight(1f),
@@ -196,21 +191,21 @@ fun StandingCard(standing: Standing) {
         }
     }
 }
-    @Composable
-    fun TextWithIcon(icon: ImageVector, text: String, iconTint: Color) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(
-                imageVector = icon,
-                contentDescription = null,
-                tint = iconTint,
-                modifier = Modifier.size(20.dp)
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            Text(
-                text = text,
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurface
-            )
-        }
-    }
 
+@Composable
+fun TextWithIcon(icon: ImageVector, text: String, iconTint: Color) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Icon(
+            imageVector = icon,
+            contentDescription = null,
+            tint = iconTint,
+            modifier = Modifier.size(20.dp)
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(
+            text = text,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurface
+        )
+    }
+}

@@ -28,7 +28,6 @@ import com.example.tft.ui.events.EventScreen
 import com.example.tft.ui.Question_And_Report.FaqScreen
 import com.example.tft.ui.filterEvent.FilterEventScreen
 import com.example.tft.ui.forgotpassword.ForgotPasswordScreen
-import com.example.tft.ui.forum.ForumScreen
 import com.example.tft.ui.globalClassification.GlobalClassificationScreen
 import com.example.tft.ui.home.HomeScreen
 import com.example.tft.ui.login.LoginScreen
@@ -36,14 +35,12 @@ import com.example.tft.ui.news.NewsScreen
 import com.example.tft.ui.newsDetail.NewsDetailScreen
 import com.example.tft.ui.notification.NotificationScreen
 import com.example.tft.ui.other.OtherScreen
-import com.example.tft.ui.otherCategoryRally.OtherCategoryRallyScreen
 import com.example.tft.ui.padock.PadockScreen
 import com.example.tft.ui.photos.PhotosScreen
 import com.example.tft.ui.pilotDetail.PilotDetailScreen
 import com.example.tft.ui.pilots.PilotScreen
 import com.example.tft.ui.questionsDetail.QuestionsDetailScreen
 import com.example.tft.ui.register.RegisterScreen
-import com.example.tft.ui.route.RouteScreen
 import com.example.tft.ui.season.SeasonScreen
 import com.example.tft.ui.sectionsSeason.SectionsSeasonScreen
 import com.example.tft.ui.sectionsStage.SectionsStageScreen
@@ -65,21 +62,27 @@ fun AppNavigation(navController: NavHostController, startDestination: String) {
         composable(route = AppScreens.LoginScreen.route) {
             LoginScreen(navController)
         }
+
         composable(route = AppScreens.RegisterScreen.route) {
             RegisterScreen(navController)
         }
+
         composable(route = AppScreens.HomeScreen.route) {
             HomeScreen(navController)
         }
+
         composable(route = AppScreens.UserProfileScreen.route) {
             UserProfileScreen(navController)
         }
+
         composable(route = AppScreens.EventScreen.route) {
             EventScreen(navController)
         }
+
         composable(route = AppScreens.NewsScreen.route) {
             NewsScreen(navController)
         }
+
         composable(
             route = AppScreens.VotationDetailScreen.route,
             arguments = listOf(navArgument("votationId") { type = NavType.StringType })
@@ -91,7 +94,6 @@ fun AppNavigation(navController: NavHostController, startDestination: String) {
             }
         }
 
-
         composable(
             route = AppScreens.NewsDetailScreen.route,
             arguments = listOf(navArgument("newsId") { type = NavType.StringType })
@@ -100,16 +102,14 @@ fun AppNavigation(navController: NavHostController, startDestination: String) {
             NewsDetailScreen(navController, newsId)
         }
 
-
         composable(route = AppScreens.PilotScreen.route) {
             PilotScreen( navController = navController)
         }
-        composable(route = AppScreens.OtherCategoryRallyScreen.route) {
-            OtherCategoryRallyScreen( navController = navController)
-        }
+
         composable(route = AppScreens.PadockScreen.route) {
             PadockScreen( navController = navController)
         }
+
         composable(
             route = AppScreens.QuestionsDetailScreen.route,
             arguments = listOf(navArgument("questionId") { type = NavType.StringType })
@@ -121,9 +121,11 @@ fun AppNavigation(navController: NavHostController, startDestination: String) {
         composable(route = AppScreens.PhotosScreen.route) {
             PhotosScreen( navController = navController)
         }
+
         composable(route = AppScreens.AllEventsScreen.route) {
             AllEventsScreen( navController = navController)
         }
+
         composable(
             route = AppScreens.FilterEventScreen.route + "/{level}",
             arguments = listOf(navArgument("level") { type = NavType.StringType })
@@ -132,12 +134,6 @@ fun AppNavigation(navController: NavHostController, startDestination: String) {
             FilterEventScreen(navController, level)
         }
 
-        /*
-        composable(route = AppScreens.PilotScreen.route) {
-            val pilotViewModel: PilotViewModel = viewModel() // Obtén el ViewModel aquí
-            PilotScreen(viewModel = pilotViewModel, navController = navController) // Pasa el ViewModel y NavHostController
-        }
-        */
         composable(route = AppScreens.CommunityScreen.route) {
             CommunityScreen( navController = navController)
         }
@@ -145,12 +141,15 @@ fun AppNavigation(navController: NavHostController, startDestination: String) {
         composable(route = AppScreens.UserProfileScreen.route) {
             UserProfileScreen(navController)
         }
+
         composable(route = AppScreens.CalendarScreen.route) {
             CalendarScreen(navController)
         }
+
         composable(route = AppScreens.CarCategoriesScreen.route) {
             CarCategoriesScreen(navController)
         }
+
         composable(route = AppScreens.CreateQuestionScreen.route) {
             val viewModel: CreateQuestionViewModel = viewModel()
             CreateQuestionScreen(navController = navController, viewModel = viewModel)
@@ -161,20 +160,18 @@ fun AppNavigation(navController: NavHostController, startDestination: String) {
             TeamWrcScreen(navController = navController, viewModel = viewModel)
         }
 
-
-
         composable(route = AppScreens.VideoScreen.route) {
             VideoScreen(navController)
         }
+
         composable(route = AppScreens.OtherScreen.route) {
             OtherScreen(navController)
         }
-        composable(route = AppScreens.ForumScreen.route) {
-            ForumScreen(navController)
-        }
+
         composable(route = AppScreens.NotificationScreen.route) {
             NotificationScreen(navController)
         }
+
         composable(
             route = AppScreens.CarScreen.route,
             arguments = listOf(navArgument("categoryId") { type = NavType.StringType })
@@ -187,14 +184,13 @@ fun AppNavigation(navController: NavHostController, startDestination: String) {
             val settingViewModel: SettingViewModel = viewModel()  // Obtiene ViewModel aquí
             SettingScreen(navController, settingViewModel)  // Pasa el ViewModel
         }
+
         composable(route = AppScreens.PilotFavoritesScreen.route) {
             val auth = FirebaseAuth.getInstance()
             val userId = auth.currentUser?.uid
-
             if (userId != null) {
                 PilotFavoritesScreen(userId, navController)
             } else {
-                // Manejar el caso de no autenticación, tal vez redirigiendo a una pantalla de inicio de sesión
             }
         }
 
@@ -202,34 +198,39 @@ fun AppNavigation(navController: NavHostController, startDestination: String) {
             val viewModel: Question_And_ReportViewModel = viewModel()
             FaqScreen(navController,viewModel)
         }
+
         composable(route = AppScreens.SeasonScreen.route) {
             SeasonScreen(navController)
         }
+
         composable(route = AppScreens.EditProfileScreen.route) {
             EditProfileScreen(navController)
         }
+
         composable(route = AppScreens.GlobalClassificationScreen.route + "/{seasonId}") { backStackEntry ->
             val seasonId = backStackEntry.arguments?.getString("seasonId") ?: return@composable
             GlobalClassificationScreen(navController, seasonId)
         }
+
         composable(route = AppScreens.SectionsSeasonScreen.route + "/{seasonId}") { backStackEntry ->
             val seasonId = backStackEntry.arguments?.getString("seasonId") ?: return@composable
             SectionsSeasonScreen(navController = navController, seasonId = seasonId)
         }
+
         composable(route = AppScreens.ForgotPasswordScreen.route) {
             ForgotPasswordScreen(navController)
         }
-        composable(route = AppScreens.RouteScreen.route) {
-            RouteScreen(navController)
-        }
+
         composable(route = AppScreens.SeasonDetailScreen.route + "/{seasonId}") { backStackEntry ->
             val seasonId = backStackEntry.arguments?.getString("seasonId") ?: return@composable
             SeasonDetailScreen(navController = navController, seasonId = seasonId)
         }
+
         composable(route = AppScreens.StageDetailScreen.route + "/{stageId}") { backStackEntry ->
             val stageId = backStackEntry.arguments?.getString("stageId") ?: return@composable
             StageDetailScreen(navController = navController, stageId = stageId)
         }
+
         composable(route = AppScreens.StageDaysDetailScreen.route + "/{stageId}") { backStackEntry ->
             val stageId = backStackEntry.arguments?.getString("stageId") ?: return@composable
             StageDaysDetailScreen(navController = navController, stageId = stageId)
@@ -239,6 +240,7 @@ fun AppNavigation(navController: NavHostController, startDestination: String) {
             val stageId = backStackEntry.arguments?.getString("stageId") ?: return@composable
             SectionsStageScreen(navController = navController, stageId = stageId)
         }
+
         composable(
             route = AppScreens.PilotDetailScreen.route,
             arguments = listOf(navArgument("pilotId") { type = NavType.IntType })
@@ -253,12 +255,10 @@ fun AppNavigation(navController: NavHostController, startDestination: String) {
                 EventDetailScreen(navController, eventId)
             }
         }
+
         composable(AppScreens.ChangePasswordScreen.route) {
             ChangePasswordScreen(navController = navController)
         }
 
-
-
-        // Agrega las demás pantallas según sea necesario
     }
 }

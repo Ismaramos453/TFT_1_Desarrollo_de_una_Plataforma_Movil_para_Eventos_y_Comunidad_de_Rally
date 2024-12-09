@@ -48,7 +48,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 
-
 @Composable
 fun LoginScreen(navController: NavController, viewModel: LoginViewModel = viewModel()) {
     Box(Modifier.fillMaxSize()) {
@@ -134,7 +133,7 @@ fun LoginButton(navController: NavController, email: String, password: String, v
     Button(
         onClick = {
             viewModel.signInWithEmailAndPassword(email, password) {
-                navController.navigate(route = AppScreens.HomeScreen.route)  // Actualiza "homeRoute" con la ruta correcta
+                navController.navigate(route = AppScreens.HomeScreen.route)
             }
         },
         colors = ButtonDefaults.buttonColors(Color(245, 138, 38, 255)),

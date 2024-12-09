@@ -16,16 +16,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Directions
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -51,29 +47,15 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.tft.R
 import com.example.tft.templates_App.BackTopBar
-import com.example.tft.ui.other.CustomDivider
-import com.example.tft.ui.theme.PrimaryColor
 import com.google.firebase.auth.FirebaseAuth
 import java.time.Instant
 import java.time.ZoneId
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.ImeAction
 
-import androidx.lifecycle.viewmodel.compose.viewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -88,9 +70,16 @@ fun QuestionsDetailScreen(navController: NavHostController, questionId: String) 
     val viewModel: QuestionsDetailViewModel = viewModel()
     val question by viewModel.getQuestionDetail(questionId).observeAsState()
 
+    // Determinar si está en modo oscuro y asignar el color de texto
+    val isDarkTheme = isSystemInDarkTheme()
+    val textColor = if (isDarkTheme) Color.White else Color.Black
+
     Scaffold(
         topBar = {
-            BackTopBar(title = "Detalle de pregunta", navController = navController)
+            BackTopBar(
+                title = "Detalle de pregunta",
+                navController = navController,
+            )
         },
         floatingActionButton = {
             FloatingActionButton(
@@ -101,7 +90,8 @@ fun QuestionsDetailScreen(navController: NavHostController, questionId: String) 
                 Icon(
                     painter = painterResource(id = R.drawable.enviar),
                     contentDescription = "Añadir respuesta",
-                    modifier = Modifier.size(24.dp) // Ajusta este valor según tus necesidades
+                    modifier = Modifier.size(24.dp),
+                    tint = textColor
                 )
             }
         }
@@ -136,29 +126,26 @@ fun QuestionsDetailScreen(navController: NavHostController, questionId: String) 
                         ) {
                             Text(
                                 text = it.title,
-                                style = MaterialTheme.typography.titleLarge.copy(
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.onPrimaryContainer
-                                )
+                                style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
+                                color = textColor
                             )
                             Spacer(modifier = Modifier.height(8.dp))
                             Text(
                                 text = "Por: ${it.userName}",
-                                style = MaterialTheme.typography.bodyMedium.copy(
-                                    color = MaterialTheme.colorScheme.primary
-                                )
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = if (isDarkTheme) Color.White else MaterialTheme.colorScheme.primary
                             )
                             Spacer(modifier = Modifier.height(8.dp))
                             Text(
                                 text = it.content,
                                 style = MaterialTheme.typography.bodyLarge,
-                                color = MaterialTheme.colorScheme.onPrimaryContainer
+                                color = textColor
                             )
                             Spacer(modifier = Modifier.height(8.dp))
                             Text(
                                 text = "Fecha: ${Instant.ofEpochMilli(it.timestamp).atZone(ZoneId.systemDefault()).toLocalDate()}",
                                 style = MaterialTheme.typography.labelSmall,
-                                color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f),
+                                color = textColor.copy(alpha = 0.7f),
                                 modifier = Modifier.align(Alignment.End)
                             )
 
@@ -174,10 +161,10 @@ fun QuestionsDetailScreen(navController: NavHostController, questionId: String) 
                                         content = it.content
                                         showEditDialog = true
                                     }) {
-                                        Icon(Icons.Filled.Edit, contentDescription = "Editar pregunta")
+                                        Icon(Icons.Filled.Edit, contentDescription = "Editar pregunta", tint = textColor)
                                     }
                                     IconButton(onClick = { showDeleteConfirmDialog = true }) {
-                                        Icon(Icons.Filled.Delete, contentDescription = "Eliminar pregunta")
+                                        Icon(Icons.Filled.Delete, contentDescription = "Eliminar pregunta", tint = textColor)
                                     }
                                 }
                             }
@@ -186,7 +173,7 @@ fun QuestionsDetailScreen(navController: NavHostController, questionId: String) 
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    Text("Respuestas:", style = MaterialTheme.typography.titleMedium)
+                    Text("Respuestas:", style = MaterialTheme.typography.titleMedium, color = textColor)
                     Spacer(modifier = Modifier.height(8.dp))
                     it.answers.forEach { answer ->
                         Card(
@@ -206,21 +193,20 @@ fun QuestionsDetailScreen(navController: NavHostController, questionId: String) 
                             ) {
                                 Text(
                                     text = answer.userName,
-                                    style = MaterialTheme.typography.bodyMedium.copy(
-                                        color = MaterialTheme.colorScheme.primary
-                                    )
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = if (isDarkTheme) Color.White else MaterialTheme.colorScheme.primary
                                 )
                                 Spacer(modifier = Modifier.height(4.dp))
                                 Text(
                                     text = answer.content,
                                     style = MaterialTheme.typography.bodySmall,
-                                    color = MaterialTheme.colorScheme.onSurface
+                                    color = textColor
                                 )
                                 Spacer(modifier = Modifier.height(4.dp))
                                 Text(
                                     text = "Fecha: ${Instant.ofEpochMilli(answer.timestamp).atZone(ZoneId.systemDefault()).toLocalDate()}",
                                     style = MaterialTheme.typography.labelSmall,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    color = textColor.copy(alpha = 0.7f),
                                     modifier = Modifier.align(Alignment.End)
                                 )
                             }
@@ -228,13 +214,13 @@ fun QuestionsDetailScreen(navController: NavHostController, questionId: String) 
                     }
                 }
             } ?: run {
-                CircularProgressIndicator()
+                CircularProgressIndicator(color = textColor)
             }
 
+            // Diálogo para agregar respuesta
             if (showDialog) {
-                val isSystemInDarkTheme = isSystemInDarkTheme()
-                val dialogBackgroundColor = if (isSystemInDarkTheme) MaterialTheme.colorScheme.surface else MaterialTheme.colorScheme.primary
-                val dialogTextColor = if (isSystemInDarkTheme) MaterialTheme.colorScheme.onSurface else Color.White
+                val dialogBackgroundColor = if (isDarkTheme) MaterialTheme.colorScheme.surface else MaterialTheme.colorScheme.primary
+                val dialogTextColor = if (isDarkTheme) Color.White else Color.White
 
                 AlertDialog(
                     onDismissRequest = { showDialog = false },
@@ -276,10 +262,10 @@ fun QuestionsDetailScreen(navController: NavHostController, questionId: String) 
                 )
             }
 
+            // Diálogo de confirmación de eliminación
             if (showDeleteConfirmDialog) {
-                val isSystemInDarkTheme = isSystemInDarkTheme()
-                val dialogBackgroundColor = if (isSystemInDarkTheme) MaterialTheme.colorScheme.surface else MaterialTheme.colorScheme.primary
-                val dialogTextColor = if (isSystemInDarkTheme) MaterialTheme.colorScheme.onSurface else Color.White
+                val dialogBackgroundColor = if (isDarkTheme) MaterialTheme.colorScheme.surface else MaterialTheme.colorScheme.primary
+                val dialogTextColor = if (isDarkTheme) Color.White else Color.White
 
                 AlertDialog(
                     onDismissRequest = { showDeleteConfirmDialog = false },
@@ -304,10 +290,10 @@ fun QuestionsDetailScreen(navController: NavHostController, questionId: String) 
                 )
             }
 
+            // Diálogo para editar pregunta
             if (showEditDialog) {
-                val isSystemInDarkTheme = isSystemInDarkTheme()
-                val dialogBackgroundColor = if (isSystemInDarkTheme) MaterialTheme.colorScheme.surface else MaterialTheme.colorScheme.primary
-                val dialogTextColor = if (isSystemInDarkTheme) MaterialTheme.colorScheme.onSurface else Color.White
+                val dialogBackgroundColor = if (isDarkTheme) MaterialTheme.colorScheme.surface else MaterialTheme.colorScheme.primary
+                val dialogTextColor = if (isDarkTheme) Color.White else Color.White
 
                 AlertDialog(
                     onDismissRequest = { showEditDialog = false },
@@ -360,17 +346,4 @@ fun QuestionsDetailScreen(navController: NavHostController, questionId: String) 
             }
         }
     }
-}
-
-
-@Composable
-fun CustomDivider() {
-    val isDarkTheme = isSystemInDarkTheme()
-    // Define el color del divisor dependiendo del tema
-    val dividerColor = if (isDarkTheme) Color.Gray else Color.LightGray  // Cambia estos colores según tu preferencia
-
-    Divider(
-        color = dividerColor,
-        thickness = 1.dp  // Puedes ajustar el grosor si lo deseas
-    )
 }

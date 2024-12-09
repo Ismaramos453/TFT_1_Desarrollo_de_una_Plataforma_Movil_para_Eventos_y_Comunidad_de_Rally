@@ -24,8 +24,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -33,14 +31,12 @@ import androidx.navigation.NavController
 import com.example.tft.ui.login.BackgroundImage
 import com.example.tft.ui.login.CustomTextField
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.tft.R
 import com.example.tft.templates_App.BackTopBar
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ForgotPasswordScreen(navController: NavController, viewModel: ForgotPasswordViewModel = viewModel(ForgotPasswordViewModel::class.java)) {
     Scaffold(
         topBar = {
-            // Reemplazo TopAppBar por BackTopBar con el título adecuado
             BackTopBar(title = "Restablecer Contraseña", navController = navController)
         }
     ) { innerPadding ->
@@ -78,7 +74,6 @@ fun ForgotPasswordContent(navController: NavController, viewModel: ForgotPasswor
             Button(
                 onClick = {
                     viewModel.sendPasswordResetEmail(email.value) {
-                        // Navegar de vuelta a la pantalla de inicio de sesión o mostrar un mensaje de éxito
                         navController.popBackStack()
                     }
                 },
@@ -95,21 +90,6 @@ fun ForgotPasswordContent(navController: NavController, viewModel: ForgotPasswor
                 )
             }
         }
-    }
-}
-
-@Composable
-fun BackgroundImage() {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Image(
-            painter = painterResource(id = R.drawable.fondo),
-            contentDescription = "Fondo",
-            modifier = Modifier.matchParentSize(),
-            contentScale = ContentScale.Crop
-        )
     }
 }
 

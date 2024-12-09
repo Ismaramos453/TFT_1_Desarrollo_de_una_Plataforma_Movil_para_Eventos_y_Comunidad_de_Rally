@@ -1,11 +1,7 @@
 package com.example.tft.model.detail_stage
-
-
-import android.health.connect.datatypes.SleepSessionRecord
 import com.example.tft.model.pilot.Country
 import com.example.tft.model.pilot.Sport
 import com.example.tft.model.pilot.TeamColors
-
 
 data class SubstagesResponse(
     val stages: List<Stage>
@@ -29,7 +25,6 @@ data class Stage(
     val flag: String,
     val stageParent: StageParent
 )
-
 
 data class Type(
     val id: Int,
@@ -85,7 +80,7 @@ data class Season(
     val name: String,
     val startDateTimestamp: Long,
     val endDateTimestamp: Long,
-    val imageUrl: String // Nuevo campo para la URL de la imagen
+    val imageUrl: String
 )
 
 data class UniqueStage(
@@ -104,7 +99,6 @@ data class Category(
 )
 
 
-//Imagen de cada temporada
 data class SeasonWithImage(
     val season: Season,
     val imageUrl: String

@@ -32,7 +32,6 @@ sealed class ItemsNavBar(
         "WRC",
         AppScreens.PadockScreen.route
     )
-    
     object Item_NavBar4: ItemsNavBar(
         Icons.Outlined.Celebration,
         "FanZone",
@@ -43,5 +42,4 @@ sealed class ItemsNavBar(
         "Otros",
         AppScreens.OtherScreen.route
     )
-
 }

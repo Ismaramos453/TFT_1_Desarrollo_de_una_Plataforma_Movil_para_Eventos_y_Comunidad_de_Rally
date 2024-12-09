@@ -2,8 +2,6 @@ package com.example.tft.ui.photos
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
-
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,54 +11,25 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import com.example.tft.templates_App.DefaultTopBar
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.compose.rememberNavController
-import coil.compose.AsyncImage
 import coil.compose.rememberImagePainter
-import coil.request.ImageRequest
-import com.example.tft.R
-import com.example.tft.model.RallyEvent
-import com.example.tft.navigation.AppScreens
-import com.example.tft.ui.bottonBar.BottonBarScreen
-import com.example.tft.ui.theme.BackGroundLight
-import com.example.tft.ui.theme.BackGroundLightDark
-import com.example.tft.ui.theme.PrimaryColorDark
-import com.example.tft.ui.theme.TertiaryColor
-import com.example.tft.ui.theme.TertiaryColorDark
-import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material.icons.filled.Share
-import androidx.compose.material.icons.filled.Upload
-import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavHostController
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.tft.model.GalleryItem
 import com.example.tft.model.ImageItem
 import com.example.tft.templates_App.BackTopBar
@@ -69,25 +38,14 @@ import com.example.tft.templates_App.BackTopBar
 @Composable
 fun PhotosScreen(navController: NavHostController, viewModel: PhotosViewModel = viewModel()) {
     val galleryItems by viewModel.galleryItems.observeAsState(emptyList())
-
-    // Inicializar el filtro de año en 2023 y la categoría en WRC por defecto
     var selectedYear by remember { mutableStateOf("2023") }
     var selectedCategory by remember { mutableStateOf("WRC") }
-
     val years = galleryItems.map { it.year.toString() }.distinct()
     val categories = galleryItems.map { it.category }.distinct()
 
     Scaffold(
         topBar = {
             BackTopBar(title = "Galería de Fotos", navController = navController)
-        },
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = { /* Acción para subir imagen */ },
-                containerColor = MaterialTheme.colorScheme.secondary  // Color secundario para el botón flotante
-            ) {
-                Icon(Icons.Filled.Upload, contentDescription = "Subir imagen")
-            }
         }
     ) { innerPadding ->
         LazyColumn(
@@ -117,7 +75,6 @@ fun PhotosScreen(navController: NavHostController, viewModel: PhotosViewModel = 
                     }
                 }
             }
-            // Filtra las imágenes por año y categoría
             val filteredItems = galleryItems.filter {
                 (it.year.toString() == selectedYear || selectedYear == "All") &&
                         (it.category == selectedCategory || selectedCategory == "All")
@@ -141,17 +98,16 @@ fun YearDropdownMenu(
         OutlinedButton(
             onClick = { expanded = true },
             colors = ButtonDefaults.outlinedButtonColors(
-                containerColor = MaterialTheme.colorScheme.secondary,  // Usar color secundario para el botón
+                containerColor = MaterialTheme.colorScheme.secondary,
             ),
             modifier = Modifier
-                .width(120.dp)  // Ajustar el ancho del botón para que sea más pequeño
+                .width(120.dp)
         ) {
             Text(
                 text = "Año: ${if (selectedYear == "All") "Todos" else selectedYear}",
                 style = MaterialTheme.typography.bodySmall,
             )
         }
-
         DropdownMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false }
@@ -188,19 +144,18 @@ fun CategoryDropdownMenu(
         OutlinedButton(
             onClick = { expanded = true },
             colors = ButtonDefaults.outlinedButtonColors(
-                containerColor = MaterialTheme.colorScheme.secondary,  // Usar color secundario para el botón
-                contentColor = Color.Black  // Color del texto en negro
+                containerColor = MaterialTheme.colorScheme.secondary,
+                contentColor = Color.Black
             ),
             modifier = Modifier
-                .width(180.dp)  // Ajustar el ancho del botón para que sea más grande
+                .width(180.dp)
         ) {
             Text(
                 text = "Categoría: ${if (selectedCategory == "All") "Todas" else selectedCategory}",
                 style = MaterialTheme.typography.bodySmall,
-                color = Color.Black  // Color de texto en negro
+                color = Color.Black
             )
         }
-
         DropdownMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false }
@@ -228,7 +183,6 @@ fun CategoryDropdownMenu(
 
 @Composable
 fun GroupedPhotosCarousel(galleryItem: GalleryItem) {
-    // Agrupa las imágenes por ruta
     val groupedByRoute = galleryItem.images.groupBy { it.route }
 
     groupedByRoute.forEach { (route, images) ->
@@ -291,8 +245,8 @@ fun PhotoCard(image: ImageItem) {
         modifier = Modifier
             .padding(8.dp)
             .width(250.dp)
-            .clickable { isDialogOpen = true },  // Abrir el diálogo al hacer clic
-        shape = RoundedCornerShape(16.dp), // Bordes redondeados más grandes para mejor estética
+            .clickable { isDialogOpen = true },
+        shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
         Column {

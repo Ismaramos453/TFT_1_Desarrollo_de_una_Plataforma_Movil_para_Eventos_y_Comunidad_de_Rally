@@ -12,7 +12,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
-import com.example.tft.templates_App.DefaultTopBar
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -30,26 +29,27 @@ import com.example.tft.navigation.AppScreens
 import com.example.tft.ui.theme.TFTTheme
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.AutoAwesomeMosaic
 import androidx.compose.material.icons.filled.DirectionsCar
 import androidx.compose.material.icons.filled.EmojiEvents
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.example.tft.ui.theme.TertiaryColor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PadockScreen(navController: NavHostController) {
-    val searchQuery = remember { mutableStateOf("") }  // Usar val aquí para mantener el estado mutable
+    val searchQuery = remember { mutableStateOf("") }
     TFTTheme {
         Scaffold(
             topBar = {
                 TopAppBar(
-                    title = { Text("Sección del mundial de Rally", color = Color.White) }, // Color del título ajustado a blanco
+                    title = { Text("Sección del mundial de Rally", color = TertiaryColor) },
                     navigationIcon = {
-                        // Puedes cambiar Icons.Filled.Menu por Icons.Filled.ArrowBack si es para navegación hacia atrás
-                        IconButton(onClick = { /* Define la acción aquí, como navController.popBackStack() o abrir un drawer */ }) {
-                            Icon(Icons.Filled.DirectionsCar, contentDescription = "WRC", tint = Color.White)
+                        IconButton(onClick = { /* Acción*/ }) {
+                            Icon(
+                                Icons.Filled.DirectionsCar,
+                                contentDescription = "WRC",
+                                tint = TertiaryColor// Color adaptado al tema
+                            )
                         }
                     },
                     colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
@@ -80,27 +80,6 @@ fun PadockContent(navController: NavHostController, innerPadding: PaddingValues)
         item { TeamCard(navController, R.drawable.equipos, "Teams Info", "Explore details about teams", Icons.Default.Group) }
     }
 }
-
-@Composable
-fun SeasonCard(navController: NavHostController, imageId: Int, title: String, description: String, icon: ImageVector) {
-    InfoCard(navController, imageId, title, description, icon, AppScreens.SeasonScreen.route)
-}
-
-@Composable
-fun PilotCard(navController: NavHostController, imageId: Int, title: String, description: String, icon: ImageVector) {
-    InfoCard(navController, imageId, title, description, icon, AppScreens.PilotScreen.route)
-}
-
-@Composable
-fun CarCard(navController: NavHostController, imageId: Int, title: String, description: String, icon: ImageVector) {
-    InfoCard(navController, imageId, title, description, icon, AppScreens.CarCategoriesScreen.route)
-}
-
-@Composable
-fun TeamCard(navController: NavHostController, imageId: Int, title: String, description: String, icon: ImageVector) {
-    InfoCard(navController, imageId, title, description, icon, AppScreens.TeamWrcScreen.route)
-}
-
 
 @Composable
 fun InfoCard(
@@ -135,7 +114,7 @@ fun InfoCard(
                 Icon(
                     imageVector = icon,
                     contentDescription = "Icon for $title",
-                    tint = MaterialTheme.colorScheme.primary,
+                    tint = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier.size(64.dp)
                 )
                 Spacer(modifier = Modifier.width(16.dp))
@@ -155,3 +134,25 @@ fun InfoCard(
         }
     }
 }
+
+@Composable
+fun SeasonCard(navController: NavHostController, imageId: Int, title: String, description: String, icon: ImageVector) {
+    InfoCard(navController, imageId, title, description, icon, AppScreens.SeasonScreen.route)
+}
+
+@Composable
+fun PilotCard(navController: NavHostController, imageId: Int, title: String, description: String, icon: ImageVector) {
+    InfoCard(navController, imageId, title, description, icon, AppScreens.PilotScreen.route)
+}
+
+@Composable
+fun CarCard(navController: NavHostController, imageId: Int, title: String, description: String, icon: ImageVector) {
+    InfoCard(navController, imageId, title, description, icon, AppScreens.CarCategoriesScreen.route)
+}
+
+@Composable
+fun TeamCard(navController: NavHostController, imageId: Int, title: String, description: String, icon: ImageVector) {
+    InfoCard(navController, imageId, title, description, icon, AppScreens.TeamWrcScreen.route)
+}
+
+

@@ -6,13 +6,11 @@ import androidx.lifecycle.ViewModel
 import com.example.tft.data.services.Answer.AnswerServices
 import com.example.tft.data.services.Question.QuestionServices
 import com.example.tft.model.foro.Question
-import com.example.tft.model.notification.NotificationService
+import com.example.tft.data.services.notification.NotificationService
 import com.google.firebase.auth.FirebaseAuth
 
 class QuestionsDetailViewModel : ViewModel() {
     private val firestoreService = QuestionServices
-
-    // MutableLiveData que se expone como LiveData
     private val _questionLiveData = MutableLiveData<Question>()
     val questionLiveData: LiveData<Question> = _questionLiveData
 
@@ -27,7 +25,6 @@ class QuestionsDetailViewModel : ViewModel() {
         }
     }
 
-    // Asegúrate de llamar a loadQuestionDetail dentro de las funciones que modifican los datos
     fun updateQuestion(questionId: String, title: String, content: String, callback: (Boolean) -> Unit) {
         QuestionServices.updateQuestion(questionId, title, content) { success ->
             if (success) {
@@ -56,7 +53,6 @@ class QuestionsDetailViewModel : ViewModel() {
             callback(success)
         }
     }
-
 
     fun deleteQuestion(questionId: String, callback: (Boolean) -> Unit) {
         QuestionServices.deleteQuestion(questionId, callback)

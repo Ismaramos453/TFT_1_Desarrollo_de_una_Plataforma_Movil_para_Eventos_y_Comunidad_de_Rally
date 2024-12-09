@@ -64,7 +64,6 @@ fun CommunityScreen(navController: NavHostController) {
     val filterExpanded = remember { mutableStateOf(false) }
 
     LaunchedEffect(sortOption, commentsSortOption) {
-        // Trigger recomposition when sort options change
     }
 
     val filteredItems = items.filter { item ->
@@ -75,7 +74,6 @@ fun CommunityScreen(navController: NavHostController) {
             else -> true
         } && itemMatchesSearchQuery(item, searchText)
     }.sortedWith { a, b ->
-        // First sort by comments if commentsSortOption is active
         var commentResult = when (commentsSortOption) {
             "Más comentarios" -> (b as? Question)?.answers?.size?.compareTo((a as? Question)?.answers?.size ?: 0) ?: 0
             "Menos comentarios" -> (a as? Question)?.answers?.size?.compareTo((b as? Question)?.answers?.size ?: 0) ?: 0
@@ -83,8 +81,6 @@ fun CommunityScreen(navController: NavHostController) {
         }
 
         if (commentResult != 0) return@sortedWith commentResult
-
-        // Then sort by date if necessary
         when (sortOption) {
             "Recientes" -> (b as? Question)?.timestamp?.compareTo((a as? Question)?.timestamp ?: Long.MAX_VALUE) ?: 0
             "Antiguas" -> (a as? Question)?.timestamp?.compareTo((b as? Question)?.timestamp ?: Long.MAX_VALUE) ?: 0
@@ -206,19 +202,18 @@ fun SortDropdownMenu(
         OutlinedButton(
             onClick = { expanded = true },
             modifier = Modifier
-                .padding(4.dp)  // Adjusted padding for a more compact look
-                .width(150.dp),  // Set a fixed width to make the button smaller
+                .padding(4.dp)
+                .width(150.dp),
             colors = ButtonDefaults.outlinedButtonColors(
-                containerColor = MaterialTheme.colorScheme.secondary,  // Usar color secundario para el botón
+                containerColor = MaterialTheme.colorScheme.secondary,
             ),
             shape = RoundedCornerShape(50)
         ) {
-            // Update the text based on the selected option
             val displayText = when (selectedOption) {
                 "Recientes" -> "Recientes"
                 "Antiguas" -> "Menos recientes"
                 "Todas" -> "Todas"
-                else -> selectedOption  // Default to showing the selected option directly
+                else -> selectedOption
             }
             Text(
                 text = "$label: $displayText",
@@ -229,7 +224,7 @@ fun SortDropdownMenu(
         DropdownMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false },
-            modifier = Modifier.width(150.dp)  // Match the width of the button
+            modifier = Modifier.width(150.dp)
         ) {
             options.forEach { option ->
                 DropdownMenuItem(
@@ -260,7 +255,6 @@ fun SortCommentsDropdownMenu(
                 .padding(4.dp)
                 .width(150.dp)
                 .onGloballyPositioned { coordinates ->
-                    // Capture the button size
                     buttonSize = coordinates.size
                 },
             colors = ButtonDefaults.outlinedButtonColors(
@@ -288,7 +282,7 @@ fun SortCommentsDropdownMenu(
             onDismissRequest = { expanded = false },
             offset = DpOffset(
                 x = 0.dp,
-                y = 0.dp // Set y offset to 0 to remove any gap between the button and the dropdown
+                y = 0.dp
             ),
             modifier = Modifier.width(150.dp)
         ) {
@@ -305,11 +299,6 @@ fun SortCommentsDropdownMenu(
     }
 }
 
-
-
-
-
-
 private fun itemMatchesSearchQuery(item: Any, query: String): Boolean {
     return when (item) {
         is Question -> item.title.contains(query, ignoreCase = true) || item.content.contains(query, ignoreCase = true)
@@ -317,9 +306,6 @@ private fun itemMatchesSearchQuery(item: Any, query: String): Boolean {
         else -> false
     }
 }
-
-
-
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -359,7 +345,7 @@ fun QuestionCard(question: Question, navController: NavHostController) {
                 Text(
                     text = question.title,
                     style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.primary,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
                 )
@@ -386,8 +372,6 @@ fun QuestionCard(question: Question, navController: NavHostController) {
         }
     }
 }
-
-
 
 @Composable
 fun VotationCard(votation: Votation, onVote: (String, String) -> Unit, navController: NavHostController) {
@@ -432,10 +416,10 @@ fun VotationCard(votation: Votation, onVote: (String, String) -> Unit, navContro
                     progress = percentage / 100,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(16.dp)  // Aumentar la altura de la barra
-                        .clip(RoundedCornerShape(8.dp))  // Esquinas redondeadas para un estilo más moderno
+                        .height(16.dp)
+                        .clip(RoundedCornerShape(8.dp))
                         .padding(vertical = 4.dp),
-                    color = MaterialTheme.colorScheme.primary  // Color de la barra de progreso
+                    color = MaterialTheme.colorScheme.primary
                 )
                 Text(
                     text = "${"%.1f".format(percentage)}% ($votesForOption votos)",

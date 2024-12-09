@@ -3,8 +3,6 @@ package com.example.tft.ui.createQuestion
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,26 +10,16 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -42,9 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.example.tft.model.foro.Question
 import com.example.tft.templates_App.BackTopBar
-import com.example.tft.ui.community.CommunityViewModel
 import com.google.firebase.auth.FirebaseAuth
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.tft.navigation.AppScreens
@@ -151,16 +137,12 @@ fun CreateQuestionScreen(navController: NavHostController, viewModel: CreateQues
     }
 }
 
-
-
-
 @Composable
 fun HandleResponse(context: Context, success: Boolean, onDone: () -> Unit) {
-    // Se lanza un efecto que escucha los cambios de 'success'
     LaunchedEffect(success) {
         if (success) {
             Toast.makeText(context, "Operación exitosa", Toast.LENGTH_SHORT).show()
-            onDone() // Navegar de regreso o realizar otra acción
+            onDone()
         } else {
             Toast.makeText(context, "Error al realizar la operación", Toast.LENGTH_SHORT).show()
         }
@@ -176,21 +158,18 @@ fun DropdownMenuComponent(
     var expanded by remember { mutableStateOf(false) }
 
     Column {
-        // Utilizar OutlinedButton para activar el menú
         OutlinedButton(
             onClick = { expanded = true },
             colors = ButtonDefaults.outlinedButtonColors(
-                containerColor = MaterialTheme.colorScheme.secondary,  // Usar color secundario para el botón
+                containerColor = MaterialTheme.colorScheme.secondary,
             ),
-            modifier = Modifier.width(180.dp)  // Ajustar el ancho del botón para dar más espacio
+            modifier = Modifier.width(180.dp)
         ) {
             Text(
                 text = "Tipo: $currentType",
                 style = MaterialTheme.typography.bodySmall,
             )
         }
-
-        // DropdownMenu para seleccionar el tipo de pregunta
         DropdownMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false }

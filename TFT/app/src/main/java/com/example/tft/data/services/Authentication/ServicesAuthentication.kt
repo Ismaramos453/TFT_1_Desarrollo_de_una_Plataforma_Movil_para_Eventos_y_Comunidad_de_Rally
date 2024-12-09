@@ -7,13 +7,12 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.auth.User
 import kotlinx.coroutines.tasks.await
 
 object AuthenticationServices {
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
     private val firestore = FirebaseFirestore.getInstance()
-
+    val defaultProfileImageUrl = "https://firebasestorage.googleapis.com/v0/b/tft-ismael.appspot.com/o/profile_images%2Fperfil.png?alt=media&token=228f72ea-b277-47d7-b2df-b7c0876cdbb1"
     suspend fun signIn(email: String, password: String): FirebaseUser? {
         return try {
             val result = auth.signInWithEmailAndPassword(email, password).await()
@@ -26,7 +25,6 @@ object AuthenticationServices {
         return FirebaseAuth.getInstance().currentUser?.uid
     }
 
-    // Este método comprueba si el documento del usuario existe en Firestore
     fun checkIfUserExists(callback: (Boolean) -> Unit) {
         val currentUser = getCurrentUser()
         if (currentUser != null) {
@@ -34,38 +32,19 @@ object AuthenticationServices {
             firestore.collection("users").document(userId).get()
                 .addOnSuccessListener { document ->
                     if (document.exists()) {
-                        callback(true)  // El usuario existe
+                        callback(true)
                     } else {
-                        callback(false)  // El usuario no existe
+                        callback(false)
                     }
                 }
                 .addOnFailureListener { exception ->
                     Log.e("AuthenticationServices", "Error checking user existence: ${exception.message}")
-                    callback(false)  // En caso de error, tratar como si el usuario no existiera
+                    callback(false)
                 }
         } else {
-            callback(false)  // No hay un usuario autenticado
+            callback(false)
         }
     }
-
-    fun updateUserPassword(newPassword: String, callback: (Boolean, String) -> Unit) {
-        val user = auth.currentUser
-
-        if (user != null) {
-            user.updatePassword(newPassword)
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        callback(true, "Contraseña actualizada correctamente.")
-                    } else {
-                        callback(false, "Error al actualizar la contraseña.")
-                    }
-                }
-        } else {
-            callback(false, "Usuario no autenticado.")
-        }
-    }
-    // URL of the default profile image
-    val defaultProfileImageUrl = "https://firebasestorage.googleapis.com/v0/b/tft-ismael.appspot.com/o/profile_images%2Fperfil.png?alt=media&token=228f72ea-b277-47d7-b2df-b7c0876cdbb1"
 
     suspend fun register(email: String, password: String, name: String, image: String? = null): FirebaseUser? {
         return try {
@@ -75,13 +54,12 @@ object AuthenticationServices {
 
                 val user = Users(
                     id = firebaseUser.uid,
-                    userId = firebaseUser.email ?: "",
+                    email = firebaseUser.email ?: "",
                     name = name,
                     image = profileImageUrl,
-                    favoritePilots = mutableListOf(),  // Inicializa con una lista vacía de favoritos
+                    favoritePilots = mutableListOf(),
                     eventsSaved = emptyList()
                 )
-                // Guarda el usuario en Firestore
                 saveUserToFirestore(user)
             }
             result.user
@@ -91,7 +69,6 @@ object AuthenticationServices {
         }
     }
 
-
     suspend fun signInWithGoogle(idToken: String): FirebaseUser? {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         return try {
@@ -99,10 +76,10 @@ object AuthenticationServices {
             result.user?.let {
                 val user = Users(
                     id = it.uid,
-                    userId = it.email ?: "",
+                    email = it.email ?: "",
                     name = it.displayName ?: "",
                     image = it.photoUrl?.toString() ?: "",
-                    favoritePilots = mutableListOf(),  // Asegura que se inicializa la lista de favoritos
+                    favoritePilots = mutableListOf(),
                     eventsSaved = emptyList()
                 )
                 saveUserToFirestore(user)
@@ -114,7 +91,6 @@ object AuthenticationServices {
         }
     }
 
-
     private suspend fun saveUserToFirestore(user: Users) {
         Log.d("FirestoreService", "Attempting to save user: ${user}")
         firestore.collection("users").document(user.id!!).set(user)
@@ -124,7 +100,7 @@ object AuthenticationServices {
             .addOnFailureListener { e ->
                 Log.w("FirestoreService", "Error writing user document", e)
             }
-            .await() // Asegúrate de que el await está siendo usado correctamente dentro del contexto de una coroutine
+            .await()
     }
 
     suspend fun sendPasswordResetEmail(email: String) {

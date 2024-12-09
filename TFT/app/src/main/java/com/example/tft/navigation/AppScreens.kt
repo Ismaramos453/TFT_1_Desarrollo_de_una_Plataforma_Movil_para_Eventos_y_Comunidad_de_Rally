@@ -29,7 +29,6 @@ sealed class AppScreens(val route: String) {
     object PadockScreen : AppScreens("Padock_Screen")
     object CarCategoriesScreen : AppScreens("Padock_Screen/CarCategories_Screen")
     object CarScreen : AppScreens("Padock_Screen/CarCategories_Screen/carScreen/{categoryId}")
-
     object PhotosScreen : AppScreens("Other_Screens/Photos_Screen")
     object ForumScreen : AppScreens("Forum_Screen")
     object NewsScreen : AppScreens("News_Screen")
@@ -40,9 +39,7 @@ sealed class AppScreens(val route: String) {
     object AllEventsScreen : AppScreens("AllEvents_Screen")
     object CreateQuestionScreen : AppScreens("Community_Screen/CreateQuestion_Screen")
     object QuestionsDetailScreen : AppScreens("Community_Screen/QuestionsDetail_Screen/{questionId}")
-
     object VotationDetailScreen : AppScreens("Community_Screen/VotationDetail_Screen/{votationId}")
-
     object TeamWrcScreen : AppScreens("Padock_Screen/TeamWrc_Screen")
     object ChangePasswordScreen : AppScreens("Other_Screens/Profile_Screens/EditProfile_Screens/change_password_screen")
 }

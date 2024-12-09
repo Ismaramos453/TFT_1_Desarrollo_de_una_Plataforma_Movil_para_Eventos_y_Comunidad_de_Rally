@@ -1,12 +1,9 @@
 package com.example.tft.ui.home
-
-
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -26,8 +23,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.livedata.observeAsState
@@ -39,7 +34,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -48,7 +42,6 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.compose.rememberImagePainter
 import coil.request.ImageRequest
-import com.example.tft.R
 import com.example.tft.model.News
 import com.example.tft.model.RallyEvent
 import com.example.tft.navigation.AppScreens
@@ -118,7 +111,7 @@ fun HomeScreen(navController: NavHostController, homeViewModel: HomeViewModel = 
                                 onClick = { navController.navigate("News_screen") },
                                 modifier = Modifier.align(Alignment.End)
                             ) {
-                                Text("Ver todas las noticias")
+                                Text("Ver todas las noticias",  color = MaterialTheme.colorScheme.onSurface)
                             }
                         }
                     }
@@ -136,7 +129,7 @@ fun HomeScreen(navController: NavHostController, homeViewModel: HomeViewModel = 
                                     onClick = { navController.navigate("AllEvents_Screen") },
                                     modifier = Modifier.align(Alignment.End)
                                 ) {
-                                    Text("Ver todos los eventos")
+                                    Text("Ver todos los eventos", color = MaterialTheme.colorScheme.onSurface)
                                 }
                             }
                         }
@@ -186,10 +179,10 @@ fun HomeScreen(navController: NavHostController, homeViewModel: HomeViewModel = 
 fun FeaturedEventImage(event: RallyEvent, navController: NavHostController) {
     Card(
         modifier = Modifier
-            .fillMaxWidth() // Ocupa todo el ancho disponible
-            .height(250.dp) // Aumenta la altura para una mayor presencia visual
+            .fillMaxWidth()
+            .height(250.dp)
             .clickable { navController.navigate(AppScreens.EventDetailScreen.route + "/${event.id}") },
-        shape = RoundedCornerShape(0.dp) // Esquinas completamente cuadradas para un diseño más integrado
+        shape = RoundedCornerShape(0.dp)
     ) {
         Box {
             AsyncImage(
@@ -201,7 +194,6 @@ fun FeaturedEventImage(event: RallyEvent, navController: NavHostController) {
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.Crop
             )
-            // Gradiente de degradado para mejorar la legibilidad del texto sobre la imagen
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -213,12 +205,11 @@ fun FeaturedEventImage(event: RallyEvent, navController: NavHostController) {
                         )
                     )
             )
-            // Texto del título del evento con mejor legibilidad
             Text(
                 text = event.title,
-                color = Color.White, // Color blanco para el texto
-                fontWeight = FontWeight.Bold, // Fuente en negrita
-                fontSize = 20.sp, // Tamaño de texto similar al h6
+                color = Color.White,
+                fontWeight = FontWeight.Bold,
+                fontSize = 20.sp,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier
@@ -228,7 +219,6 @@ fun FeaturedEventImage(event: RallyEvent, navController: NavHostController) {
         }
     }
 }
-
 
 @Composable
 fun IconCategoryButton(label: String, iconResourceId: Int, onClick: () -> Unit) {
@@ -262,8 +252,8 @@ fun IconCategoryButton(label: String, iconResourceId: Int, onClick: () -> Unit) 
 fun EventsCarousel(events: List<RallyEvent>, navController: NavHostController) {
     LazyRow(
         modifier = Modifier
-            .padding(vertical = 8.dp),  // Elimina el padding horizontal para que esté más pegado a la izquierda
-        horizontalArrangement = Arrangement.spacedBy(8.dp)  // Reduce el espacio entre elementos si es necesario
+            .padding(vertical = 8.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(events) { event ->
             RallyEventCard(event, navController)
@@ -275,8 +265,8 @@ fun EventsCarousel(events: List<RallyEvent>, navController: NavHostController) {
 fun NewsCarousel(news: List<News>, navController: NavHostController) {
     LazyRow(
         modifier = Modifier
-            .padding(vertical = 8.dp),  // Elimina el padding horizontal para que esté más pegado a la izquierda
-        horizontalArrangement = Arrangement.spacedBy(8.dp)  // Reduce el espacio entre elementos si es necesario
+            .padding(vertical = 8.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(news) { newsItem ->
             NewsCard(newsItem, navController)
@@ -284,14 +274,13 @@ fun NewsCarousel(news: List<News>, navController: NavHostController) {
     }
 }
 
-
 @Composable
 fun RallyEventCard(event: RallyEvent, navController: NavHostController) {
     Card(
         modifier = Modifier
             .width(280.dp)
             .height(240.dp)
-            .padding(end = 8.dp)  // Reducir o eliminar el padding izquierdo para alinear mejor
+            .padding(end = 8.dp)
             .clickable {
                 navController.navigate(AppScreens.EventDetailScreen.route + "/${event.id}")
             },
@@ -310,7 +299,7 @@ fun RallyEventCard(event: RallyEvent, navController: NavHostController) {
                     contentDescription = "Imagen del evento",
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(140.dp)  // Reducido de 200dp a 140dp
+                        .height(140.dp)
                         .clip(MaterialTheme.shapes.medium),
                     contentScale = ContentScale.Crop
                 )
@@ -318,7 +307,7 @@ fun RallyEventCard(event: RallyEvent, navController: NavHostController) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(140.dp)  // Consistente con la imagen
+                        .height(140.dp)
                         .clip(MaterialTheme.shapes.medium)
                         .background(MaterialTheme.colorScheme.primary),
                     contentAlignment = Alignment.Center
@@ -327,7 +316,6 @@ fun RallyEventCard(event: RallyEvent, navController: NavHostController) {
                 }
             }
 
-            // Gradiente de degradado para mejorar la legibilidad del texto sobre la imagen
             Box(
                 modifier = Modifier
                     .matchParentSize()
@@ -339,22 +327,20 @@ fun RallyEventCard(event: RallyEvent, navController: NavHostController) {
                     )
             )
 
-            // Título del evento sobre la imagen
             Text(
                 text = event.title.ifEmpty { "No title available" },
-                color = Color.White, // Color blanco para el texto
-                fontWeight = FontWeight.Bold, // Fuente en negrita
-                fontSize = 18.sp, // Ligeramente más pequeño
+                color = Color.White,
+                fontWeight = FontWeight.Bold,
+                fontSize = 18.sp,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier
                     .align(Alignment.BottomStart)
-                    .padding(12.dp)  // Padding reducido
+                    .padding(12.dp)
             )
         }
 
-        // Texto adicional bajo la imagen
-        Column(modifier = Modifier.padding(8.dp)) {  // Padding reducido
+        Column(modifier = Modifier.padding(8.dp)) {
             Text(
                 text = event.type.ifEmpty { "No type available" },
                 style = MaterialTheme.typography.bodyMedium,
@@ -373,28 +359,24 @@ fun RallyEventCard(event: RallyEvent, navController: NavHostController) {
     }
 }
 
-
-
 @Composable
 fun NewsCard(news: News, navController: NavController){
     Card(
         modifier = Modifier
             .width(280.dp)
             .height(200.dp)
-            .padding(end = 8.dp)  // Reducir o eliminar el padding izquierdo para alinear mejor
+            .padding(end = 8.dp)
             .clickable {   navController.navigate(AppScreens.NewsDetailScreen.route.replace("{newsId}", news.id)) },
         shape = RoundedCornerShape(8.dp),
     ) {
         Box {
-            // Imagen de fondo
             Image(
                 painter = rememberImagePainter(news.image),
                 contentDescription = "Imagen de Noticia",
-                contentScale = ContentScale.Crop, // Escala la imagen para llenar el tamaño mientras se recorta
+                contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxSize()
             )
 
-            // Gradiente de degradado para mejorar la legibilidad del texto sobre la imagen
             Box(
                 modifier = Modifier
                     .matchParentSize()
@@ -405,13 +387,11 @@ fun NewsCard(news: News, navController: NavController){
                         )
                     )
             )
-
-            // Título de la noticia sobre la imagen
             Text(
                 text = news.title,
-                color = Color.White, // Color blanco para el texto
-                fontWeight = FontWeight.Bold, // Fuente en negrita
-                fontSize = 20.sp, // Tamaño de texto similar al h6
+                color = Color.White,
+                fontWeight = FontWeight.Bold,
+                fontSize = 20.sp,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier

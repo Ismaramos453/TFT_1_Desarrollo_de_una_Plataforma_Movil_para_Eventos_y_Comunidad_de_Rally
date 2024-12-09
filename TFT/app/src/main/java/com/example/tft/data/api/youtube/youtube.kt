@@ -13,7 +13,7 @@ data class Snippet(
     val title: String,
     val description: String,
     val thumbnails: Thumbnails,
-    val channelTitle: String // Añadido para obtener el nombre del autor
+    val channelTitle: String
 )
 
 data class Thumbnails(

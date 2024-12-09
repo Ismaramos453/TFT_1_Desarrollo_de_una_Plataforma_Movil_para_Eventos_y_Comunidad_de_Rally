@@ -1,7 +1,5 @@
 package com.example.tft.ui.Question_And_Report
 
-
-
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.tft.data.services.Questions_And_BugReport.QuestionForAdminServices
@@ -12,7 +10,6 @@ class Question_And_ReportViewModel : ViewModel() {
     fun sendFaqQuestion(title: String, content: String) {
         val currentUser = FirebaseAuth.getInstance().currentUser
         if (currentUser != null) {
-            // Using the currentUser directly to get the user ID and email
             val userId = currentUser.uid
             val userEmail = currentUser.email ?: "No Email Provided"
             val userName = currentUser.displayName ?: "Anonymous"
@@ -26,7 +23,6 @@ class Question_And_ReportViewModel : ViewModel() {
     fun reportBug(title: String, content: String, severity: SeverityLevel) {
         val currentUser = FirebaseAuth.getInstance().currentUser
         if (currentUser != null) {
-            // Again, extracting user details directly from the FirebaseUser
             val userId = currentUser.uid
             val userEmail = currentUser.email ?: "No Email Provided"
             val userName = currentUser.displayName ?: "Anonymous"

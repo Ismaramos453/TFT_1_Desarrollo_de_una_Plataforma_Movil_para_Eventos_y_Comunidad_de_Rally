@@ -7,11 +7,11 @@ data class RallyEvent(
     val date: String = "",
     val time: String = "",
     val location: String = "",
-    val image: Any? = null, // Cambiamos a Any para aceptar String o List
+    val image: Any? = null,
     val images: List<String> = emptyList(), // Lista de imágenes de los tramos del rally
     val description: String = "",
     val level: String = "",
-    val coordinates: Pair<Double, Double>? = null // Coordenadas para el mapa, si es necesario
+    val coordinates: Pair<Double, Double>? = null
 ) {
     fun getImageAsString(): String? {
         // Si el campo 'image' es un String, devuélvelo directamente, si es una lista, toma el primer elemento.
@@ -23,15 +23,13 @@ data class RallyEvent(
     }
 }
 
-
-
 data class SavedEvent(
     val id: String = "",
     val title: String = "",
     val date: String = "",
     val time: String = "",
     val location: String = "",
-    val type: String = "",  // Aquí agregamos el tipo de evento (ERC, WRC, etc.)
+    val type: String = "",  // Tipo de evento (ERC, WRC, etc.)
     val description: String = "",
     val image: String = ""
 ) {

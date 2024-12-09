@@ -15,8 +15,6 @@ import androidx.navigation.NavHostController
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Group
 import androidx.compose.runtime.*
 import androidx.compose.material3.*
 import androidx.compose.ui.Alignment
@@ -24,18 +22,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import coil.request.ImageRequest
 import com.example.tft.R
-import com.example.tft.model.RallyEvent
 import com.example.tft.navigation.AppScreens
 import com.example.tft.ui.theme.TFTTheme
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.filled.Category
-import androidx.compose.material.icons.filled.EmojiEvents
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.example.tft.model.CarCategory
@@ -76,7 +68,7 @@ fun CarCategoriesScreen(navController: NavHostController) {
                         CategoryCard(
                             navController = navController,
                             category = category,
-                            imageResourceId = category.summary.image,  // Usa la URL de la imagen desde el campo `summary`
+                            imageResourceId = category.summary.image,
                             title = category.summary.title,
                             specs = listOf(
                                 "Average Power: ${category.summary.averagePower}",
@@ -94,7 +86,7 @@ fun CarCategoriesScreen(navController: NavHostController) {
 fun CategoryCard(
     navController: NavHostController,
     category: CarCategory,
-    imageResourceId: String,  // Cambia el tipo a String para la URL
+    imageResourceId: String,
     title: String,
     specs: List<String>,
     iconResourceId: Int
@@ -109,7 +101,7 @@ fun CategoryCard(
     ) {
         Column {
             AsyncImage(
-                model = imageResourceId,  // Directamente la URL
+                model = imageResourceId,  
                 contentDescription = "$title Image",
                 modifier = Modifier
                     .fillMaxWidth()

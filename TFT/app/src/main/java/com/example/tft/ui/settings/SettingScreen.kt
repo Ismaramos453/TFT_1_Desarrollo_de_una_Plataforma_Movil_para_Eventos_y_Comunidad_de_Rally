@@ -3,7 +3,6 @@ package com.example.tft.ui.settings
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -21,19 +20,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.viewmodel.compose.viewModel
 import android.Manifest
 import android.content.pm.PackageManager
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingScreen(navController: NavHostController, settingViewModel: SettingViewModel) {
     val context = LocalContext.current
     val areNotificationsEnabled = settingViewModel.areNotificationsEnabled
-
-    // Solicita permiso cuando sea necesario
     val requestPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission(),
         onResult = { isGranted ->
@@ -89,9 +83,6 @@ fun SettingScreen(navController: NavHostController, settingViewModel: SettingVie
                     Modifier.padding(vertical = 16.dp),
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f)
                 )
-
-                // Otras configuraciones aquí
-
             }
         }
     }

@@ -8,9 +8,8 @@ data class Question(
     val title: String = "",
     val content: String = "",
     val timestamp: Long = System.currentTimeMillis(),
-    val answers: MutableList<Answer> = mutableListOf()  // Cambiado a MutableList
+    val answers: MutableList<Answer> = mutableListOf()
 )
-
 
 data class Answer(
     val userId: String = "",      // ID del usuario que responde
@@ -22,7 +21,6 @@ data class Answer(
     constructor() : this("", "", "", System.currentTimeMillis())
 }
 
-
 data class Votation(
     var id: String = "",
     val userId: String = "",
@@ -32,7 +30,7 @@ data class Votation(
     val options: List<String> = emptyList(),
     val timestamp: Long = System.currentTimeMillis(),
     var votes: Map<String, Int> = emptyMap(),
-    var userVote: String? = null  // Nuevo campo para registrar la opción seleccionada por el usuario
+    var userVote: String? = null
 )
 
 

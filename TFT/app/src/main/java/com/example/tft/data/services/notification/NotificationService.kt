@@ -1,4 +1,4 @@
-package com.example.tft.model.notification
+package com.example.tft.data.services.notification
 
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query

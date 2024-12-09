@@ -5,8 +5,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -57,7 +55,7 @@ fun AllEventsScreen(navController: NavHostController, viewModel: AllEventsViewMo
     val events by viewModel.events.observeAsState(initial = emptyList())
     var searchQuery by remember { mutableStateOf("") }
 
-    // Filtra los eventos en función de searchQuery
+    // Filtra los eventos
     val filteredEvents = events.filter { event ->
         event.title.contains(searchQuery, ignoreCase = true)
     }
@@ -73,7 +71,7 @@ fun AllEventsScreen(navController: NavHostController, viewModel: AllEventsViewMo
                 .background(MaterialTheme.colorScheme.background)
                 .padding(innerPadding)
         ) {
-            // Usar LazyColumn para permitir desplazamiento
+            // LazyColumn para permitir desplazamiento
             LazyColumn(
                 Modifier
                     .fillMaxSize()
@@ -81,7 +79,7 @@ fun AllEventsScreen(navController: NavHostController, viewModel: AllEventsViewMo
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 item {
-                    // Barra de búsqueda en la parte superior
+                    // Barra de búsqueda superior
                     OutlinedTextField(
                         value = searchQuery,
                         onValueChange = { searchQuery = it },
@@ -145,9 +143,6 @@ fun EventCategoryButtons(navController: NavHostController) {
         }
     }
 }
-
-
-
 
 @Composable
 fun RallyEventCard(event: RallyEvent, navController: NavHostController) {

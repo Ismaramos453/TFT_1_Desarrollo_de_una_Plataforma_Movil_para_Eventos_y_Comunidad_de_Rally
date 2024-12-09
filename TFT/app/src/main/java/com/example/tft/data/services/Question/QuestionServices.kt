@@ -5,13 +5,11 @@ import com.example.tft.model.foro.Question
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import com.google.firebase.storage.FirebaseStorage
 
 object QuestionServices {
 
     val auth = FirebaseAuth.getInstance()
     val firestore = FirebaseFirestore.getInstance()
-    val storageReference = FirebaseStorage.getInstance().reference
     fun addQuestion(title: String, content: String, userId: String, callback: (Boolean) -> Unit) {
         val userDocRef = QuestionServices.firestore.collection("users").document(userId)
         userDocRef.get().addOnSuccessListener { documentSnapshot ->
@@ -28,7 +26,7 @@ object QuestionServices {
                 userImage = userImage,
                 title = title,
                 content = content,
-                timestamp = System.currentTimeMillis() // Asegúrate de que este campo se establece correctamente
+                timestamp = System.currentTimeMillis() 
             )
 
             docRef.set(question)

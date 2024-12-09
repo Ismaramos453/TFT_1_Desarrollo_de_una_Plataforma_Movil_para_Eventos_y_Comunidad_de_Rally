@@ -16,41 +16,33 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
-
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Group
 import androidx.compose.runtime.*
 import androidx.compose.material3.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.example.tft.model.pilot.Team
-
-
-import coil.request.CachePolicy
 import coil.request.ImageRequest
 import coil.transform.CircleCropTransformation
-import com.example.tft.R
 import com.example.tft.navigation.AppScreens
 import com.example.tft.templates_App.BackTopBar
 import com.example.tft.ui.pilots.getPilotImageUrl
 import com.example.tft.ui.theme.ColorTextDark
 import com.example.tft.ui.theme.PrimaryColor
-
-// En PilotFavoritesScreen.kt
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -87,17 +79,13 @@ fun PilotFavoritesScreen(userId: String, navController: NavHostController) {
                     contentAlignment = Alignment.Center
                 ) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Image(
-                            painter = painterResource(id = R.drawable.corredor),
-                            contentDescription = "Imagen decorativa",
-                            modifier = Modifier.size(120.dp)  // Ajusta el tamaño de la imagen
-                        )
+                        Icon(Icons.Default.Group, contentDescription = "No hay eventos", Modifier.size(100.dp))
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(
                             "Tu lista de pilotos está vacía",
                             style = MaterialTheme.typography.bodyLarge.copy(
-                                fontSize = 20.sp,  // Aumenta el tamaño de la fuente
-                                fontWeight = FontWeight.Bold  // Hace la fuente más gruesa
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.Bold
                             )
                         )
                         Spacer(modifier = Modifier.height(16.dp))
@@ -202,10 +190,6 @@ fun PilotItem(pilot: Team, navController: NavHostController, isEditMode: Boolean
     }
 }
 
-
-fun getPilotImageUrl(pilotId: Int): String {
-    return "https://motorsportapi.p.rapidapi.com/api/motorsport/team/$pilotId/image"
-}
 
 
 

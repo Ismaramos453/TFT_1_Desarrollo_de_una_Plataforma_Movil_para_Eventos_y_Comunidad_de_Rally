@@ -62,7 +62,6 @@ fun EventDetailScreen(navController: NavHostController, eventId: String) {
     val eventViewModel: EventViewModel = viewModel()
     val user = AuthenticationServices.getCurrentUser()
 
-    // Se cambia LaunchedEffect(Unit) por LaunchedEffect(eventId)
     LaunchedEffect(eventId) {
         eventDetailViewModel.loadEventById(eventId)
         user?.let {
@@ -76,7 +75,6 @@ fun EventDetailScreen(navController: NavHostController, eventId: String) {
 
         }
     }
-
 
     TFTTheme {
         Scaffold(
@@ -125,7 +123,7 @@ fun EventDetailScreen(navController: NavHostController, eventId: String) {
                                     isBookmarked = !isBookmarked
                                     if (isBookmarked) {
                                         user?.let {
-                                            eventViewModel.addEvent(it.uid, eventDetails)  // Pass the complete event
+                                            eventViewModel.addEvent(it.uid, eventDetails)
                                             dialogMessage = "Evento guardado exitosamente"
                                             showDialog = true
                                         }
@@ -142,7 +140,7 @@ fun EventDetailScreen(navController: NavHostController, eventId: String) {
                                     imageVector = if (isBookmarked) Icons.Default.Bookmark else Icons.Default.BookmarkBorder,
                                     contentDescription = if (isBookmarked) "Evento guardado" else "Guardar evento",
                                     tint = MaterialTheme.colorScheme.secondary,
-                                    modifier = Modifier.size(36.dp)  // Ajusta este valor según la necesidad de tamaño
+                                    modifier = Modifier.size(36.dp)
                                 )
 
                             }
@@ -203,7 +201,6 @@ fun EventDetailScreen(navController: NavHostController, eventId: String) {
 
                         Spacer(modifier = Modifier.height(16.dp))
 
-                        // Displaying Rally Route Images
                         Text(
                             text = "Rally Route Images",
                             style = MaterialTheme.typography.bodyMedium,
@@ -211,12 +208,11 @@ fun EventDetailScreen(navController: NavHostController, eventId: String) {
                             fontWeight = FontWeight.Bold
                         )
 
-
                         Spacer(modifier = Modifier.height(8.dp))
 
                         eventDetails.images?.let { images ->
                             LazyRow(
-                                horizontalArrangement = Arrangement.spacedBy(8.dp)  // Space between images
+                                horizontalArrangement = Arrangement.spacedBy(8.dp)
                             ) {
                                 items(images) { imageUrl ->
                                     AsyncImage(
@@ -226,7 +222,7 @@ fun EventDetailScreen(navController: NavHostController, eventId: String) {
                                             .build(),
                                         contentDescription = "Rally Route Image",
                                         modifier = Modifier
-                                            .size(120.dp)  // Smaller size for side by side
+                                            .size(120.dp)
                                             .clip(MaterialTheme.shapes.small)
                                             .clickable { selectedImage = imageUrl },
                                         contentScale = ContentScale.Crop
@@ -251,7 +247,6 @@ fun EventDetailScreen(navController: NavHostController, eventId: String) {
             }
         }
 
-        // Dialog to show enlarged image with zoom functionality
         selectedImage?.let { imageUrl ->
             Dialog(onDismissRequest = { selectedImage = null }) {
                 ZoomableImageDialog(imageUrl = imageUrl, onDismiss = { selectedImage = null })
@@ -286,7 +281,7 @@ fun ZoomableImageDialog(imageUrl: String, onDismiss: () -> Unit) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color.Black)  // Ensuring the black background fills the screen
+                .background(Color.Black)
                 .clickable(onClick = onDismiss),
             contentAlignment = Alignment.Center
         ) {
@@ -299,15 +294,13 @@ fun ZoomableImageDialog(imageUrl: String, onDismiss: () -> Unit) {
 fun ZoomableImage(imageUrl: String) {
     val context = LocalContext.current
 
-    // State for tracking the current scale, rotation, and translation of the image
     var scale by remember { mutableStateOf(1f) }
     var offset by remember { mutableStateOf(Offset.Zero) }
     var rotationState by remember { mutableStateOf(0f) }
 
-    // Modifier to handle zooming and panning
     val modifier = Modifier
         .fillMaxSize()
-        .background(Color.Black)  // Black background to fill entire screen
+        .background(Color.Black)
         .graphicsLayer(
             scaleX = scale,
             scaleY = scale,
@@ -332,7 +325,7 @@ fun ZoomableImage(imageUrl: String) {
             contentDescription = "Zoomable Rally Route Image",
             modifier = Modifier
                 .fillMaxWidth()
-                .aspectRatio(1f)  // Ensure the image scales correctly to fit the screen width
+                .aspectRatio(1f)  
                 .clip(MaterialTheme.shapes.medium),
             contentScale = ContentScale.Fit
         )

@@ -1,9 +1,7 @@
 package com.example.tft.ui.newsDetail
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -28,21 +26,18 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import coil.compose.rememberImagePainter
 import com.example.tft.templates_App.BackTopBar
-import com.example.tft.ui.news.NewsViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewsDetailScreen(navController: NavHostController, newsId: String) {
     val newsDetailViewModel: NewsDetailViewModel = viewModel()
     val newsDetail by newsDetailViewModel.newsDetail.observeAsState()
 
-    // Cargar los detalles de la noticia al entrar a la pantalla
     LaunchedEffect(newsId) {
         newsDetailViewModel.loadNewsDetail(newsId)
     }
 
     Scaffold(
         topBar = {
-            // Utilizar el título de la noticia si está disponible
             BackTopBar(title = "Detalle de la Noticia", navController = navController)
         }
     ) { innerPadding ->
@@ -70,13 +65,12 @@ fun NewsDetailScreen(navController: NavHostController, newsId: String) {
                             )
                             Spacer(modifier = Modifier.height(16.dp))
                         }
-                        // Ajustar el texto por la izquierda y la derecha
                         Text(
                             text = news.description,
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(horizontal = 8.dp),
-                            textAlign = TextAlign.Justify // Alineación justificada
+                            textAlign = TextAlign.Justify
                         )
                     }
                 }
