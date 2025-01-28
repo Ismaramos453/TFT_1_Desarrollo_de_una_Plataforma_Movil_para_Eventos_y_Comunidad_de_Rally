@@ -3,6 +3,8 @@ package com.example.tft.ui.createQuestion
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
+import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,6 +22,7 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -27,6 +30,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -34,6 +38,9 @@ import com.example.tft.templates_App.BackTopBar
 import com.google.firebase.auth.FirebaseAuth
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.tft.navigation.AppScreens
+import com.example.tft.ui.theme.ColorText
+import com.example.tft.ui.theme.ColorTextDark
+import com.example.tft.ui.theme.TertiaryColorDark
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -47,6 +54,10 @@ fun CreateQuestionScreen(navController: NavHostController, viewModel: CreateQues
     var successState by remember { mutableStateOf<Boolean?>(null) }
     var option1 by remember { mutableStateOf("") }
     var option2 by remember { mutableStateOf("") }
+
+    val isDarkTheme = isSystemInDarkTheme()
+    val textColor = if (isDarkTheme) ColorTextDark else ColorText
+    val containerColor = if (isDarkTheme) TertiaryColorDark else Color.White
 
     Scaffold(
         topBar = {
@@ -63,7 +74,14 @@ fun CreateQuestionScreen(navController: NavHostController, viewModel: CreateQues
             TextField(
                 value = title,
                 onValueChange = { title = it },
-                label = { Text("Título") },
+                label = { Text("Título", color = textColor) },
+                colors = TextFieldDefaults.textFieldColors(
+                    textColor = textColor,
+                    containerColor = containerColor,
+                    focusedLabelColor = MaterialTheme.colorScheme.primary,
+                    focusedIndicatorColor = MaterialTheme.colorScheme.primary,
+                    unfocusedIndicatorColor = textColor
+                ),
                 modifier = Modifier.fillMaxWidth()
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -75,21 +93,44 @@ fun CreateQuestionScreen(navController: NavHostController, viewModel: CreateQues
                 TextField(
                     value = content,
                     onValueChange = { content = it },
-                    label = { Text("Contenido") },
-                    modifier = Modifier.fillMaxWidth().height(200.dp)
+                    label = { Text("Contenido", color = textColor) },
+                    colors = TextFieldDefaults.textFieldColors(
+                        textColor = textColor,
+                        containerColor = containerColor,
+                        focusedLabelColor = MaterialTheme.colorScheme.primary,
+                        focusedIndicatorColor = MaterialTheme.colorScheme.primary,
+                        unfocusedIndicatorColor = textColor
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(200.dp)
                 )
             } else {
                 TextField(
                     value = option1,
                     onValueChange = { option1 = it },
-                    label = { Text("Opción 1") },
+                    label = { Text("Opción 1", color = textColor) },
+                    colors = TextFieldDefaults.textFieldColors(
+                        textColor = textColor,
+                        containerColor = containerColor,
+                        focusedLabelColor = MaterialTheme.colorScheme.primary,
+                        focusedIndicatorColor = MaterialTheme.colorScheme.primary,
+                        unfocusedIndicatorColor = textColor
+                    ),
                     modifier = Modifier.fillMaxWidth()
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 TextField(
                     value = option2,
                     onValueChange = { option2 = it },
-                    label = { Text("Opción 2") },
+                    label = { Text("Opción 2", color = textColor) },
+                    colors = TextFieldDefaults.textFieldColors(
+                        textColor = textColor,
+                        containerColor = containerColor,
+                        focusedLabelColor = MaterialTheme.colorScheme.primary,
+                        focusedIndicatorColor = MaterialTheme.colorScheme.primary,
+                        unfocusedIndicatorColor = textColor
+                    ),
                     modifier = Modifier.fillMaxWidth()
                 )
             }
@@ -155,6 +196,10 @@ fun DropdownMenuComponent(
     options: List<String>,
     onTypeChange: (String) -> Unit
 ) {
+    val isDarkTheme = isSystemInDarkTheme()
+    val textColor = if (isDarkTheme) ColorTextDark else ColorText
+    val backgroundColor = if (isDarkTheme) TertiaryColorDark else Color.White
+
     var expanded by remember { mutableStateOf(false) }
 
     Column {
@@ -162,17 +207,20 @@ fun DropdownMenuComponent(
             onClick = { expanded = true },
             colors = ButtonDefaults.outlinedButtonColors(
                 containerColor = MaterialTheme.colorScheme.secondary,
+                contentColor = MaterialTheme.colorScheme.onSecondary
             ),
             modifier = Modifier.width(180.dp)
         ) {
             Text(
                 text = "Tipo: $currentType",
                 style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSecondary
             )
         }
         DropdownMenu(
             expanded = expanded,
-            onDismissRequest = { expanded = false }
+            onDismissRequest = { expanded = false },
+            modifier = Modifier.background(backgroundColor)
         ) {
             options.forEach { option ->
                 DropdownMenuItem(
@@ -180,7 +228,7 @@ fun DropdownMenuComponent(
                         onTypeChange(option)
                         expanded = false
                     },
-                    text = { Text(option, style = MaterialTheme.typography.bodySmall) }
+                    text = { Text(option, style = MaterialTheme.typography.bodySmall, color = textColor) }
                 )
             }
         }

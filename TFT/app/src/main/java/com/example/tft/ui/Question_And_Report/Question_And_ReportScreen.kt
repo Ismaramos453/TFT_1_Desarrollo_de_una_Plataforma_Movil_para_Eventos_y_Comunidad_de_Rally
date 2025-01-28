@@ -25,7 +25,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
+import com.example.tft.ui.theme.ColorText
 import com.example.tft.ui.theme.ColorTextDark
+import com.example.tft.ui.theme.TertiaryColorDark
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -33,7 +35,7 @@ import com.example.tft.ui.theme.ColorTextDark
 fun FaqScreen(navController: NavHostController, viewModel: Question_And_ReportViewModel) {
     var title by remember { mutableStateOf("") }
     var content by remember { mutableStateOf("") }
-    var severity by remember { mutableStateOf(SeverityLevel.LIGHT) }
+    var severity by remember { mutableStateOf(SeverityLevel.LIGERO) }
     var selectedOption by remember { mutableStateOf("Hacer una pregunta") }
     val options = listOf("Hacer una pregunta", "Informar de un error")
     var showSnackbar by remember { mutableStateOf(false) }
@@ -133,16 +135,20 @@ fun FaqForm(
     content: String,
     onContentChange: (String) -> Unit
 ) {
+    val isDarkTheme = isSystemInDarkTheme()
+    val textColor = if (isDarkTheme) ColorTextDark else ColorText
+    val containerColor = if (isDarkTheme) TertiaryColorDark else Color.White
+
     TextField(
         value = title,
         onValueChange = onTitleChange,
-        label = { Text("Título", color = MaterialTheme.colorScheme.onBackground) },
+        label = { Text("Título", color = textColor) },
         colors = TextFieldDefaults.textFieldColors(
-            textColor = MaterialTheme.colorScheme.onBackground,
+            textColor = textColor,
+            containerColor = containerColor,
             focusedLabelColor = MaterialTheme.colorScheme.primary,
             focusedIndicatorColor = MaterialTheme.colorScheme.primary,
-            unfocusedIndicatorColor = MaterialTheme.colorScheme.onBackground,
-
+            unfocusedIndicatorColor = textColor
         ),
         modifier = Modifier.fillMaxWidth()
     )
@@ -150,39 +156,67 @@ fun FaqForm(
     TextField(
         value = content,
         onValueChange = onContentChange,
-        label = { Text("Contenido", color = MaterialTheme.colorScheme.onBackground) },
+        label = { Text("Contenido", color = textColor) },
         colors = TextFieldDefaults.textFieldColors(
-            textColor = MaterialTheme.colorScheme.onBackground,
+            textColor = textColor,
+            containerColor = containerColor,
             focusedLabelColor = MaterialTheme.colorScheme.primary,
             focusedIndicatorColor = MaterialTheme.colorScheme.primary,
-            unfocusedIndicatorColor = MaterialTheme.colorScheme.onBackground,
-
+            unfocusedIndicatorColor = textColor
         ),
-        modifier = Modifier.fillMaxWidth().height(200.dp)
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(200.dp)
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ErrorReportForm(title: String, onTitleChange: (String) -> Unit,
-                    content: String, onContentChange: (String) -> Unit,
-                    severity: SeverityLevel, onSeveritySelected: (SeverityLevel) -> Unit) {
+fun ErrorReportForm(
+    title: String,
+    onTitleChange: (String) -> Unit,
+    content: String,
+    onContentChange: (String) -> Unit,
+    severity: SeverityLevel,
+    onSeveritySelected: (SeverityLevel) -> Unit
+) {
+    val isDarkTheme = isSystemInDarkTheme()
+    val textColor = if (isDarkTheme) ColorTextDark else ColorText
+    val containerColor = if (isDarkTheme) TertiaryColorDark else Color.White
+
     TextField(
         value = title,
         onValueChange = onTitleChange,
-        label = { Text("Título del error") },
+        label = { Text("Título del error", color = textColor) },
+        colors = TextFieldDefaults.textFieldColors(
+            textColor = textColor,
+            containerColor = containerColor,
+            focusedLabelColor = MaterialTheme.colorScheme.primary,
+            focusedIndicatorColor = MaterialTheme.colorScheme.primary,
+            unfocusedIndicatorColor = textColor
+        ),
         modifier = Modifier.fillMaxWidth()
     )
     Spacer(modifier = Modifier.height(8.dp))
     TextField(
         value = content,
         onValueChange = onContentChange,
-        label = { Text("Descripción del error") },
-        modifier = Modifier.fillMaxWidth().height(200.dp)
+        label = { Text("Descripción del error", color = textColor) },
+        colors = TextFieldDefaults.textFieldColors(
+            textColor = textColor,
+            containerColor = containerColor,
+            focusedLabelColor = MaterialTheme.colorScheme.primary,
+            focusedIndicatorColor = MaterialTheme.colorScheme.primary,
+            unfocusedIndicatorColor = textColor
+        ),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(200.dp)
     )
     Spacer(modifier = Modifier.height(8.dp))
     SeveritySelector(severity, onSeveritySelected)
 }
+
 
 @Composable
 fun DropdownMenuComponent(
@@ -241,17 +275,29 @@ fun SeveritySelector(currentSeverity: SeverityLevel, onSeveritySelected: (Severi
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         SeverityLevel.values().forEach { level ->
+            val (containerColor, contentColor) = when (level) {
+                SeverityLevel.LIGERO -> {
+                    // Ejemplo: Fondo verde claro, texto blanco
+                    if (currentSeverity == level) Pair(Color(0xFF4CAF50), Color.White)
+                    else Pair(Color(0xFFE8F5E9), Color.Black)
+                }
+                SeverityLevel.MEDIO -> {
+                    // Ejemplo: Fondo amarillo, texto negro
+                    if (currentSeverity == level) Pair(Color(0xFFFFC107), Color.Black)
+                    else Pair(Color(0xFFFFF8E1), Color.Black)
+                }
+                SeverityLevel.GRAVE -> {
+                    // Ejemplo: Fondo rojo, texto blanco
+                    if (currentSeverity == level) Pair(Color(0xFFF44336), Color.White)
+                    else Pair(Color(0xFFFFEBEE), Color.Black)
+                }
+            }
+
             OutlinedButton(
                 onClick = { onSeveritySelected(level) },
                 colors = ButtonDefaults.outlinedButtonColors(
-                    containerColor = if (currentSeverity == level)
-                        MaterialTheme.colorScheme.primary
-                    else
-                        MaterialTheme.colorScheme.surface,
-                    contentColor = if (currentSeverity == level)
-                        MaterialTheme.colorScheme.onPrimary
-                    else
-                        MaterialTheme.colorScheme.onSurface
+                    containerColor = containerColor,
+                    contentColor = contentColor
                 ),
                 modifier = Modifier.padding(horizontal = 4.dp)
             ) {

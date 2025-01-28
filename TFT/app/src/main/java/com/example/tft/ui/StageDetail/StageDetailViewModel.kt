@@ -22,7 +22,7 @@ class StageDetailViewModel(application: Application) : AndroidViewModel(applicat
     fun fetchStandings(stageId: String) {
         viewModelScope.launch {
             val cachedStandings = getCachedStandings(stageId)
-            if (cachedStandings != null) {
+            if (cachedStandings != null && cachedStandings.standings.isNotEmpty()) {
                 // Usar datos en caché
                 _standings.value = cachedStandings
                 Log.d("StageDetailViewModel", "Using cached standings data")
@@ -30,16 +30,29 @@ class StageDetailViewModel(application: Application) : AndroidViewModel(applicat
                 // Hacer la llamada a la API
                 try {
                     val response = RetrofitInstance.api.getStandings(stageId)
-                    // Actualizar la caché
-                    cacheStandings(stageId, response)
-                    _standings.value = response
-                    Log.d("StageDetailViewModel", "Fetched standings data from API")
+
+                    // Verificar si la respuesta está vacía
+                    if (response.standings.isNullOrEmpty()) {
+                        Log.w("StageDetailViewModel", "No standings data available for this stage.")
+                        // Opcional: asignar un valor vacío para indicar que no hay datos
+                        _standings.value = RallyStandingsResponse2(emptyList())
+                    } else {
+                        // Actualizar la caché
+                        cacheStandings(stageId, response)
+                        _standings.value = response
+                        Log.d("StageDetailViewModel", "Fetched standings data from API")
+                    }
                 } catch (e: Exception) {
                     Log.e("StageDetailViewModel", "Error fetching standings", e)
+                    // Si falla la API y no hay datos en caché, puedes asignar un valor vacío o manejar el error
+                    if (cachedStandings == null) {
+                        _standings.value = RallyStandingsResponse2(emptyList())
+                    }
                 }
             }
         }
     }
+
 
     private fun cacheStandings(stageId: String, standings: RallyStandingsResponse2) {
         val editor = sharedPreferences.edit()

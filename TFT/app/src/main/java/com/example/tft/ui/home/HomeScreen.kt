@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -108,7 +109,7 @@ fun HomeScreen(navController: NavHostController, homeViewModel: HomeViewModel = 
                             )
                             NewsCarousel(homeViewModel.news.value?.take(5) ?: listOf(), navController)
                             TextButton(
-                                onClick = { navController.navigate("News_screen") },
+                                onClick = { navController.navigate("Home_Screens/News_Screen") },
                                 modifier = Modifier.align(Alignment.End)
                             ) {
                                 Text("Ver todas las noticias",  color = MaterialTheme.colorScheme.onSurface)
@@ -126,7 +127,7 @@ fun HomeScreen(navController: NavHostController, homeViewModel: HomeViewModel = 
                                 )
                                 EventsCarousel(recentEvents.take(5), navController)
                                 TextButton(
-                                    onClick = { navController.navigate("AllEvents_Screen") },
+                                    onClick = { navController.navigate("Home_Screens/AllEvents_Screen") },
                                     modifier = Modifier.align(Alignment.End)
                                 ) {
                                     Text("Ver todos los eventos", color = MaterialTheme.colorScheme.onSurface)
@@ -249,30 +250,96 @@ fun IconCategoryButton(label: String, iconResourceId: Int, onClick: () -> Unit) 
     }
 }
 @Composable
-fun EventsCarousel(events: List<RallyEvent>, navController: NavHostController) {
-    LazyRow(
-        modifier = Modifier
-            .padding(vertical = 8.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
+fun PageIndicator(
+    totalPages: Int,
+    currentPage: Int,
+    modifier: Modifier = Modifier,
+    activeColor: Color = MaterialTheme.colorScheme.primary,
+    inactiveColor: Color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
+) {
+    Row(
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier
     ) {
-        items(events) { event ->
-            RallyEventCard(event, navController)
+        for (i in 0 until totalPages) {
+            Box(
+                modifier = Modifier
+                    .size(8.dp)
+                    .clip(CircleShape)
+                    .background(if (i == currentPage) activeColor else inactiveColor)
+            )
+            if (i != totalPages - 1) {
+                Spacer(modifier = Modifier.width(4.dp))
+            }
         }
     }
 }
 
 @Composable
-fun NewsCarousel(news: List<News>, navController: NavHostController) {
-    LazyRow(
-        modifier = Modifier
-            .padding(vertical = 8.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        items(news) { newsItem ->
-            NewsCard(newsItem, navController)
+fun EventsCarousel(events: List<RallyEvent>, navController: NavHostController) {
+    val listState = rememberLazyListState()
+    val coroutineScope = rememberCoroutineScope()
+    val totalPages = events.size
+    val currentPage by remember {
+        derivedStateOf {
+            (listState.firstVisibleItemIndex)
         }
     }
+
+    Column {
+        LazyRow(
+            state = listState,
+            modifier = Modifier
+                .padding(vertical = 8.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            items(events) { event ->
+                RallyEventCard(event, navController)
+            }
+        }
+        PageIndicator(
+            totalPages = totalPages,
+            currentPage = currentPage,
+            modifier = Modifier
+                .padding(top = 8.dp)
+                .align(Alignment.CenterHorizontally)
+        )
+    }
 }
+
+@Composable
+fun NewsCarousel(news: List<News>, navController: NavHostController) {
+    val listState = rememberLazyListState()
+    val coroutineScope = rememberCoroutineScope()
+    val totalPages = news.size
+    val currentPage by remember {
+        derivedStateOf {
+            (listState.firstVisibleItemIndex)
+        }
+    }
+
+    Column {
+        LazyRow(
+            state = listState,
+            modifier = Modifier
+                .padding(vertical = 8.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            items(news) { newsItem ->
+                NewsCard(newsItem, navController)
+            }
+        }
+        PageIndicator(
+            totalPages = totalPages,
+            currentPage = currentPage,
+            modifier = Modifier
+                .padding(top = 8.dp)
+                .align(Alignment.CenterHorizontally)
+        )
+    }
+}
+
 
 @Composable
 fun RallyEventCard(event: RallyEvent, navController: NavHostController) {

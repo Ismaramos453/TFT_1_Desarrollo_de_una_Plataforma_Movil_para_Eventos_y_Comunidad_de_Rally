@@ -30,8 +30,9 @@ class PilotViewModel(application: Application) : AndroidViewModel(application) {
 
     fun loadRallyPilots() {
         if (isLoading) return
+
         val cachedRallyPilots = getCachedRallyPilots()
-        if (cachedRallyPilots != null) {
+        if (cachedRallyPilots != null && cachedRallyPilots.isNotEmpty()) {
             _allRallyPilots.value = cachedRallyPilots
             _filteredRallyPilots.value = cachedRallyPilots
             _countries.value = listOf("All") + cachedRallyPilots.map { it.country.name ?: "" }.distinct()
@@ -42,26 +43,71 @@ class PilotViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             try {
                 val seasonsResponse = RetrofitInstance.api.getSeasons()
-                val seasonId = seasonsResponse.seasons.firstOrNull()?.id ?: return@launch
 
-                val substagesResponse = RetrofitInstance.api.getSubstages(seasonId.toString())
-                val substageId = substagesResponse.stages.firstOrNull()?.id ?: return@launch
+                // Ordenar temporadas por año descendente (primero la más reciente con datos pasados)
+                val sortedSeasons = seasonsResponse.seasons
+                    .filter { it.year.toIntOrNull() != null }
+                    .sortedByDescending { it.year.toInt() }
 
-                val standingsResponse = RetrofitInstance.api.getStandings(substageId.toString())
-                val rallyTeams = standingsResponse.standings
-                    .map { it.team }
-                    .filter { it.category.name == "Rally" }
+                var rallyTeams: List<Team>? = null
 
-                cacheRallyPilots(rallyTeams)
-                _allRallyPilots.value = rallyTeams
-                _filteredRallyPilots.value = rallyTeams
-                _countries.value = listOf("All") + rallyTeams.map { it.country.name ?: "" }.distinct()
+                // Intentar encontrar standings en alguna temporada
+                for (season in sortedSeasons) {
+                    // Evitar temporadas futuras (ej: año >= 2025 si aún no ha empezado)
+                    val currentTime = System.currentTimeMillis() / 1000
+                    if (season.startDateTimestamp > currentTime) {
+                        // Esta temporada no ha empezado, no vale la pena buscar standings
+                        continue
+                    }
+
+                    val substagesResponse = RetrofitInstance.api.getSubstages(season.id.toString())
+                    for (substage in substagesResponse.stages) {
+                        // Verifica que el evento esté empezado o finalizado
+                        if (substage.status.type == "notstarted") {
+                            continue // Este evento no tiene standings todavía
+                        }
+
+                        val standingsResponse = RetrofitInstance.api.getStandings(substage.id.toString())
+                        if (standingsResponse.standings.isNotEmpty()) {
+                            rallyTeams = standingsResponse.standings
+                                .map { it.team }
+                                .filter { it.category.name == "Rally" }
+                            if (rallyTeams.isNotEmpty()) {
+                                break
+                            }
+                        }
+                    }
+
+                    if (!rallyTeams.isNullOrEmpty()) break
+                }
+
+                if (rallyTeams.isNullOrEmpty()) {
+                    // No se encontraron standings en ninguna temporada pasada
+                    // Muestra un mensaje o rellena con otro tipo de información
+                    _allRallyPilots.value = emptyList()
+                    _filteredRallyPilots.value = emptyList()
+                    _countries.value = listOf("All")
+                } else {
+                    // Cachear y mostrar los pilotos encontrados
+                    cacheRallyPilots(rallyTeams)
+                    _allRallyPilots.value = rallyTeams
+                    _filteredRallyPilots.value = rallyTeams
+                    _countries.value = listOf("All") + rallyTeams.map { it.country.name ?: "" }.distinct()
+                }
+
             } catch (e: Exception) {
+                // Manejo de error
+                _allRallyPilots.value = emptyList()
+                _filteredRallyPilots.value = emptyList()
+                _countries.value = listOf("All")
             } finally {
                 isLoading = false
             }
         }
     }
+
+
+
 
     private fun cacheRallyPilots(rallyPilots: List<Team>) {
         val editor = sharedPreferences.edit()

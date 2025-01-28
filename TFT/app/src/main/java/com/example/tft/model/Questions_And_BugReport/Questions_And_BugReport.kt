@@ -4,8 +4,11 @@ import java.util.Date
 
 
 enum class SeverityLevel {
-    GRAVE, MEDIUM, LIGHT
+    GRAVE,
+    MEDIO,
+    LIGERO
 }
+
 
 data class QuestionForAdmin(
     var id: String = "",

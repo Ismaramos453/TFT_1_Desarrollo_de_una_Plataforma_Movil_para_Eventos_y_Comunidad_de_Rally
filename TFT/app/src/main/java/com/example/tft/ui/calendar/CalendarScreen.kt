@@ -160,7 +160,6 @@ fun CalendarHeader(currentMonth: YearMonth, onPreviousMonth: () -> Unit, onNextM
         }
     }
 }
-
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun CalendarView(
@@ -215,8 +214,9 @@ fun CalendarView(
                                     day == null -> Color.Transparent
                                     eventTypes[day] == "WRC Event" -> Color(0xFF2196F3) // Azul para WRC
                                     eventTypes[day] == "ERC Event" -> Color(0xFF4CAF50) // Verde para ERC
-                                    day == selectedDay -> Color(0xFFA32902) // Rojo para el día seleccionado
-                                    else -> Color(0xFFF58A26) // Naranja para los días normales
+                                    eventTypes[day] == "Amateur" -> Color(0xFF46208B) // Morado para Amateur
+                                    day == selectedDay -> Color(0xFFA32902) // Rojo día seleccionado
+                                    else -> Color(0xFFF58A26) // Naranja días normales
                                 },
                                 shape = CircleShape
                             )
@@ -234,36 +234,35 @@ fun CalendarView(
                 }
             }
         }
-        // Leyenda para los tipos de eventos
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center,
-            modifier = Modifier.fillMaxWidth().padding(top = 8.dp)
-        ) {
-            Box(
-                modifier = Modifier
-                    .size(20.dp)
-                    .background(Color(0xFF2196F3), shape = CircleShape)
-                    .padding(4.dp)
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            Text("WRC Event", style = MaterialTheme.typography.bodyMedium)
-        }
 
+        // Leyenda mostrada en una sola fila, con los ítems separados como columnas
         Row(
+            horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center,
-            modifier = Modifier.fillMaxWidth().padding(top = 4.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 8.dp)
         ) {
-            Box(
-                modifier = Modifier
-                    .size(20.dp)
-                    .background(Color(0xFF4CAF50), shape = CircleShape)
-                    .padding(4.dp)
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            Text("ERC Event", style = MaterialTheme.typography.bodyMedium)
+            LegendItem(Color(0xFF2196F3), "Evento WRC")
+            LegendItem(Color(0xFF4CAF50), "Evento ERC")
+            LegendItem(Color(0xFF46208B), "Amateur")
         }
     }
 }
 
+@Composable
+fun LegendItem(color: Color, label: String) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center,
+        modifier = Modifier
+    ) {
+        Box(
+            modifier = Modifier
+                .size(20.dp)
+                .background(color, shape = CircleShape)
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(label, style = MaterialTheme.typography.bodyMedium)
+    }
+}
