@@ -274,6 +274,7 @@ fun PageIndicator(
             }
         }
     }
+    Spacer(modifier = Modifier.height(14.dp))
 }
 
 @Composable
