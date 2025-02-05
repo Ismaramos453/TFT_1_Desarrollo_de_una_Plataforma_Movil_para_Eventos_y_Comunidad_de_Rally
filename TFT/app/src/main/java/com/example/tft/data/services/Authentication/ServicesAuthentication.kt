@@ -16,7 +16,22 @@ object AuthenticationServices {
     suspend fun signIn(email: String, password: String): FirebaseUser? {
         return try {
             val result = auth.signInWithEmailAndPassword(email, password).await()
-            result.user
+            val firebaseUser = result.user
+            if (firebaseUser != null) {
+                // Verificamos en Firestore el campo identifier
+                val documentSnapshot = firestore.collection("users")
+                    .document(firebaseUser.uid)
+                    .get()
+                    .await()
+
+                val identifierFromDb = documentSnapshot.getString("identifier")
+                // Si no existe el campo o es distinto de "user", no se permite acceso
+                if (identifierFromDb != "user") {
+                    signOut() // Deslogea inmediatamente
+                    return null // Retorna null -> forzamos error en la capa superior
+                }
+            }
+            firebaseUser
         } catch (e: Exception) {
             null
         }
@@ -46,11 +61,17 @@ object AuthenticationServices {
         }
     }
 
-    suspend fun register(email: String, password: String, name: String, image: String? = null): FirebaseUser? {
+    suspend fun register(
+        email: String,
+        password: String,
+        name: String,
+        image: String? = null,
+        identifier: String = "user" // <-- Nuevo parámetro (por defecto "user")
+    ): FirebaseUser? {
         return try {
             val result = auth.createUserWithEmailAndPassword(email, password).await()
             result.user?.let { firebaseUser ->
-                val profileImageUrl = image ?: defaultProfileImageUrl  // Imagen predeterminada si no se proporciona
+                val profileImageUrl = image ?: defaultProfileImageUrl
 
                 val user = Users(
                     id = firebaseUser.uid,
@@ -58,7 +79,8 @@ object AuthenticationServices {
                     name = name,
                     image = profileImageUrl,
                     favoritePilots = mutableListOf(),
-                    eventsSaved = emptyList()
+                    eventsSaved = emptyList(),
+                    identifier = identifier // <-- Asignar el nuevo campo
                 )
                 saveUserToFirestore(user)
             }
@@ -73,26 +95,43 @@ object AuthenticationServices {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         return try {
             val result = auth.signInWithCredential(credential).await()
-            result.user?.let {
-                val user = Users(
-                    id = it.uid,
-                    email = it.email ?: "",
-                    name = it.displayName ?: "",
-                    image = it.photoUrl?.toString() ?: "",
-                    favoritePilots = mutableListOf(),
-                    eventsSaved = emptyList()
-                )
-                saveUserToFirestore(user)
+            val firebaseUser = result.user
+
+            if (firebaseUser != null) {
+                val userDocRef = firestore.collection("users").document(firebaseUser.uid)
+                val documentSnapshot = userDocRef.get().await()
+
+                // 1. Si el doc NO existe -> es la primera vez que se registra con Google -> se crea
+                if (!documentSnapshot.exists()) {
+                    val newUser = Users(
+                        id = firebaseUser.uid,
+                        email = firebaseUser.email ?: "",
+                        name = firebaseUser.displayName ?: "",
+                        image = firebaseUser.photoUrl?.toString() ?: "",
+                        favoritePilots = mutableListOf(),
+                        eventsSaved = emptyList(),
+                        identifier = "user"
+                    )
+                    saveUserToFirestore(newUser)
+                } else {
+                    // 2. Si YA existe, verificamos que identifier sea "user"
+                    val identifierFromDb = documentSnapshot.getString("identifier")
+                    if (identifierFromDb != "user") {
+                        signOut()
+                        return null
+                    }
+                }
             }
-            result.user
+            firebaseUser
         } catch (e: Exception) {
             Log.e("AuthenticationServices", "Google sign-in failed", e)
             null
         }
     }
 
+
     private suspend fun saveUserToFirestore(user: Users) {
-        Log.d("FirestoreService", "Attempting to save user: ${user}")
+        Log.d("FirestoreService", "Attempting to save user: $user")
         firestore.collection("users").document(user.id!!).set(user)
             .addOnSuccessListener {
                 Log.d("FirestoreService", "User document successfully written with image: ${user.image}")

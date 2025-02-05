@@ -7,7 +7,8 @@ data class Users(
     var name: String = "",
     var image: String = "",
     var favoritePilots: MutableList<Int> = mutableListOf(),
-    val eventsSaved: List<SavedEvent> = emptyList()
+    val eventsSaved: List<SavedEvent> = emptyList(),
+    var identifier: String = "user" // <-- Nuevo campo
 ) {
-    constructor() : this(null, "", "", "", mutableListOf(), emptyList())
+    constructor() : this(null, "", "", "", mutableListOf(), emptyList(), "user")
 }

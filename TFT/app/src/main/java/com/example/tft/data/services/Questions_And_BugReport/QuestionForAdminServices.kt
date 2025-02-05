@@ -18,7 +18,7 @@ object QuestionForAdminServices {
             authorName = userName,
             authorEmail = userEmail,
             timestamp = Date(),
-            type = "Question"
+            type = "Pregunta"
         )
         // Crear el documento y luego actualizarlo con su propio ID
         val documentReference = db.collection("questionsAdmin").document()
@@ -35,7 +35,7 @@ object QuestionForAdminServices {
             authorEmail = userEmail,
             timestamp = Date(),
             severity = severity,
-            type = "Bug Report"
+            type = "Informe de Error"
         )
         // Crear el documento y luego actualizarlo con su propio ID
         val documentReference = db.collection("bugReports").document()

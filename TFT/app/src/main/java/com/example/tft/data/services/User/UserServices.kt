@@ -8,15 +8,23 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.tasks.await
 
-object UserServices{
+
+
+object UserServices {
 
     private val auth = FirebaseAuth.getInstance()
     val firestore = FirebaseFirestore.getInstance()
     private val storageReference = FirebaseStorage.getInstance().reference
-    private const val DEFAULT_IMAGE_URL = "https://firebasestorage.googleapis.com/v0/b/tft-ismael.appspot.com/o/profile_images%2Fismae%40gmail.com.jpg?alt=media&token=948f4509-7c28-464c-bb67-adbd0d9f7e06"
+
+    private const val DEFAULT_IMAGE_URL =
+        "https://firebasestorage.googleapis.com/v0/b/tft-ismael.appspot.com/o/profile_images%2Fismae%40gmail.com.jpg?alt=media&token=948f4509-7c28-464c-bb67-adbd0d9f7e06"
+
+    /**
+     * Obtiene los detalles de un usuario (por UID) desde Firestore.
+     */
     suspend fun getUserDetails(userId: String): Users? {
         return try {
-            val document = UserServices.firestore.collection("users").document(userId).get().await()
+            val document = firestore.collection("users").document(userId).get().await()
             document.toObject(Users::class.java)
         } catch (e: Exception) {
             println("Error fetching user details: ${e.message}")
@@ -24,8 +32,26 @@ object UserServices{
         }
     }
 
+    /**
+     * Sube la imagen de perfil a la ruta "profile_images/UID.jpg"
+     * Verifica si currentUser está logueado y si coincide con 'userId'.
+     */
     fun uploadProfileImage(imageUri: Uri, userId: String, callback: (Boolean, String?) -> Unit) {
-        val profileImageRef = UserServices.storageReference.child("profile_images/$userId.jpg")
+        // <-- CAMBIOS: verificamos que el usuario esté logueado y coincida su UID
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        if (currentUser == null) {
+            Log.e("FirestoreService", "No user is logged in. Can't upload.")
+            callback(false, null)
+            return
+        }
+        if (currentUser.uid != userId) {
+            Log.e("FirestoreService", "UID mismatch: currentUser.uid=${currentUser.uid}, targetUid=$userId")
+            callback(false, null)
+            return
+        }
+
+        val profileImageRef = storageReference.child("profile_images/$userId.jpg")
+
         profileImageRef.putFile(imageUri)
             .addOnSuccessListener {
                 profileImageRef.downloadUrl.addOnSuccessListener { uri ->
@@ -41,7 +67,7 @@ object UserServices{
     }
 
     private fun updateUserImage(documentId: String, imageUrl: String, callback: (Boolean) -> Unit) {
-        UserServices.firestore.collection("users").document(documentId)
+        firestore.collection("users").document(documentId)
             .update("image", imageUrl)
             .addOnSuccessListener {
                 Log.d("FirestoreService", "User profile image URL updated in Firestore: $imageUrl")
@@ -53,11 +79,14 @@ object UserServices{
             }
     }
 
-    // Lógica para obtener el perfil actual del usuario
+    /**
+     * Obtener el perfil del usuario actual (usando su email)
+     * Si no existe imagen, asignar la imagen por defecto.
+     */
     fun getCurrentUserProfile(callback: (Users?, String?) -> Unit) {
-        val user = UserServices.auth.currentUser
+        val user = auth.currentUser
         if (user != null) {
-            UserServices.firestore.collection("users").whereEqualTo("email", user.email).get()
+            firestore.collection("users").whereEqualTo("email", user.email).get()
                 .addOnSuccessListener { documents ->
                     if (!documents.isEmpty) {
                         val document = documents.documents[0]
@@ -65,15 +94,12 @@ object UserServices{
 
                         Log.d("FirestoreService", "User profile retrieved: $userProfile")
 
-                        // Verificar si la imagen está vacía y asignar la imagen por defecto
                         if (userProfile?.image.isNullOrEmpty()) {
                             userProfile?.image = DEFAULT_IMAGE_URL
-                            // Actualizar el documento de Firestore solo si es necesario
                             updateUserImage(document.id, DEFAULT_IMAGE_URL) { success ->
                                 Log.d("FirestoreService", "Imagen por defecto asignada: $DEFAULT_IMAGE_URL")
                             }
                         }
-
                         callback(userProfile, document.id)
                     } else {
                         Log.w("FirestoreService", "User document does not exist")
@@ -90,15 +116,12 @@ object UserServices{
         }
     }
 
-
-    // Función para crear o actualizar el perfil de usuario
     fun updateUserProfile(user: Users, documentId: String, callback: (Boolean) -> Unit) {
-        // Si la imagen está vacía, asignar la imagen por defecto
         if (user.image.isEmpty()) {
             user.image = DEFAULT_IMAGE_URL
         }
 
-        UserServices.firestore.collection("users").document(documentId)
+        firestore.collection("users").document(documentId)
             .set(user)
             .addOnSuccessListener {
                 Log.d("FirestoreService", "UserProfile updated")
@@ -109,5 +132,4 @@ object UserServices{
                 callback(false)
             }
     }
-
 }

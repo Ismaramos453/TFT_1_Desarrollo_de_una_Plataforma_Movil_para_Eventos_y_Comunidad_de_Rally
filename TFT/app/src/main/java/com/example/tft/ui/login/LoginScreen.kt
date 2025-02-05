@@ -1,5 +1,6 @@
 package com.example.tft.ui.login
 import android.app.Activity
+import android.os.Build
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -48,6 +49,13 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 
+
+
+import androidx.annotation.RequiresApi
+
+
+@RequiresApi(Build.VERSION_CODES.O)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(navController: NavController, viewModel: LoginViewModel = viewModel()) {
     Box(Modifier.fillMaxSize()) {
@@ -74,17 +82,43 @@ fun LoginContent(navController: NavController, viewModel: LoginViewModel) {
         item {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 HeaderImage()
-                Text("RallyWorld", fontSize = 30.sp, fontWeight = FontWeight.Bold, color = Color.White)
+                Text(
+                    "RallyWorld",
+                    fontSize = 30.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White
+                )
                 Spacer(modifier = Modifier.height(25.dp))
 
-                Column(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.Top, horizontalAlignment = Alignment.CenterHorizontally) {
-                    CustomTextField(valueState = email, label = "Correo electrónico", modifier = Modifier.fillMaxWidth(), error = emailError)
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalArrangement = Arrangement.Top,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    CustomTextField(
+                        valueState = email,
+                        label = "Correo electrónico",
+                        modifier = Modifier.fillMaxWidth(),
+                        error = emailError
+                    )
                     Spacer(modifier = Modifier.height(16.dp))
-                    CustomTextField(valueState = password, label = "Contraseña", modifier = Modifier.fillMaxWidth(), visualTransformation = PasswordVisualTransformation(), error = passwordError)
+                    CustomTextField(
+                        valueState = password,
+                        label = "Contraseña",
+                        modifier = Modifier.fillMaxWidth(),
+                        visualTransformation = PasswordVisualTransformation(),
+                        error = passwordError
+                    )
                     Spacer(modifier = Modifier.height(16.dp))
-                    Text("¿Olvidaste tu contraseña?", fontSize = 14.sp, fontWeight = FontWeight.Bold, color = Color(245, 138, 38, 255), modifier = Modifier.clickable {
-                        navController.navigate(route = AppScreens.ForgotPasswordScreen.route)
-                    })
+                    Text(
+                        "¿Olvidaste tu contraseña?",
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color(245, 138, 38, 255),
+                        modifier = Modifier.clickable {
+                            navController.navigate(route = AppScreens.ForgotPasswordScreen.route)
+                        }
+                    )
                     Spacer(modifier = Modifier.height(16.dp))
                 }
             }
@@ -98,7 +132,13 @@ fun LoginContent(navController: NavController, viewModel: LoginViewModel) {
                 }
                 Spacer(modifier = Modifier.height(16.dp))
                 Text("¿No tienes cuenta?", fontSize = 16.sp, color = Color.White)
-                Text("Regístrate", fontSize = 16.sp, color = Color(245, 138, 38, 255), fontWeight = FontWeight.Bold, modifier = Modifier.clickable { navController.navigate(route = AppScreens.RegisterScreen.route) })
+                Text(
+                    "Regístrate",
+                    fontSize = 16.sp,
+                    color = Color(245, 138, 38, 255),
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.clickable { navController.navigate(route = AppScreens.RegisterScreen.route) }
+                )
             }
         }
     }
@@ -129,7 +169,12 @@ fun BackgroundImage() {
 }
 
 @Composable
-fun LoginButton(navController: NavController, email: String, password: String, viewModel: LoginViewModel) {
+fun LoginButton(
+    navController: NavController,
+    email: String,
+    password: String,
+    viewModel: LoginViewModel
+) {
     Button(
         onClick = {
             viewModel.signInWithEmailAndPassword(email, password) {
@@ -188,11 +233,9 @@ fun GoogleSignInButton(viewModel: LoginViewModel, home: () -> Unit) {
             .fillMaxWidth()
             .height(50.dp)
     ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically
-        ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
             Image(
-                painter = painterResource(id = com.google.android.gms.base.R.drawable.googleg_standard_color_18), // Asegúrate de tener el logo de Google en tus recursos
+                painter = painterResource(id = com.google.android.gms.base.R.drawable.googleg_standard_color_18),
                 contentDescription = "Google Logo",
                 modifier = Modifier.size(24.dp)
             )

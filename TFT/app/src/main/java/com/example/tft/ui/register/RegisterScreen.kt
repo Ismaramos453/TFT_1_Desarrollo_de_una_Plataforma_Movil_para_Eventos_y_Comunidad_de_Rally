@@ -51,7 +51,7 @@ import androidx.compose.material.icons.filled.VisibilityOff
 fun RegisterScreen(navController: NavController) {
     Scaffold(
         topBar = {
-            BackTopBar(title = "Inicio de Sesión", navController = navController)
+            BackTopBar(title = "Registro de usuario", navController = navController)
         }
     ) { innerPadding ->
         Box(

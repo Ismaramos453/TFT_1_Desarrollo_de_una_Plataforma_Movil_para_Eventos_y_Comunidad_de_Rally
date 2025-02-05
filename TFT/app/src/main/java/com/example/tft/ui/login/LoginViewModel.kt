@@ -10,6 +10,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.tft.data.services.Authentication.AuthenticationServices
 import kotlinx.coroutines.launch
 
+
 class LoginViewModel : ViewModel() {
     private val _loading = MutableLiveData(false)
     private val _emailError = MutableLiveData<String?>()
@@ -48,13 +49,34 @@ class LoginViewModel : ViewModel() {
             try {
                 val user = AuthenticationServices.signIn(email, password)
                 if (user != null) {
+                    // Inicio de sesión exitoso, se limpian los errores.
+                    _emailError.value = null
+                    _passwordError.value = null
                     Log.d("RallyWord", "signInWithEmailAndPassword logueado")
                     home()
                 } else {
-                    Log.d("RallyWord", "signInWithEmailAndPassword: fallo en la autenticación")
+                    // En este ejemplo, si user es nulo se asume que el correo existe pero la contraseña es incorrecta.
+                    // (En algunas implementaciones, podría ser indistinto)
+                    _passwordError.value = "Contraseña incorrecta"
+                    _emailError.value = null
+                    Log.d("RallyWord", "signInWithEmailAndPassword: Contraseña incorrecta")
                 }
             } catch (ex: Exception) {
-                Log.d("RallyWord", "signInWithEmailAndPassword : ${ex.message}")
+                Log.d("RallyWord", "signInWithEmailAndPassword: ${ex.message}")
+                // Intenta distinguir el error a partir del mensaje
+                val errorMessage = ex.message ?: "Error desconocido"
+                if (errorMessage.contains("password", ignoreCase = true)) {
+                    _passwordError.value = "Contraseña incorrecta"
+                    _emailError.value = null
+                } else if (errorMessage.contains("user", ignoreCase = true) ||
+                    errorMessage.contains("no user", ignoreCase = true)) {
+                    _emailError.value = "Correo incorrecto"
+                    _passwordError.value = null
+                } else {
+                    // Si no se puede determinar, asigna el mismo error a ambos campos.
+                    _emailError.value = "Error al iniciar sesión: $errorMessage"
+                    _passwordError.value = "Error al iniciar sesión: $errorMessage"
+                }
             }
         }
     }
@@ -69,10 +91,9 @@ class LoginViewModel : ViewModel() {
                 Log.d("RallyWord", "signInWithGoogle: fallo en la autenticación")
             }
         } catch (ex: Exception) {
-            Log.d("RallyWord", "signInWithGoogle : ${ex.message}")
+            Log.d("RallyWord", "signInWithGoogle: ${ex.message}")
         }
     }
 }
-
 
 

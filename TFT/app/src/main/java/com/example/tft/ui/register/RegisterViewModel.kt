@@ -86,7 +86,7 @@ class RegisterViewModel : ViewModel() {
             viewModelScope.launch {
                 _registrationState.value = RegistrationState.Loading
                 try {
-                    val user = AuthenticationServices.register(email, password, name, image)
+                    val user = AuthenticationServices.register(email, password, name, image, identifier = "user")
                     _registrationState.value = if (user != null) {
                         RegistrationState.Success(user)
                     } else {
@@ -100,6 +100,7 @@ class RegisterViewModel : ViewModel() {
             }
         }
     }
+
 
     sealed class RegistrationState {
         object Idle : RegistrationState()
