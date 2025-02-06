@@ -160,7 +160,7 @@ https://www.figma.com/design/Bmh5LJqfA7YY1TPo1ZOAK7/Untitled?node-id=0-1&p=f&t=e
 - **Ismael Ramos Alonso**
 
 ---
-## Supervisora {#supervisora}
+## Supervisora 
 - **María Dolores Afonso Suárez**
 
 ---
